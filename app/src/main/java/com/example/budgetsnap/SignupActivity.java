@@ -22,6 +22,8 @@ public class SignupActivity extends AppCompatActivity {
     TextView nameText, birthdayText, emailText, passwordText, rePasswordText;
 
     ImageButton eyeButton, eyeButton2;
+
+    EditText editName, editBirthday, editEmail;
     EditText editPassword, editRePassword;
 
     boolean isPasswordVisible = false;
@@ -62,6 +64,10 @@ public class SignupActivity extends AppCompatActivity {
         rePasswordText = findViewById(R.id.rePasswordText);
         String rpText = "<font color=#000000>Re-enter Password</font> <font color=#E16162>*</font>";
         rePasswordText.setText(Html.fromHtml(rpText, Html.FROM_HTML_MODE_LEGACY));
+
+        editName = findViewById(R.id.editName);
+        editBirthday = findViewById(R.id.editBirthday);
+        editEmail = findViewById(R.id.editEmail);
 
         editPassword = findViewById(R.id.editPassword);
         editRePassword = findViewById(R.id.editRePassword);
@@ -106,16 +112,17 @@ public class SignupActivity extends AppCompatActivity {
 
         Intent i = new Intent(SignupActivity.this, CongratsSignup.class);
 
-        i.putExtra("name", nameText.getText().toString());
-        i.putExtra("birthday", birthdayText.getText().toString());
-        i.putExtra("email", emailText.getText().toString());
-        i.putExtra("password", passwordText.getText().toString());
+        i.putExtra("name", editName.getText().toString());
+        i.putExtra("birthday", editBirthday.getText().toString());
+        i.putExtra("email", editEmail.getText().toString());
+        i.putExtra("password", editPassword.getText().toString());
 
         startActivity(i);
     }
 
     public void log (View v) {
 
-
+        Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 }

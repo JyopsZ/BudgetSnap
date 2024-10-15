@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
-
 public class CongratsSignup extends AppCompatActivity {
-
-    ArrayList<User> users = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +33,12 @@ public class CongratsSignup extends AppCompatActivity {
         String email = i.getStringExtra("email");
         String password = i.getStringExtra("password");
 
-
         Intent i2 = new Intent(CongratsSignup.this, LoginActivity.class); // Passing data to LoginActivity for verification
         i2.putExtra("name", name);
         i2.putExtra("birthday", birthday);
         i2.putExtra("email", email);
         i2.putExtra("password", password);
+
         startActivity(i2);
     }
 }
