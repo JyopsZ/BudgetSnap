@@ -1,5 +1,6 @@
 package com.example.budgetsnap;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
@@ -103,7 +104,14 @@ public class SignupActivity extends AppCompatActivity {
 
     public void sign (View v) {
 
-        
+        Intent i = new Intent(SignupActivity.this, CongratsSignup.class);
+
+        i.putExtra("name", nameText.getText().toString());
+        i.putExtra("birthday", birthdayText.getText().toString());
+        i.putExtra("email", emailText.getText().toString());
+        i.putExtra("password", passwordText.getText().toString());
+
+        startActivity(i);
     }
 
     public void log (View v) {
