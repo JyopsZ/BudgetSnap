@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BudgetSnap</string>
+    <string name="bg">bg</string>
+    <string name="GraphRectangle">Graph Rectangle</string>
 </resources>
