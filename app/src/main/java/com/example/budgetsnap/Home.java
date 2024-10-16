@@ -1,8 +1,6 @@
 package com.example.budgetsnap;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
