@@ -21,20 +21,24 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
         });
+        Intent i = new Intent(MainActivity.this, Home.class);
+        startActivity(i);
+        finish();
 
-        // automatically go to onboarding1 after 3 seconds
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // intent to navigate to onboarding1
-                Intent i = new Intent(MainActivity.this, onboarding1.class);
-                startActivity(i);
-
-                // Optionally finish MainActivity so the user cannot return to it
-                finish();
-            }
-        }, 3000); // 3-second delay (can edit this to extend or shorten the delay)
+//        // automatically go to onboarding1 after 3 seconds
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // intent to navigate to onboarding1
+//                Intent i = new Intent(MainActivity.this, onboarding1.class);
+//                startActivity(i);
+//
+//                // Optionally finish MainActivity so the user cannot return to it
+//                finish();
+//            }
+//        }, 3000); // 3-second delay (can edit this to extend or shorten the delay)
 
     }
 }

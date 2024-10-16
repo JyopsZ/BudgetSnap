@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (isValid) {
 
-            Intent i = new Intent(LoginActivity.this, postLogin.class); // REPLACE WITH ACTUAL POST LOGIN ACTIVITY * PLACEHOLDER ACTIVITY ONLY
+            Intent i = new Intent(LoginActivity.this, Home.class); // REPLACE WITH ACTUAL POST LOGIN ACTIVITY * PLACEHOLDER ACTIVITY ONLY
             startActivity(i); // Start new activity after logging in
         }
 
