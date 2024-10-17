@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Define the fill color -->
+            <solid android:color="@android:color/transparent"/> <!-- Clear/transparent fill -->
+
+            <!-- Define the border color and width -->
+            <stroke android:width="0.5dp" android:color="@android:color/black"/>
+
+            <!-- Round edges -->
+            <corners android:radius="16dp"/>
+
+            <!-- Size of the shape -->
+            <size android:width="200dp" android:height="60dp"/>
+        </shape>
+    </item>
+</selector>

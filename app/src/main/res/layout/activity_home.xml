@@ -21,10 +21,10 @@
 
     <ImageView
         android:id="@+id/GraphRectangle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="328dp"
+        android:layout_width="372dp"
+        android:layout_height="118dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="316dp"
         android:contentDescription="@string/GraphRectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,11 +33,10 @@
     <ImageView
         android:id="@+id/SearchBar"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toStartOf="@+id/Bell"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toEndOf="@+id/UpperL_Badge"
         app:layout_constraintTop_toBottomOf="@+id/Logo"
         app:srcCompat="@drawable/home_searchbar" />
@@ -46,7 +45,7 @@
         android:id="@+id/Logo"
         android:layout_width="136dp"
         android:layout_height="30dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="136dp"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +57,7 @@
         android:layout_width="40dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="56dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,8 +67,8 @@
         android:id="@+id/Bell"
         android:layout_width="40dp"
         android:layout_height="35dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_urightbadge" />
@@ -105,31 +104,41 @@
         android:layout_width="25dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="65dp"
         app:layout_constraintStart_toStartOf="@+id/SearchBar"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_search" />
 
     <TextView
         android:id="@+id/Search_Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="206dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="23dp"
         android:fontFamily="@font/poppins"
         android:hint="Search transactions..."
+        android:textAlignment="gravity"
         android:textColorHint="#FFFFFF"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/Search_Button"
-        app:layout_constraintTop_toTopOf="@+id/SearchBar" />
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/SearchBar"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/homerectangle"
         android:layout_width="367dp"
         android:layout_height="144dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/home_homerectangle"
-        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteX="22dp"
         tools:layout_editor_absoluteY="731dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="367dp"
+        android:layout_height="144dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/home_upperrectangle"
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="313dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
