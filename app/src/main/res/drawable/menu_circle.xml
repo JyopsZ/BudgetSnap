@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval"> <!-- Use "oval" for a circle -->
+            <size android:width="50dp" android:height="50dp"/> <!-- Set equal width and height for a circle -->
+            <solid android:color="#004743"/> <!-- Fill color for the circle (red in this case) -->
+        </shape>
+    </item>
+</selector>
