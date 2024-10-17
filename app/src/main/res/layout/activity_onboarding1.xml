@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="Trusted by users to manage budgets and track spending"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
