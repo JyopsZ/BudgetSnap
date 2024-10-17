@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Define the fill color -->
+            <solid android:color="#F9BB61"/> <!-- Purple fill color -->
+
+            <!-- Round edges -->
+            <corners android:radius="30dp"/> <!-- Slightly rounded corners -->
+
+            <!-- Size of the shape (make width and height the same for a square) -->
+            <size android:width="200dp" android:height="200dp"/> <!-- Now it's a square -->
+        </shape>
+    </item>
+</selector>
