@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F7"
+    android:background="#E4E4E4"
     tools:context=".Home">
 
     <ImageView
@@ -24,12 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="324dp"
+        android:layout_marginBottom="328dp"
         android:contentDescription="@string/GraphRectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView15"
-        app:layout_constraintVertical_bias="0.843"
         app:srcCompat="@drawable/home_graphrectangle" />
 
     <ImageView
@@ -38,7 +36,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/imageView13"
+        app:layout_constraintEnd_toStartOf="@+id/Bell"
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toEndOf="@+id/UpperL_Badge"
         app:layout_constraintTop_toBottomOf="@+id/Logo"
@@ -67,7 +65,7 @@
         app:srcCompat="@drawable/home_uleftbadge" />
 
     <ImageView
-        android:id="@+id/imageView13"
+        android:id="@+id/Bell"
         android:layout_width="40dp"
         android:layout_height="35dp"
         android:layout_marginTop="50dp"
@@ -126,12 +124,12 @@
         app:layout_constraintTop_toTopOf="@+id/SearchBar" />
 
     <ImageView
-        android:id="@+id/imageView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="124dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Available_Text"
-        app:srcCompat="@drawable/home_upperrectangle" />
+        android:id="@+id/imageView5"
+        android:layout_width="367dp"
+        android:layout_height="144dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/home_homerectangle"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="731dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
