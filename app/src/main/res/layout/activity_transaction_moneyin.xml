@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".transaction_moneyin">
 
-  <!-- Background Image -->
   <ImageView
       android:id="@+id/imageBG"
       android:layout_width="0dp"
@@ -19,7 +18,6 @@
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/background" />
 
-  <!-- Logo Image -->
   <ImageView
       android:id="@+id/imageLogo"
       android:layout_width="259dp"
@@ -30,7 +28,6 @@
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/logonobg" />
 
-  <!-- Badge Icon -->
   <ImageView
       android:id="@+id/imageBadge"
       android:layout_width="52dp"
@@ -41,7 +38,6 @@
       app:layout_constraintTop_toBottomOf="@+id/imageLogo"
       app:srcCompat="@drawable/badge" />
 
-  <!-- Bell Icon -->
   <ImageView
       android:id="@+id/imageBell"
       android:layout_width="52dp"
@@ -52,7 +48,6 @@
       app:layout_constraintTop_toBottomOf="@+id/imageLogo"
       app:srcCompat="@drawable/bell" />
 
-  <!-- Search Bar -->
   <SearchView
       android:id="@+id/searchBar"
       android:layout_width="231dp"
@@ -63,7 +58,6 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
 
-  <!-- Transactions Title -->
   <TextView
       android:id="@+id/textTransactions"
       android:layout_width="wrap_content"
@@ -77,7 +71,36 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
-  <!-- Name TextView -->
+  <Button
+      android:id="@+id/buttonMoneyIn"
+      android:layout_width="125dp"
+      android:layout_height="46dp"
+      android:layout_marginTop="12dp"
+      android:layout_marginEnd="5dp"
+      android:backgroundTint="@color/white"
+      android:text="Money In"
+      android:textColor="@color/verydarkcyan"
+      android:textSize="15dp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toStartOf="@+id/buttonMoneyOut"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textTransactions" />
+
+  <Button
+      android:id="@+id/buttonMoneyOut"
+      android:layout_width="125dp"
+      android:layout_height="46dp"
+      android:layout_marginStart="0dp"
+      android:layout_marginTop="12dp"
+      android:backgroundTint="@color/white"
+      android:text="Money Out"
+      android:textSize="15dp"
+      android:textStyle="bold"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@+id/buttonMoneyIn"
+      app:layout_constraintTop_toBottomOf="@+id/textTransactions" />
+
   <TextView
       android:id="@+id/textViewName"
       android:layout_width="wrap_content"
@@ -85,11 +108,10 @@
       android:text="Name *"
       android:textStyle="bold"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textTransactions"
+      app:layout_constraintTop_toBottomOf="@+id/buttonMoneyIn"
       android:layout_marginStart="36dp"
       android:layout_marginTop="16dp" />
 
-  <!-- Name EditText -->
   <EditText
       android:id="@+id/editTextName"
       android:layout_width="0dp"
@@ -103,7 +125,6 @@
       android:layout_marginEnd="36dp"
       android:layout_marginTop="8dp" />
 
-  <!-- Amount TextView -->
   <TextView
       android:id="@+id/textViewAmount"
       android:layout_width="wrap_content"
@@ -115,7 +136,6 @@
       android:layout_marginStart="36dp"
       android:layout_marginTop="16dp" />
 
-  <!-- Amount EditText -->
   <EditText
       android:id="@+id/editTextAmount"
       android:layout_width="0dp"
@@ -129,7 +149,6 @@
       android:layout_marginEnd="36dp"
       android:layout_marginTop="8dp" />
 
-  <!-- Category TextView -->
   <TextView
       android:id="@+id/textViewCategory"
       android:layout_width="wrap_content"
@@ -141,15 +160,12 @@
       android:layout_marginStart="36dp"
       android:layout_marginTop="16dp" />
 
-  <!-- Image TextView -->
-
-  <!-- Category Spinner -->
   <TextView
       android:id="@+id/textViewImage"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="108dp"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="12dp"
       android:text="Image"
       android:textStyle="bold"
       app:layout_constraintStart_toEndOf="@+id/textViewCategory"
@@ -166,13 +182,12 @@
       android:layout_marginEnd="8dp"
       android:layout_marginTop="8dp" />
 
-  <!-- placeholder -->
   <Button
       android:id="@+id/buttonAttachImage"
-      android:layout_width="150dp"
-      android:layout_height="41dp"
+      android:layout_width="163dp"
+      android:layout_height="39dp"
       android:layout_marginStart="8dp"
-      android:layout_marginTop="4dp"
+      android:layout_marginTop="8dp"
       android:layout_marginEnd="36dp"
       android:text="Attach Image"
       app:layout_constraintEnd_toEndOf="parent"
@@ -190,15 +205,11 @@
       android:layout_marginStart="36dp"
       android:layout_marginTop="16dp" />
 
-  <!-- Time TextView -->
-
-  <!-- Date EditText -->
-
   <TextView
       android:id="@+id/textViewTime"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="144dp"
+      android:layout_marginStart="136dp"
       android:layout_marginTop="16dp"
       android:text="Time *"
       android:textStyle="bold"
@@ -218,7 +229,6 @@
       android:layout_marginEnd="8dp"
       android:layout_marginTop="8dp" />
 
-  <!-- Time EditText -->
   <EditText
       android:id="@+id/editTextTime"
       android:layout_width="0dp"
@@ -232,7 +242,6 @@
       android:layout_marginEnd="36dp"
       android:layout_marginTop="8dp" />
 
-  <!-- Add Income Button -->
   <Button
       android:id="@+id/buttonAddIncome"
       android:layout_width="0dp"
