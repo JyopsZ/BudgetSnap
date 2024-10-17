@@ -30,7 +30,7 @@
         android:background="@color/black"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintHorizontal_bias="0.009"
         app:layout_constraintStart_toStartOf="@id/welcomeView"
         app:layout_constraintTop_toBottomOf="@id/welcomeView" />
 

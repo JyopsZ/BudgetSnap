@@ -1,7 +1,6 @@
 package com.example.budgetsnap;
-import java.util.ArrayList;
 
-public class User {
+public class UserClass {
 
     private String name;
     private String birthday;
@@ -9,7 +8,7 @@ public class User {
     private String password;
 
 
-    public User (String name, String birthday, String email, String password) {
+    public UserClass(String name, String birthday, String email, String password) {
 
         this.name = name;
         this.birthday = birthday;

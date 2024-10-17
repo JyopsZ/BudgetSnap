@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
 
         });
-        Intent i = new Intent(MainActivity.this, Home.class);
+        Intent i = new Intent(MainActivity.this, onboarding1.class);
         startActivity(i);
         finish();
 
