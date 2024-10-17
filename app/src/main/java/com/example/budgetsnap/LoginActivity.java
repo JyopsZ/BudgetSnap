@@ -66,7 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 
         userClassList.add(new UserClass("Liam Anderson", "01/12/1997", "liam_anderson@dlsu.edu.ph", "asdf"));
         userClassList.add(new UserClass("Ren Amamiya", "06/24/2004", "ren_amamiya@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Hiro Worldo", "12/03/1995", "hiro_worldo@dlsu.edu.ph", "asdf"));
+        userClassList.add(new UserClass("Brad Pitt", "12/03/1995", "brad_pitt@dlsu.edu.ph", "asdf"));
+        userClassList.add(new UserClass("Kevin Villador", "03/04/2005", "admin", "1234"));
     }
 
     private void addUser() { // Add user from sign up to userList arrayList, only if the textboxes were filled earlier

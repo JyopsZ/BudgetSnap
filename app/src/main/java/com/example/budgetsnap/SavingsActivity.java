@@ -1,6 +1,8 @@
 package com.example.budgetsnap;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,4 +23,16 @@ public class SavingsActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+    public void back(View v) {
+
+        finish();
+    }
+
+    public void addSavings(View v) {
+
+        Intent i = new Intent(this, SavingsChallenge.class);
+        startActivity(i);
+    }
+
 }
