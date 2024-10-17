@@ -5,8 +5,21 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E4E4E4"
+    android:background="#F7F7F7"
     tools:context=".Home">
+
+    <TextView
+        android:id="@+id/balance_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="108dp"
+        android:fontFamily="@font/calistoga"
+        android:text="PHP 1,000"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
 
     <ImageView
         android:id="@+id/GreenBG"
@@ -21,13 +34,13 @@
 
     <ImageView
         android:id="@+id/GraphRectangle"
-        android:layout_width="372dp"
-        android:layout_height="118dp"
+        android:layout_width="371dp"
+        android:layout_height="121dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="316dp"
+        android:layout_marginTop="408dp"
         android:contentDescription="@string/GraphRectangle"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_graphrectangle" />
 
     <ImageView
@@ -74,23 +87,37 @@
         app:srcCompat="@drawable/home_urightbadge" />
 
     <TextView
-        android:id="@+id/Balance_Text"
+        android:id="@+id/InsightsSummary"
+        android:layout_width="240dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="163dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Insights Summary"
+        android:textColor="#E16162"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
+
+    <TextView
+        android:id="@+id/balance_Text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="108dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="128dp"
         android:fontFamily="@font/calistoga"
         android:text="PHP 1,000"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Available_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="144dp"
         android:fontFamily="@font/inter"
         android:text="Available Balance"
@@ -125,20 +152,47 @@
 
     <ImageView
         android:id="@+id/homerectangle"
-        android:layout_width="367dp"
-        android:layout_height="144dp"
+        android:layout_width="371dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="18dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/home_homerectangle"
-        tools:layout_editor_absoluteX="22dp"
-        tools:layout_editor_absoluteY="731dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/midrectangle"
+        app:srcCompat="@drawable/home_homerectangle" />
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="367dp"
-        android:layout_height="144dp"
+        android:id="@+id/upperrectangle"
+        android:layout_width="371dp"
+        android:layout_height="137dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="288dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/home_upperrectangle"
-        tools:layout_editor_absoluteX="22dp"
-        tools:layout_editor_absoluteY="313dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home_upperrectangle" />
+
+    <ImageView
+        android:id="@+id/midrectangle"
+        android:layout_width="371dp"
+        android:layout_height="214dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="196dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG"
+        app:srcCompat="@drawable/home_midrectangle" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/homerectangle"
+        app:layout_constraintStart_toStartOf="@+id/homerectangle"
+        app:srcCompat="@drawable/home" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,13 +6,13 @@
             <solid android:color="@android:color/transparent"/> <!-- Clear/transparent fill -->
 
             <!-- Define the border color and width -->
-            <stroke android:width="0.5dp" android:color="@android:color/black"/>
+            <stroke android:width="0.5dp" android:color="#262626"/>
 
             <!-- Round edges -->
-            <corners android:radius="16dp"/>
+            <corners android:radius="7dp"/>
 
             <!-- Size of the shape -->
-            <size android:width="200dp" android:height="60dp"/>
+            <size android:width="200dp" android:height="55dp"/>
         </shape>
     </item>
 </selector>
