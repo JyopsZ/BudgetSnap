@@ -64,7 +64,7 @@
     <ImageView
         android:id="@+id/backPane"
         android:layout_width="371dp"
-        android:layout_height="400dp"
+        android:layout_height="600dp"
         android:layout_marginTop="184dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

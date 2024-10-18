@@ -6,13 +6,15 @@ public class SavingsClass {
     private float goalAmount;
     private String frequency;
     private String dateFinish;
+    private float currentAmount;
 
-    public SavingsClass(String name, float goalAmount, String frequency, String dateFinish) {
+    public SavingsClass(String name, float goalAmount, String frequency, String dateFinish, float currentAmount) {
 
         this.name = name;
         this.goalAmount = goalAmount;
         this.frequency = frequency;
         this.dateFinish = dateFinish;
+        this.currentAmount = currentAmount;
     }
 
     // GETTERS
@@ -36,6 +38,11 @@ public class SavingsClass {
         return dateFinish;
     }
 
+    public float getCurrentAmount() {
+
+        return currentAmount;
+    }
+
     // SETTERS FOR EDITING SAVINGS
     public void setName (String name) {
 
@@ -55,5 +62,10 @@ public class SavingsClass {
     public void setDateFinish (String dateFinish) {
 
         this.dateFinish = dateFinish;
+    }
+
+    public void setCurrentAmount (float currentAmount) {
+
+        this.currentAmount = currentAmount;
     }
 }
