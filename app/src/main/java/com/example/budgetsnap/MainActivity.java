@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
 
         });
-        Intent i = new Intent(MainActivity.this, categories_main.class);
+        Intent i = new Intent(MainActivity.this, categories_select.class);
         startActivity(i);
         finish();
 
