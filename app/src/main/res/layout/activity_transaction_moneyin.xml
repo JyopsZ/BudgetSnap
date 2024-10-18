@@ -10,9 +10,11 @@
 
   <ImageView
       android:id="@+id/imageBG"
-      android:layout_width="434dp"
-      android:layout_height="166dp"
-      android:scaleType="fitXY"
+      android:layout_width="418dp"
+      android:layout_height="144dp"
+      android:adjustViewBounds="false"
+      android:contentDescription="@string/bg"
+      android:scaleType="centerCrop"
       app:layout_constraintBottom_toBottomOf="@+id/searchBar"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.571"
@@ -145,7 +147,7 @@
       android:layout_marginTop="16dp"
       android:layout_marginEnd="16dp"
       android:layout_marginBottom="16dp"
-      android:background="@android:color/white"
+      android:background="@drawable/containerrounded"
       android:elevation="4dp"
       app:layout_constraintBottom_toTopOf="@+id/menu_rectangle"
       app:layout_constraintEnd_toEndOf="parent"
@@ -289,15 +291,16 @@
 
     <Button
         android:id="@+id/buttonAddIncome"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
+        android:layout_width="360dp"
+        android:layout_height="52dp"
         android:layout_marginTop="52dp"
         android:backgroundTint="@color/lightgreen"
+        android:fontFamily="@font/poppins"
         android:text="Add Income"
         android:textColor="@color/white"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.392"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
 
