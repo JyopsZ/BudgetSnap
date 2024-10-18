@@ -140,4 +140,10 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
             dialog.dismiss();
         });
     }
+
+    public void goHome (View v) {
+
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
 }

@@ -9,8 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class SavingsActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+    ArrayList<SavingsClass> savingsList = new ArrayList<>(); // Sample data for testing
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +29,12 @@ public class SavingsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        loadSavings(); // Method call to add values to savingsList arrayList
     }
 
     public void back(View v) { // When the back button is pressed, return to the previous activity (Home)
@@ -35,4 +48,18 @@ public class SavingsActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void goHome (View v) {
+
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+    private void loadSavings() { // Load hard-coded savings into arrayList for testing and demo purposes
+
+        savingsList.add(new SavingsClass("Concert", 5000, "Daily", "10/17/2024", 0.00, true));
+        savingsList.add(new SavingsClass("Tuition", 100000, "Monthly", "01/03/2025", 9878.00, false));
+
+        SavingsAdapter savingsAdapter = new SavingsAdapter(savingsList, this);
+        recyclerView.setAdapter(savingsAdapter);
+    }
 }

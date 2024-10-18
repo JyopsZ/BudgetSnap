@@ -3,18 +3,20 @@ package com.example.budgetsnap;
 public class SavingsClass {
 
     private String name;
-    private float goalAmount;
+    private double goalAmount;
     private String frequency;
     private String dateFinish;
-    private float currentAmount;
+    private double currentAmount;
+    private boolean isActivated;
 
-    public SavingsClass(String name, float goalAmount, String frequency, String dateFinish, float currentAmount) {
+    public SavingsClass(String name, double goalAmount, String frequency, String dateFinish, double currentAmount, boolean isActivated) {
 
         this.name = name;
         this.goalAmount = goalAmount;
         this.frequency = frequency;
         this.dateFinish = dateFinish;
         this.currentAmount = currentAmount;
+        this.isActivated = isActivated;
     }
 
     // GETTERS
@@ -23,7 +25,7 @@ public class SavingsClass {
         return name;
     }
 
-    public float getGoalAmount () {
+    public double getGoalAmount () {
 
         return goalAmount;
     }
@@ -38,9 +40,14 @@ public class SavingsClass {
         return dateFinish;
     }
 
-    public float getCurrentAmount() {
+    public double getCurrentAmount() {
 
         return currentAmount;
+    }
+
+    public boolean getIsActivated() {
+
+        return isActivated;
     }
 
     // SETTERS FOR EDITING SAVINGS
@@ -49,7 +56,7 @@ public class SavingsClass {
         this.name = name;
     }
 
-    public void setGoalAmount (float goalAmount) {
+    public void setGoalAmount (double goalAmount) {
 
         this.goalAmount = goalAmount;
     }
@@ -64,8 +71,13 @@ public class SavingsClass {
         this.dateFinish = dateFinish;
     }
 
-    public void setCurrentAmount (float currentAmount) {
+    public void setCurrentAmount (double currentAmount) {
 
         this.currentAmount = currentAmount;
+    }
+
+    public void setIsActivated(boolean isActivated) {
+
+        this.isActivated = isActivated;
     }
 }

@@ -84,8 +84,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
                 android:textSize="15sp"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_bold"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +105,7 @@
 
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="18sp"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameText" />
@@ -116,7 +117,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="100dp"
                 android:textSize="15sp"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_bold"
 
                 app:layout_constraintBottom_toTopOf="@+id/editName"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -129,13 +130,13 @@
                 android:layout_height="43dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/textbox"
-
+                android:fontFamily="@font/poppins"
                 android:hint="0.00"
                 android:inputType="numberDecimal"
 
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="18sp"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/goalText" />
@@ -147,7 +148,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="100dp"
                 android:textSize="15sp"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_bold"
 
                 app:layout_constraintBottom_toTopOf="@+id/editGoal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -167,7 +168,7 @@
                 android:spinnerMode="dropdown"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="18sp"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/frequencyText" />
@@ -179,7 +180,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="100dp"
                 android:textSize="15sp"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_bold"
 
                 app:layout_constraintBottom_toTopOf="@+id/editFrequency"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -197,7 +198,8 @@
 
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="18sp"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateText" />
@@ -340,6 +342,7 @@
         android:layout_height="46dp"
         android:layout_marginStart="13dp"
         android:layout_marginBottom="14dp"
+        android:onClick="goHome"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/home" />
