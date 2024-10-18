@@ -1,8 +1,10 @@
 package com.example.budgetsnap;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -66,8 +68,46 @@ public class SavingsViewing extends AppCompatActivity {
     }
 
     public void delete(View v) {
+        // Inflate the custom dialog layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_savings_sure, null);
 
+        // Create the dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Handle clicking Cancel button
+        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v1 -> {
+            dialog.dismiss();
+        });
+
+        // Handle clicking Confirm button
+        dialogView.findViewById(R.id.confirmButton).setOnClickListener(v1 -> {
+            dialog.dismiss();
+
+            // Show the deletion confirmation dialog
+            View deletionConfirmView = inflater.inflate(R.layout.dialog_savings_delete, null);
+            AlertDialog.Builder deletionConfirmBuilder = new AlertDialog.Builder(this);
+            deletionConfirmBuilder.setView(deletionConfirmView)
+                    .setCancelable(false);
+            AlertDialog deletionConfirmDialog = deletionConfirmBuilder.create();
+            deletionConfirmDialog.show();
+
+            // Handle clicking Back button
+            deletionConfirmView.findViewById(R.id.backButton).setOnClickListener(v2 -> {
+                deletionConfirmDialog.dismiss();
+
+                finish();
+            });
+        });
     }
+
+
 
     public void inputMoney(View v) {
 

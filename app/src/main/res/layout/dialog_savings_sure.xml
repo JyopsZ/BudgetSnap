@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:layout_gravity="center"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_marginTop="110dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Are you sure you want to\ndelete this savings challenge?"
+            android:textAlignment="center"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <LinearLayout
+            android:layout_marginTop="100dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="121dp"
+                android:layout_height="43dp"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:fontFamily="@font/poppins_bold"
+                android:backgroundTint="#bebebe"
+                android:layout_marginEnd="40dp"/>
+
+            <Button
+                android:id="@+id/confirmButton"
+                android:layout_width="121dp"
+                android:layout_height="43dp"
+                android:layout_weight="1"
+                android:text="Confirm"
+                android:textSize="16dp"
+                android:fontFamily="@font/poppins_bold"
+                android:backgroundTint="#004643"
+                android:layout_marginStart="4dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

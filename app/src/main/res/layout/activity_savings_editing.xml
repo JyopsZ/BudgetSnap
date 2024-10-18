@@ -56,7 +56,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Savings Challenge: "
+        android:text="Savings Challenge: Concert"
         android:textColor="#E16162"
 
 
