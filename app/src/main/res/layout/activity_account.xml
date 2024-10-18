@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".account">
+
+    <ImageView
+        android:id="@+id/GreenBG"
+        android:layout_width="414dp"
+        android:layout_height="62dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/budgetsnapbg_1" />
+
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="136dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="136dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logonobg" />
+
+
+    <TextView
+        android:id="@+id/Account"
+        android:layout_width="361dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Account"
+        android:textColor="#E16162"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
+
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Account"
+        app:srcCompat="@drawable/profile_girl1" />
+
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Olivia Rodrigo"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/profilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/Account" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:fontFamily="@font/poppins"
+        android:text="livrodrigo@gmail.com"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/profilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/profileName" />
+
+    <TextView
+        android:id="@+id/Friends"
+        android:layout_width="361dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Friends"
+        android:textColor="#E16162"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="367dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/rounded_border"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Friends">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="350dp"
+            android:layout_height="93dp">
+
+            <ImageView
+                android:id="@+id/friend1"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/profile_boy1" />
+
+            <ImageView
+                android:id="@+id/friend2"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                app:layout_constraintEnd_toStartOf="@+id/friend3"
+                app:layout_constraintStart_toEndOf="@+id/friend1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/profile_girl2" />
+
+            <ImageView
+                android:id="@+id/friend3"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                app:layout_constraintEnd_toStartOf="@+id/imageView6"
+                app:layout_constraintStart_toEndOf="@+id/friend2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/profile_boy2" />
+
+            <TextView
+                android:id="@+id/friendName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="Dylan Sprouse"
+                android:textSize="9sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/friend1" />
+
+            <TextView
+                android:id="@+id/friendName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:fontFamily="@font/poppins"
+                android:text="Taylor Swift"
+                android:textSize="9sp"
+                app:layout_constraintStart_toEndOf="@+id/friendName1"
+                app:layout_constraintTop_toBottomOf="@+id/friend2" />
+
+            <TextView
+                android:id="@+id/friendName3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:fontFamily="@font/poppins"
+                android:text="Harry Styles"
+                android:textSize="9sp"
+                app:layout_constraintStart_toEndOf="@+id/friendName2"
+                app:layout_constraintTop_toBottomOf="@+id/friend3" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginEnd="60dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/profile_girl3" />
+
+            <TextView
+                android:id="@+id/friendName4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:fontFamily="@font/poppins"
+                android:text="Tyla Seethal"
+                android:textSize="9sp"
+                app:layout_constraintStart_toEndOf="@+id/friendName3"
+                app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+            <TextView
+                android:id="@+id/viewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:fontFamily="@font/poppins"
+                android:text=">"
+                android:textSize="34sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/viewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="47dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/poppins"
+                android:text="view all"
+                android:textSize="7sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/RecentTransactions"
+        android:layout_width="361dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Recent Transactions"
+        android:textColor="#E16162"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout1"
+        android:layout_width="367dp"
+        android:layout_height="300dp"
+        android:background="@drawable/rounded_border"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.355"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RecentTransactions">
+
+        <TextView
+            android:id="@+id/textRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/verydarkcyan"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/textPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/transactionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/menu_rectangle"
+        android:layout_width="371dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/menu_rectangle" />
+
+    <ImageView
+        android:id="@+id/menu_square"
+        android:layout_width="75dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/menu_transaction"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout1"
+        app:srcCompat="@drawable/menu_square" />
+
+    <ImageView
+        android:id="@+id/menu_home"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/home" />
+
+    <ImageView
+        android:id="@+id/menu_circle"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="11dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/menu_circle" />
+
+    <ImageView
+        android:id="@+id/menu_account"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/account" />
+
+    <ImageView
+        android:id="@+id/menu_account2"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/categories" />
+
+    <ImageView
+        android:id="@+id/menu_transaction"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/transactions" />
+
+    <ImageView
+        android:id="@+id/menu_plus"
+        android:layout_width="47dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/menu_square"
+        app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/menu_plus" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

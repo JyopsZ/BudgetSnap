@@ -43,22 +43,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
 
+    <Spinner
+        android:id="@+id/dropdown_menu"
+        android:layout_width="152dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="367dp"
         android:layout_height="625dp"
+        android:layout_margin="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_border"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CategoryFood">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="367dp"
-            android:layout_height="560dp">
+        <TextView
+            android:id="@+id/textRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/verydarkcyan"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/textCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/transactionContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
     </FrameLayout>
 
     <ImageView

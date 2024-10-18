@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class categories_select extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class account extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     ImageView imageBG, imageLogo, imageBadge, imageBell, searchBar, Search_Button;
     TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
@@ -36,14 +36,13 @@ public class categories_select extends AppCompatActivity implements AdapterView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories_select);
+        setContentView(R.layout.activity_account);
 
         // Initialize views properly
         frameLayout = findViewById(R.id.frameLayout);
         textRestaurant = findViewById(R.id.textRestaurant);
         textCategory = findViewById(R.id.textCategory);
         textPrice = findViewById(R.id.textPrice);
-        dropdown_menu = findViewById(R.id.dropdown_menu);
 
         // Setup Window Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -51,12 +50,6 @@ public class categories_select extends AppCompatActivity implements AdapterView.
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Setup Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, paths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown_menu.setAdapter(adapter);
-        dropdown_menu.setOnItemSelectedListener(this); // Set listener for item selection
 
         // Load hardcoded data
         loadTransactionData();
@@ -89,14 +82,14 @@ public class categories_select extends AppCompatActivity implements AdapterView.
         // Handle clicking on "Money In" and "Money Out"
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
             // Start Money In Activity
-            Intent i = new Intent(categories_select.this, transaction_moneyin.class);
+            Intent i = new Intent(account.this, transaction_moneyin.class);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
 
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
             // Start Money Out Activity
-            Intent i = new Intent(categories_select.this, transactions_moneyout.class);
+            Intent i = new Intent(account.this, transactions_moneyout.class);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
@@ -216,9 +209,9 @@ public class categories_select extends AppCompatActivity implements AdapterView.
 
     private void sortTransactionsByAmount(boolean descending) {
         // Comparator to sort by the numeric value of the transaction amount
-        Collections.sort(transactionList, (categories_select, transaction2) -> {
+        Collections.sort(transactionList, (account, transaction2) -> {
             // Extract the amounts from both transactions, remove any non-numeric characters
-            String amount1 = categories_select.getAmount().replaceAll("[^\\d.-]", "");
+            String amount1 = account.getAmount().replaceAll("[^\\d.-]", "");
             String amount2 = transaction2.getAmount().replaceAll("[^\\d.-]", "");
 
             // Convert to double for comparison
