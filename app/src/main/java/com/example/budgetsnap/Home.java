@@ -1,5 +1,6 @@
 package com.example.budgetsnap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,8 +45,13 @@ public class Home extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Optional: Handle case where nothing is selected
+
             }
         });
+
+    }
+    public void notif(View v) {
+        Intent i = new Intent(this, Notifications.class);
+        startActivity(i);
     }
 }
