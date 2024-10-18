@@ -9,5 +9,17 @@
         <item>Monthly</item>
         <item>Yearly</item>
     </string-array>
-</resources>
 
+    <string-array name="categories_array">
+        <item>Home</item>
+        <item>Food</item>
+        <item>Bills</item>
+        <item>Health</item>
+        <item>Education</item>
+        <item>Leisure</item>
+        <item>Transport</item>
+        <item>Savings</item>
+        <item>Others</item>
+    </string-array>
+
+</resources>

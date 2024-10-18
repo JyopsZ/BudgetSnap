@@ -28,7 +28,7 @@
         android:paddingBottom="8dp"
         android:text="Set savings goals and monitor your financial progress"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/nextButtonOnboarding3"
         app:layout_constraintEnd_toEndOf="parent"

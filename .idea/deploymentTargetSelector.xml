@@ -4,6 +4,17 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="Transaction1">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="budgetingEditCategory">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="budgetingAddExpense">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+    </selectionStates>
         <DropdownSelection timestamp="2024-10-18T17:03:33.851750200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
@@ -12,7 +23,5 @@
           </Target>
         </DropdownSelection>
         <DialogSelection />
-      </SelectionState>
-    </selectionStates>
   </component>
 </project>
