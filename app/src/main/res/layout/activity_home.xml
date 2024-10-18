@@ -378,23 +378,27 @@
         android:id="@+id/savinggoal_Text2"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:fontFamily="@font/poppins_bold"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="116dp"
+        android:fontFamily="@font/inter"
         android:text="Php: 20.00/day"
         android:textColor="#F9BB61"
-        android:textSize="15sp"
-        tools:layout_editor_absoluteX="182dp"
-        tools:layout_editor_absoluteY="228dp" />
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Available_Text" />
 
     <TextView
         android:id="@+id/Savinggoal_Text"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Savings goal:"
         android:textColor="#F9BB61"
         android:textSize="15sp"
-        tools:layout_editor_absoluteX="80dp"
-        tools:layout_editor_absoluteY="228dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Available_Text" />
 
     <TextView
         android:id="@+id/Budgeting_Text"
@@ -407,5 +411,16 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/upper_rectangle"
         app:layout_constraintTop_toBottomOf="@+id/Budgeting_Image" />
+
+    <Spinner
+        android:id="@+id/spinner_frequency"
+        android:layout_width="103dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/spinner_home"
+        app:layout_constraintEnd_toEndOf="@+id/mid_rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/InsightsSummary" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
