@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/Savings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F7F7"
@@ -32,12 +32,12 @@
 
     <ImageView
         android:id="@+id/SearchBar"
-        android:layout_width="wrap_content"
+        android:layout_width="295dp"
         android:layout_height="50dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toStartOf="@+id/Bell"
-        app:layout_constraintStart_toEndOf="@+id/UpperL_Badge"
         app:layout_constraintTop_toBottomOf="@+id/Logo"
         app:srcCompat="@drawable/home_searchbar" />
 
@@ -53,22 +53,11 @@
         app:srcCompat="@drawable/logonobg" />
 
     <ImageView
-        android:id="@+id/UpperL_Badge"
-        android:layout_width="40dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/home_uleftbadge" />
-
-    <ImageView
         android:id="@+id/Bell"
         android:layout_width="40dp"
         android:layout_height="35dp"
         android:layout_marginTop="56dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_urightbadge" />
@@ -125,10 +114,10 @@
 
     <TextView
         android:id="@+id/Search_Text"
-        android:layout_width="206dp"
-        android:layout_height="23dp"
+        android:layout_width="221dp"
+        android:layout_height="24dp"
         android:layout_marginTop="66dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="@font/poppins"
         android:hint="Search transactions..."
         android:textAlignment="gravity"
@@ -196,6 +185,85 @@
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
         app:srcCompat="@drawable/home_midrectangle" />
 
+    <TextView
+        android:id="@+id/insightsSummary"
+        android:layout_width="108dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins"
+        android:text="October 2024"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        app:layout_constraintTop_toTopOf="@+id/mid_rectangle" />
+
+    <TextView
+        android:id="@+id/TotalIncome_1"
+        android:layout_width="95dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="57dp"
+
+        android:fontFamily="@font/poppins_bold"
+        android:text="Total Income"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        app:layout_constraintTop_toTopOf="@+id/mid_rectangle" />
+
+    <TextView
+        android:id="@+id/Php_1"
+        android:layout_width="106dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="PHP 0.00"
+        android:textColor="#99000000"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/Cashin"
+        app:layout_constraintTop_toBottomOf="@+id/TotalIncome_1" />
+
+    <TextView
+        android:id="@+id/TotalIncome_2"
+        android:layout_width="95dp"
+        android:layout_height="17dp"
+
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Total Income"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/horizontallline" />
+
+    <TextView
+        android:id="@+id/Php_2"
+        android:layout_width="106dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="PHP 0.00"
+        android:textColor="#99000000"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/cashout"
+        app:layout_constraintTop_toBottomOf="@+id/TotalIncome_2" />
+
+    <ImageView
+        android:id="@+id/Cashin"
+        android:layout_width="72dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontallline"
+        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        app:srcCompat="@drawable/cashin" />
+
     <ImageView
         android:id="@+id/menu_home"
         android:layout_width="47dp"
@@ -255,5 +323,100 @@
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
+
+    <ImageView
+        android:id="@+id/horizontallline"
+        android:layout_width="330dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        app:layout_constraintTop_toTopOf="@+id/mid_rectangle"
+        app:srcCompat="@drawable/home_isline" />
+
+    <ImageView
+        android:id="@+id/cashout"
+        android:layout_width="72dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/horizontallline"
+        app:srcCompat="@drawable/cashout" />
+
+    <ImageView
+        android:id="@+id/VerticalLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toStartOf="@+id/upper_rectangle"
+        app:layout_constraintTop_toTopOf="@+id/upper_rectangle"
+        app:srcCompat="@drawable/home_verticalline" />
+
+    <ImageView
+        android:id="@+id/Savings_Image"
+        android:layout_width="55dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="@+id/upper_rectangle"
+        app:layout_constraintTop_toTopOf="@+id/upper_rectangle"
+        app:srcCompat="@drawable/savings" />
+
+    <ImageView
+        android:id="@+id/Budgeting_Image"
+        android:layout_width="55dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="72dp"
+        app:layout_constraintEnd_toEndOf="@+id/upper_rectangle"
+        app:layout_constraintTop_toTopOf="@+id/upper_rectangle"
+        app:srcCompat="@drawable/budgeting" />
+
+    <TextView
+        android:id="@+id/Savings_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:fontFamily="@font/poppins"
+        android:text="Savings"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/upper_rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/Savings_Image" />
+
+    <TextView
+        android:id="@+id/savinggoal_Text2"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Php: 20.00/day"
+        android:textColor="#F9BB61"
+        android:textSize="15sp"
+        tools:layout_editor_absoluteX="182dp"
+        tools:layout_editor_absoluteY="228dp" />
+
+    <TextView
+        android:id="@+id/Savinggoal_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Savings goal:"
+        android:textColor="#F9BB61"
+        android:textSize="15sp"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="228dp" />
+
+    <TextView
+        android:id="@+id/Budgeting_Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="62dp"
+        android:fontFamily="@font/poppins"
+        android:text="Budgeting"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/upper_rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/Budgeting_Image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
