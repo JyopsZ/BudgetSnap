@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.315"
+        app:layout_constraintVertical_bias="0.352"
         app:srcCompat="@drawable/background" />
 
     <ImageView
@@ -33,16 +33,6 @@
         app:srcCompat="@drawable/logonobg" />
 
     <ImageView
-        android:id="@+id/imageBadge"
-        android:layout_width="52dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLogo"
-        app:srcCompat="@drawable/badge" />
-
-    <ImageView
         android:id="@+id/imageBell"
         android:layout_width="52dp"
         android:layout_height="52dp"
@@ -54,32 +44,31 @@
 
     <ImageView
         android:id="@+id/searchBar"
-        android:layout_width="256dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="56dp"
+        android:layout_width="308dp"
+        android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/imageBell"
-        app:layout_constraintStart_toStartOf="@+id/imageBadge"
         app:layout_constraintTop_toBottomOf="@+id/imageLogo"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/home_searchbar" />
+        app:srcCompat="@drawable/home_searchbar"
+        tools:layout_editor_absoluteX="22dp" />
 
     <ImageView
         android:id="@+id/Search_Button"
         android:layout_width="25dp"
         android:layout_height="20dp"
         android:layout_marginTop="92dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toStartOf="@+id/Search_Text"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_search" />
 
     <TextView
         android:id="@+id/Search_Text"
-        android:layout_width="206dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="118dp"
+        android:layout_width="238dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="88dp"
         android:fontFamily="@font/poppins"
         android:hint="Search transactions..."
@@ -89,21 +78,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/searchBar"
         app:layout_constraintStart_toStartOf="@+id/imageBG"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.266" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <TextView
         android:id="@+id/textTransactions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="48dp"
+        android:fontFamily="@font/poppins"
         android:text="Transactions"
         android:textColor="@color/red"
-        android:fontFamily="@font/poppins"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageBadge" />
+        tools:layout_editor_absoluteY="174dp" />
 
     <Spinner
         android:id="@+id/dropdown_menu"

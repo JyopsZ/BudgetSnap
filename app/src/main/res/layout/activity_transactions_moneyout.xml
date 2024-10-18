@@ -34,16 +34,6 @@
         app:srcCompat="@drawable/logonobg" />
 
     <ImageView
-        android:id="@+id/imageBadge"
-        android:layout_width="52dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLogo"
-        app:srcCompat="@drawable/badge" />
-
-    <ImageView
         android:id="@+id/imageBell"
         android:layout_width="52dp"
         android:layout_height="52dp"
@@ -55,16 +45,15 @@
 
     <ImageView
         android:id="@+id/searchBar"
-        android:layout_width="256dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="56dp"
+        android:layout_width="312dp"
+        android:layout_height="42dp"
         android:layout_marginTop="20dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/imageBell"
-        app:layout_constraintStart_toStartOf="@+id/imageBadge"
         app:layout_constraintTop_toBottomOf="@+id/imageLogo"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/home_searchbar" />
+        app:srcCompat="@drawable/home_searchbar"
+        tools:layout_editor_absoluteX="16dp" />
 
     <ImageView
         android:id="@+id/Search_Button"
@@ -80,7 +69,7 @@
         android:id="@+id/Search_Text"
         android:layout_width="206dp"
         android:layout_height="23dp"
-        android:layout_marginStart="118dp"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="88dp"
         android:fontFamily="@font/poppins"
         android:hint="Search transactions..."
@@ -90,7 +79,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/searchBar"
         app:layout_constraintStart_toStartOf="@+id/imageBG"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.266" />
+        app:layout_constraintVertical_bias="0.307" />
 
     <TextView
         android:id="@+id/textTransactions"

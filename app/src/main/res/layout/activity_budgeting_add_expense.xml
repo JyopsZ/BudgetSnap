@@ -284,4 +284,24 @@
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/account" />
 
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#fef7ff"
+        android:clickable="true"
+
+        android:focusable="true"
+        android:onClick="back"
+
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/BudgetingTitle3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/backbutton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

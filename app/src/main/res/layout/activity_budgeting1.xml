@@ -43,12 +43,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintVertical_bias="0.125" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayoutBudgeting"
-        android:layout_width="381dp"
-        android:layout_height="217dp"
+        android:layout_width="385dp"
+        android:layout_height="258dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="116dp"
         android:layout_marginEnd="16dp"
@@ -56,11 +56,163 @@
         android:elevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/menu_square"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
-        app:layout_constraintVertical_bias="0.82">
+        app:layout_constraintVertical_bias="0.771">
 
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food"
+            android:textColor="@color/lime"
+            android:fontFamily="@font/poppins_bold"
+            tools:layout_editor_absoluteX="109dp"
+            tools:layout_editor_absoluteY="4dp" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transportation"
+            android:textColor="@color/lime"
+            android:fontFamily="@font/poppins_bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toEndOf="@+id/imageTransportation"
+            tools:layout_editor_absoluteY="90dp"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Remaining: Php 120.00"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Remaining: Php 100.00"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toEndOf="@+id/imageTransportation"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Expenses: Php 0.00"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="95dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="280dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/food" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Expenses: Php 0.00"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintStart_toEndOf="@+id/imageTransportation"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <ImageView
+            android:id="@+id/imageTransportation"
+            android:layout_width="95dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.034"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:srcCompat="@drawable/transportation" />
+
+        <ImageView
+            android:id="@+id/imageTransportation2"
+            android:layout_width="95dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="31dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.034"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageTransportation"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/home" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="12dp"
+            android:text="Home"
+            android:textColor="@color/lime"
+            android:fontFamily="@font/poppins_bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="Remaining: Php 200.00"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Expenses: Php 0.00"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
+            app:layout_constraintTop_toBottomOf="@+id/textView20"
+            app:layout_constraintVertical_bias="0.4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -75,7 +227,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayoutBudgeting"
-        app:layout_constraintVertical_bias="0.973"
+        app:layout_constraintVertical_bias="0.988"
         app:srcCompat="@drawable/menu_rectangle" />
 
     <ImageView
@@ -173,29 +325,38 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="144dp"
+        android:text="Edit Category"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/verydarkcyan"
         app:layout_constraintBottom_toTopOf="@+id/menu_transaction"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutBudgeting"
-        tools:layout_editor_absoluteX="39dp" />
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutBudgeting" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_width="168dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="25dp"
+        android:text="Add Expense"
+        android:backgroundTint="@color/verydarkcyan"
         app:layout_constraintBottom_toTopOf="@+id/menu_account2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayoutBudgeting"
-        tools:layout_editor_absoluteX="266dp" />
+        app:layout_constraintVertical_bias="0.512" />
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="376dp"
         android:layout_height="59dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintHorizontal_bias="0.342"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
 
@@ -203,11 +364,12 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="148dp"
-        android:text="TextView"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Php 1,000.00"
+        android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.823"
+        app:layout_constraintHorizontal_bias="0.223"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
@@ -215,11 +377,11 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:layout_marginTop="12dp"
+        android:text="Total Budget"
+        android:fontFamily="@font/poppins"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.154"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -227,10 +389,12 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="TextView"
+        android:layout_marginTop="44dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Php 0.00"
+        android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -239,10 +403,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:text="TextView"
+        android:fontFamily="@font/poppins"
+        android:text="Total Expenses"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintHorizontal_bias="0.143"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:layout_constraintVertical_bias="0.0" />
@@ -252,10 +417,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:text="TextView"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Budget Limit: Php 420.00"
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:layout_constraintVertical_bias="1.0" />
@@ -267,9 +433,30 @@
         android:layout_height="131dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintHorizontal_bias="0.889"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView"
-        app:layout_constraintVertical_bias="0.043" />
+        app:layout_constraintVertical_bias="0.086" />
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#fef7ff"
+
+        android:clickable="true"
+        android:focusable="true"
+
+        android:onClick="back"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/BudgetingTitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/backbutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

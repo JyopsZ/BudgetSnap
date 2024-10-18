@@ -32,7 +32,7 @@
         android:id="@+id/BudgetingTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Budgeting: Edit Category"
         android:textColor="#E16162"
@@ -48,12 +48,12 @@
         android:layout_width="371dp"
         android:layout_height="625dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="12dp"
         android:background="@drawable/containerrounded"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintHorizontal_bias="0.312"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BudgetingTitle2">
 
@@ -220,8 +220,8 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="32dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="24dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -255,7 +255,7 @@
         android:layout_width="75dp"
         android:layout_height="72dp"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="20dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
@@ -321,5 +321,23 @@
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#fef7ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="back"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/backbutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
