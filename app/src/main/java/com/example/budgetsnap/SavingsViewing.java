@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +19,7 @@ public class SavingsViewing extends AppCompatActivity {
 
     TextView nameValue, goalAmountValue, frequencyValue, dateValue;
     TextView savingsChallView, totalAmountView;
+    Button activateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +109,21 @@ public class SavingsViewing extends AppCompatActivity {
         });
     }
 
-
-
     public void inputMoney(View v) {
 
         Intent i = new Intent(this, SavingsInputAmount.class);
         startActivity(i);
+    }
+
+    public void toggleActivation(View view) {
+        activateButton = (Button) view;
+        if (activateButton.getText().toString().equals("Deactivate")) {
+            activateButton.setText("Activate");
+            activateButton.setBackgroundColor(0xFF4CAF50); // Green color
+        } else {
+            activateButton.setText("Deactivate");
+            activateButton.setBackgroundColor(0xFFFF2020); // Red color
+        }
     }
 
 }
