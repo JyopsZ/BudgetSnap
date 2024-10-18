@@ -64,7 +64,7 @@
     <ImageView
         android:id="@+id/backPane"
         android:layout_width="371dp"
-        android:layout_height="600dp"
+        android:layout_height="550dp"
         android:layout_marginTop="184dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -105,87 +105,84 @@
 
     <!-- BOTTOM MENU PART -->
     <ImageView
-        android:id="@+id/mid_rectangle"
+        android:id="@+id/menu_rectangle"
         android:layout_width="371dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="18dp"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backPane"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/home_midrectangle" />
+
+        app:srcCompat="@drawable/menu_rectangle" />
+
+    <ImageView
+        android:id="@+id/menu_square"
+        android:layout_width="75dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitCenter"
+        android:onClick="addSavings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/menu_transaction"
+
+        app:srcCompat="@drawable/menu_square" />
+
+    <ImageView
+        android:id="@+id/menu_plus"
+        android:layout_width="47dp"
+        android:layout_height="49dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/menu_square"
+        app:layout_constraintEnd_toEndOf="@+id/menu_square"
+        app:layout_constraintStart_toStartOf="@+id/menu_square"
+        app:layout_constraintTop_toTopOf="@+id/menu_square"
+        app:srcCompat="@drawable/menu_plus" />
 
     <ImageView
         android:id="@+id/menu_home"
         android:layout_width="47dp"
         android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/home" />
 
     <ImageView
-        android:id="@+id/menu_circle"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
-        app:srcCompat="@drawable/menu_circle" />
+        android:id="@+id/menu_transaction"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/transactions" />
 
     <ImageView
         android:id="@+id/menu_account"
         android:layout_width="47dp"
         android:layout_height="46dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintEnd_toEndOf="@+id/mid_rectangle"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/account" />
 
     <ImageView
         android:id="@+id/menu_account2"
         android:layout_width="47dp"
         android:layout_height="46dp"
-        android:layout_marginEnd="76dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintEnd_toEndOf="@+id/mid_rectangle"
+        android:layout_marginEnd="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/categories" />
 
-    <ImageView
-        android:id="@+id/menu_transaction"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
-        app:srcCompat="@drawable/transactions" />
-
-
-    <ImageButton
-        android:id="@+id/menuButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginBottom="4dp"
-
-        android:background="@drawable/menu_square"
-        android:onClick="addSavings"
-
-        android:textAlignment="center"
-
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/mid_rectangle"
-        app:layout_constraintEnd_toEndOf="@id/mid_rectangle"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/mid_rectangle"
-        app:layout_constraintTop_toTopOf="@id/mid_rectangle"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/menu_plus" />
+    <!-- END OF BOTTOM MENU -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
