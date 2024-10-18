@@ -85,7 +85,7 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
         dateText.setText(Html.fromHtml(pText, Html.FROM_HTML_MODE_LEGACY));
 
         editName = findViewById(R.id.editName);
-        editGoal = findViewById(R.id.editBirthday);
+        editGoal = findViewById(R.id.editGoal);
         editDate = findViewById(R.id.editDate);
 
         editFrequency = findViewById(R.id.editFrequency);
@@ -109,11 +109,11 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
 
     public void save (View v) {
 
-        showTransactionDialog();
+        showSavingDialog();
     }
 
     // Show the savings dialog
-    private void showTransactionDialog() {
+    private void showSavingDialog() {
         // Inflate the custom dialog layouts
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_savings, null);
@@ -132,9 +132,9 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
 
             Intent i = new Intent(this, SavingsActivity.class);
             i.putExtra("name", editName.getText().toString());
-            i.putExtra("goal", editGoal.getText().toString());
+            i.putExtra("goalAmount", editGoal.getText().toString());
             i.putExtra("frequency", frequency);
-            i.putExtra("date", editDate.getText().toString());
+            i.putExtra("dateFinish", editDate.getText().toString());
             startActivity(i);
 
             dialog.dismiss();

@@ -1,6 +1,7 @@
 package com.example.budgetsnap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,15 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.ViewHold
 
         holder.savingsView.setOnClickListener(v -> {
 
-            Toast.makeText(context, "SUCCESS", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(context, SavingsViewing.class);
+            i.putExtra("name", savings.getName());
+            i.putExtra("currentAmount", savings.getCurrentAmount());
+            i.putExtra("goalAmount", savings.getGoalAmount());
+            i.putExtra("frequency", savings.getFrequency());
+            i.putExtra("dateFinish", savings.getDateFinish());
+            i.putExtra("isActivated", savings.getIsActivated());
+
+            context.startActivity(i);
         });
     }
 
