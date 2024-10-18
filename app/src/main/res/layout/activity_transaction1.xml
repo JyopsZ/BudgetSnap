@@ -116,7 +116,7 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="367dp"
-        android:layout_height="547dp"
+        android:layout_height="518dp"
         android:layout_margin="16dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/white"
