@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BudgetSnap"
         tools:targetApi="31">
         <activity
+            android:name=".transactions_moneyout"
+            android:exported="false" />
+        <activity
             android:name=".moneyout"
             android:exported="false" />
         <activity
