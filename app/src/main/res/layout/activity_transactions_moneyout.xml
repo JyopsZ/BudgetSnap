@@ -105,229 +105,253 @@
         app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
     <Button
-        android:id="@+id/buttonMoneyIn"
+        android:id="@+id/ButtonMoneyIn2"
         android:layout_width="125dp"
         android:layout_height="46dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="5dp"
         android:backgroundTint="@color/white"
+        android:fontFamily="@font/poppins"
+        android:onClick="BtnMoneyInBtn2"
         android:text="Money In"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:textStyle="bold"
-        android:fontFamily="@font/poppins"
-        app:layout_constraintEnd_toStartOf="@+id/buttonMoneyOut"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTransactions"
-        android:onClick="BtnMoneyInBtn2"/>
+        app:layout_constraintTop_toBottomOf="@+id/textTransactions" />
 
     <Button
-        android:id="@+id/buttonMoneyOut"
-        android:layout_width="140dp"
-        android:layout_height="41dp"
+        android:id="@+id/ButtonMoneyOut2"
+        android:layout_width="147dp"
+        android:layout_height="48dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="40dp"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/poppins"
+        android:onClick="BtnMoneyOutBtn2"
         android:text="Money Out"
         android:textColor="@color/verydarkcyan"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonMoneyIn"
-        app:layout_constraintTop_toBottomOf="@+id/textTransactions"
-        android:onClick="BtnMoneyOutBtn2"/>
+        app:layout_constraintTop_toBottomOf="@+id/textTransactions" />
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name *"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMoneyIn"
-        android:layout_marginStart="36dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="388dp"
+        android:layout_height="473dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins"
-        />
-
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Ex. Lunch Food"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewName"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/textViewAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Amount *"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonMoneyIn">
 
-    <EditText
-        android:id="@+id/editTextAmount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="0.00"
-        android:inputType="numberDecimal"
-        android:fontFamily="@font/poppins"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAmount"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginTop="8dp" />
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Name *"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Category *"
-        android:textStyle="bold"
-        android:fontFamily="@font/poppins"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAmount"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="16dp" />
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="358dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Ex. Lunch Food"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
-    <TextView
-        android:id="@+id/textViewImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
-        android:text="Image"
-        android:textStyle="bold"
-        android:fontFamily="@font/poppins"
-        app:layout_constraintStart_toEndOf="@+id/textViewCategory"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAmount" />
+        <TextView
+            android:id="@+id/textViewAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Amount *"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
-    <Spinner
-        android:id="@+id/spinnerCategory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAttachImage"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCategory"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp" />
+        <EditText
+            android:id="@+id/editTextAmount"
+            android:layout_width="353dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="0.00"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAmount" />
 
-    <Button
-        android:id="@+id/buttonAttachImage"
-        android:layout_width="163dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
-        android:text="Attach Image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinnerCategory"
-        app:layout_constraintTop_toBottomOf="@+id/textViewImage"
-        android:fontFamily="@font/poppins"
-        />
+        <!-- Category Input -->
+        <TextView
+            android:id="@+id/textViewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Category *"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAmount" />
 
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date *"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins"/>
+        <TextView
+            android:id="@+id/textViewImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="8dp"
+            android:text="Image"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textViewCategory"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAmount" />
 
-    <TextView
-        android:id="@+id/textViewTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="16dp"
-        android:text="Time *"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textViewDate"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory"
-        android:fontFamily="@font/poppins"/>
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="169dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonAttachImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCategory" />
 
-    <EditText
-        android:id="@+id/editTextDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="MM/DD/YY"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTime"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp" />
+        <Button
+            android:id="@+id/buttonAttachImage"
+            android:layout_width="163dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Attach Image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/spinnerCategory"
+            app:layout_constraintTop_toBottomOf="@+id/textViewImage" />
 
-    <EditText
-        android:id="@+id/editTextTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="2:45 P.M"
-        android:inputType="time"
-        app:layout_constraintStart_toEndOf="@+id/editTextDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTime"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginTop="8dp" />
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Date *"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
-    <Button
-        android:id="@+id/buttonAddIncome"
-        android:layout_width="343dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="36dp"
-        android:backgroundTint="@color/red"
-        android:fontFamily="@font/poppins"
-        android:text="Add Expense"
-        android:textSize="18dp"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="12dp"
+            android:text="Time *"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textViewDate"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+
+        <EditText
+            android:id="@+id/editTextDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="MM/DD/YY"
+            android:inputType="date"
+            app:layout_constraintEnd_toStartOf="@+id/editTextTime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
+
+        <EditText
+            android:id="@+id/editTextTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="2:45 P.M"
+            android:inputType="time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editTextDate"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
+
+        <Button
+            android:id="@+id/buttonAddExpenses"
+            android:layout_width="0dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="52dp"
+            android:backgroundTint="@color/red"
+            android:text="Add Expense"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/menu_rectangle"
-        android:layout_width="371dp"
+        android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="32dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/menu_rectangle" />
+
+    <ImageView
+        android:id="@+id/menu_home"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/home" />
+
+    <ImageView
+        android:id="@+id/menu_plus"
+        android:layout_width="47dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        android:onClick="BtnClickedPlus"
+        app:layout_constraintStart_toStartOf="@+id/menu_square"
+        app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/menu_plus" />
 
     <ImageView
         android:id="@+id/menu_square"
         android:layout_width="75dp"
         android:layout_height="72dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
         app:srcCompat="@drawable/menu_square" />
 
     <ImageView
-        android:id="@+id/menu_home"
+        android:id="@+id/menu_home2"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginStart="13dp"
@@ -377,14 +401,15 @@
         app:srcCompat="@drawable/transactions" />
 
     <ImageView
-        android:id="@+id/menu_plus"
+        android:id="@+id/menu_plus2"
         android:layout_width="47dp"
         android:layout_height="49dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
+        android:onClick="BtnClickedPlus2"
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/menu_plus"
-        android:onClick="BtnClickedPlus2"/>
+        app:srcCompat="@drawable/menu_plus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
