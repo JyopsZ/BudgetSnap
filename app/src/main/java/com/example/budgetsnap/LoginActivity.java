@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean isPasswordVisible = false;
 
-    ArrayList<User> userList = new ArrayList<>(); // Sample data for testing
+    ArrayList<UserClass> userClassList = new ArrayList<>(); // Sample data for testing
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +64,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loadUsers() { // Load hard-coded users into arrayList for testing and demo purposes
 
-        userList.add(new User("Liam Anderson", "01/12/1997", "liam_anderson@dlsu.edu.ph", "asdf"));
-        userList.add(new User("Ren Amamiya", "06/24/2004", "ren_amamiya@dlsu.edu.ph", "asdf"));
-        userList.add(new User("Hiro Worldo", "12/03/1995", "hiro_worldo@dlsu.edu.ph", "asdf"));
+        userClassList.add(new UserClass("Liam Anderson", "01/12/1997", "liam_anderson@dlsu.edu.ph", "asdf"));
+        userClassList.add(new UserClass("Ren Amamiya", "06/24/2004", "ren_amamiya@dlsu.edu.ph", "asdf"));
+        userClassList.add(new UserClass("Brad Pitt", "12/03/1995", "brad_pitt@dlsu.edu.ph", "asdf"));
+        userClassList.add(new UserClass("Kevin Villador", "03/04/2005", "admin", "1234"));
     }
 
     private void addUser() { // Add user from sign up to userList arrayList, only if the textboxes were filled earlier
@@ -81,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = i.getStringExtra("email");
             String password = i.getStringExtra("password");
 
-            userList.add(new User(name, birthday, email, password));
+            userClassList.add(new UserClass(name, birthday, email, password));
         }
     }
 
@@ -110,9 +111,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = editPassword.getText().toString();
 
         boolean isValid = false;
-        for (User user : userList) {
+        for (UserClass userClass : userClassList) { // Check every user in the arrayList
 
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
 
                 isValid = true;
                 break;

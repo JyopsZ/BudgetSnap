@@ -6,7 +6,7 @@
             <solid android:color="#F9BB61"/> <!-- Purple fill color -->
 
             <!-- Round edges -->
-            <corners android:radius="30dp"/> <!-- Slightly rounded corners -->
+            <corners android:radius="8dp"/> <!-- Slightly rounded corners -->
 
             <!-- Size of the shape (make width and height the same for a square) -->
             <size android:width="200dp" android:height="200dp"/> <!-- Now it's a square -->

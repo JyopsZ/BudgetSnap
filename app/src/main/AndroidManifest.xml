@@ -19,6 +19,12 @@
             android:name=".categories_main"
             android:exported="false" />
         <activity
+            android:name=".SavingsChallenge"
+            android:exported="false" />
+        <activity
+            android:name=".SavingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity

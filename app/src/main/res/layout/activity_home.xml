@@ -348,6 +348,7 @@
         android:layout_height="47dp"
         android:layout_marginStart="72dp"
         android:layout_marginTop="36dp"
+        android:onClick="savings"
         app:layout_constraintStart_toStartOf="@+id/upper_rectangle"
         app:layout_constraintTop_toTopOf="@+id/upper_rectangle"
         app:srcCompat="@drawable/savings" />

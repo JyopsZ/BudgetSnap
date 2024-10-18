@@ -1,5 +1,6 @@
 package com.example.budgetsnap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,4 +49,11 @@ public class Home extends AppCompatActivity {
             }
         });
     }
+
+    public void savings(View v) {
+
+        Intent intent = new Intent(this, SavingsActivity.class);
+        startActivity(intent);
+    }
+
 }
