@@ -111,9 +111,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = editPassword.getText().toString();
 
         boolean isValid = false;
-        for (UserClass userClass : userClassList) {
+        for (UserClass userClass : userClassList) { // Check every user in the arrayList
 
-            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) {
+            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
 
                 isValid = true;
                 break;
