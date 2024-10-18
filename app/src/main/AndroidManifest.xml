@@ -13,11 +13,14 @@
         android:theme="@style/Theme.BudgetSnap"
         tools:targetApi="31">
         <activity
+            android:name=".budgeting1"
+            android:exported="false" />
+        <activity
             android:name=".budgetingEditCategory"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".budgetingAddExpense"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".transactions_moneyout"
             android:exported="false" />
