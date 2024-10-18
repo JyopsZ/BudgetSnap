@@ -64,312 +64,317 @@
         app:layout_constraintStart_toStartOf="@id/backButton"
         app:layout_constraintTop_toBottomOf="@id/backButton" />
 
-    <ImageView
-        android:id="@+id/backPane"
-        android:layout_width="371dp"
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="367dp"
         android:layout_height="560dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savingsChallView">
 
-        app:srcCompat="@drawable/large_rectangle" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="367dp"
+            android:layout_height="560dp">
 
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="15sp"
-        android:fontFamily="@font/poppins"
+            <TextView
+                android:id="@+id/nameText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins"
 
-        app:layout_constraintBottom_toBottomOf="@id/backPane"
-        app:layout_constraintEnd_toEndOf="@id/backPane"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/backPane"
-        app:layout_constraintTop_toTopOf="@id/backPane"
-        app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/editName"
-        android:layout_width="345dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/textbox"
-        android:hint="Ex. Concert"
+            <EditText
+                android:id="@+id/editName"
+                android:layout_width="345dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/textbox"
+                android:hint="Ex. Concert"
 
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nameText" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameText" />
 
-    <TextView
-        android:id="@+id/goalText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
-        android:textSize="15sp"
-        android:fontFamily="@font/poppins"
+            <TextView
+                android:id="@+id/goalText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="100dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins"
 
-        app:layout_constraintBottom_toTopOf="@+id/editName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editName" />
+                app:layout_constraintBottom_toTopOf="@+id/editName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editName" />
 
-    <EditText
-        android:id="@+id/editGoal"
-        android:layout_width="345dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/textbox"
+            <EditText
+                android:id="@+id/editGoal"
+                android:layout_width="345dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/textbox"
 
-        android:hint="0.00"
-        android:inputType="numberDecimal"
+                android:hint="0.00"
+                android:inputType="numberDecimal"
 
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/goalText" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/goalText" />
 
-    <TextView
-        android:id="@+id/frequencyText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
-        android:textSize="15sp"
-        android:fontFamily="@font/poppins"
+            <TextView
+                android:id="@+id/frequencyText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="100dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins"
 
-        app:layout_constraintBottom_toTopOf="@+id/editGoal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editGoal" />
+                app:layout_constraintBottom_toTopOf="@+id/editGoal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editGoal" />
 
-    <Spinner
-        android:id="@+id/editFrequency"
-        android:layout_width="345dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/textbox"
-        android:hint="Daily"
-        android:inputType="textEmailAddress"
+            <Spinner
+                android:id="@+id/editFrequency"
+                android:layout_width="345dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/textbox"
+                android:hint="Daily"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/poppins"
 
-        android:spinnerMode="dropdown"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frequencyText" />
+                android:spinnerMode="dropdown"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/frequencyText" />
 
-    <TextView
-        android:id="@+id/dateText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
-        android:textSize="15sp"
-        android:fontFamily="@font/poppins"
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="100dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppins"
 
-        app:layout_constraintBottom_toTopOf="@+id/editFrequency"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editFrequency" />
+                app:layout_constraintBottom_toTopOf="@+id/editFrequency"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editFrequency" />
+
+            <EditText
+                android:id="@+id/editDate"
+                android:layout_width="345dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/textbox"
+                android:hint="MM / DD / YYYY"
+                android:inputType="date"
+
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateText" />
+
+
+            <!-- START OF GREENISH BOX -->
+
+            <View
+                android:id="@+id/rectangleView"
+                android:layout_width="345dp"
+                android:layout_height="86dp"
+
+                android:layout_marginTop="28dp"
+                android:background="@drawable/savingsbox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editDate" />
+
+            <TextView
+                android:id="@+id/saveView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:textColor="@android:color/black"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins"
+                app:layout_constraintBottom_toBottomOf="@id/rectangleView"
+                app:layout_constraintEnd_toEndOf="@id/rectangleView"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="@id/rectangleView"
+                app:layout_constraintTop_toTopOf="@id/rectangleView"
+                app:layout_constraintVertical_bias="0.166" />
+
+            <TextView
+                android:id="@+id/phpView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PHP 0.00 /day"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold"
+                app:layout_constraintBottom_toBottomOf="@id/rectangleView"
+                app:layout_constraintEnd_toEndOf="@id/rectangleView"
+                app:layout_constraintHorizontal_bias="0.068"
+                app:layout_constraintStart_toStartOf="@id/rectangleView"
+                app:layout_constraintTop_toTopOf="@id/rectangleView"
+                app:layout_constraintVertical_bias="0.467" />
+
+            <TextView
+                android:id="@+id/toreachView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="to reach PHP 0.00"
+                android:textColor="@android:color/black"
+                android:textSize="10sp"
+
+                app:layout_constraintBottom_toBottomOf="@id/rectangleView"
+                app:layout_constraintEnd_toEndOf="@id/rectangleView"
+                app:layout_constraintHorizontal_bias="0.064"
+                app:layout_constraintStart_toStartOf="@id/rectangleView"
+                app:layout_constraintTop_toTopOf="@id/rectangleView"
+                app:layout_constraintVertical_bias="0.743" />
+
+            <ImageView
+                android:id="@+id/savingsIcon"
+                android:layout_width="72dp"
+                android:layout_height="67dp"
+                android:layout_marginEnd="20dp"
+                android:background="#ACCFC8"
+
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="@id/rectangleView"
+                app:layout_constraintEnd_toEndOf="@id/rectangleView"
+                app:layout_constraintTop_toTopOf="@id/rectangleView"
+                app:layout_constraintVertical_bias="0.578"
+                app:srcCompat="@drawable/coin" />
+
+            <!-- END OF GREENISH BOX -->
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="280dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/verydarkcyan"
+                android:onClick="save"
+                android:text="Save"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rectangleView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
     <!-- BOTTOM MENU PART -->
-    <EditText
-        android:id="@+id/editDate"
-        android:layout_width="345dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/textbox"
-        android:hint="MM / DD / YYYY"
-        android:inputType="date"
-
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/menu_rectangle"
+        android:layout_width="371dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="18dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateText" />
+
+        app:srcCompat="@drawable/menu_rectangle" />
 
     <ImageView
-        android:id="@+id/mid_rectangle"
-        android:layout_width="371dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:id="@+id/menu_square"
+        android:layout_width="75dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="16dp"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backPane"
-        app:srcCompat="@drawable/home_midrectangle" />
+        android:onClick="addSavings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/menu_transaction"
+
+        app:srcCompat="@drawable/menu_square" />
+
+    <ImageView
+        android:id="@+id/menu_plus"
+        android:layout_width="47dp"
+        android:layout_height="49dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/menu_square"
+        app:layout_constraintEnd_toEndOf="@+id/menu_square"
+        app:layout_constraintStart_toStartOf="@+id/menu_square"
+        app:layout_constraintTop_toTopOf="@+id/menu_square"
+        app:srcCompat="@drawable/menu_plus" />
 
     <ImageView
         android:id="@+id/menu_home"
         android:layout_width="47dp"
         android:layout_height="46dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/home" />
 
     <ImageView
-        android:id="@+id/menu_circle"
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
-        app:srcCompat="@drawable/menu_circle" />
+        android:id="@+id/menu_transaction"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/transactions" />
 
     <ImageView
         android:id="@+id/menu_account"
         android:layout_width="47dp"
         android:layout_height="46dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintEnd_toEndOf="@+id/mid_rectangle"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/account" />
 
     <ImageView
         android:id="@+id/menu_account2"
         android:layout_width="47dp"
         android:layout_height="46dp"
-        android:layout_marginEnd="76dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintEnd_toEndOf="@+id/mid_rectangle"
+        android:layout_marginEnd="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/categories" />
 
-    <ImageView
-        android:id="@+id/menu_transaction"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/mid_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/mid_rectangle"
-        app:srcCompat="@drawable/transactions" />
-
-    <ImageButton
-        android:id="@+id/menuButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginBottom="4dp"
-
-        android:background="@drawable/menu_square"
-        android:onClick="addSavings"
-
-        android:textAlignment="center"
-
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/mid_rectangle"
-        app:layout_constraintEnd_toEndOf="@id/mid_rectangle"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/mid_rectangle"
-        app:layout_constraintTop_toTopOf="@id/mid_rectangle"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/menu_plus" />
-
-    <!-- END OF MENU -->
-
-    <!-- START OF GREENISH BOX -->
-    <View
-        android:id="@+id/rectangleView"
-        android:layout_width="345dp"
-        android:layout_height="86dp"
-
-        android:layout_gravity="center"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/savingsbox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editDate" />
-
-    <TextView
-        android:id="@+id/saveView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:textColor="@android:color/black"
-        android:textSize="11sp"
-        android:fontFamily="@font/poppins"
-        app:layout_constraintBottom_toBottomOf="@id/rectangleView"
-        app:layout_constraintEnd_toEndOf="@id/rectangleView"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="@id/rectangleView"
-        app:layout_constraintTop_toTopOf="@id/rectangleView"
-        app:layout_constraintVertical_bias="0.166" />
-
-    <TextView
-        android:id="@+id/phpView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PHP 0.00 /day"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:fontFamily="@font/poppins_bold"
-        app:layout_constraintBottom_toBottomOf="@id/rectangleView"
-        app:layout_constraintEnd_toEndOf="@id/rectangleView"
-        app:layout_constraintHorizontal_bias="0.068"
-        app:layout_constraintStart_toStartOf="@id/rectangleView"
-        app:layout_constraintTop_toTopOf="@id/rectangleView"
-        app:layout_constraintVertical_bias="0.467" />
-
-    <TextView
-        android:id="@+id/toreachView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins"
-        android:text="to reach PHP 0.00"
-        android:textColor="@android:color/black"
-        android:textSize="10sp"
-
-        app:layout_constraintBottom_toBottomOf="@id/rectangleView"
-        app:layout_constraintEnd_toEndOf="@id/rectangleView"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toStartOf="@id/rectangleView"
-        app:layout_constraintTop_toTopOf="@id/rectangleView"
-        app:layout_constraintVertical_bias="0.743" />
-
-    <ImageView
-        android:id="@+id/savingsIcon"
-        android:layout_width="72dp"
-        android:layout_height="67dp"
-        android:layout_marginEnd="20dp"
-        android:background="#ACCFC8"
-
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@id/rectangleView"
-        app:layout_constraintEnd_toEndOf="@id/rectangleView"
-        app:layout_constraintTop_toTopOf="@id/rectangleView"
-        app:layout_constraintVertical_bias="0.578"
-        app:srcCompat="@drawable/coin" />
-
-    <!-- END OF GREENISH BOX -->
-
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="280dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/verydarkcyan"
-        android:onClick="save"
-        android:text="Save"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rectangleView" />
+    <!-- END OF BOTTOM MENU -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
