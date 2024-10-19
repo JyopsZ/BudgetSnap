@@ -37,14 +37,13 @@
         android:background="#fef7ff"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="back"
+        android:onClick="viewCategoryList"
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
-        app:layout_constraintVertical_bias="0.533"
         app:srcCompat="@drawable/backbutton" />
 
     <TextView

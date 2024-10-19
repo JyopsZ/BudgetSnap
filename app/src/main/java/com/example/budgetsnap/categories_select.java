@@ -110,7 +110,7 @@ public class categories_select extends AppCompatActivity implements AdapterView.
     // Hardcoded data for transactions
     private void loadTransactionData() {
         transactionList = new ArrayList<>();
-        transactionList.add(new Transaction("Dunkin' Donut Coffee", "Food", "- Php 150.00", false));
+        transactionList.add(new Transaction("Dunkin' Donut Coffee", "Today", "- Php 150.00", false));
         transactionList.add(new Transaction("Kuya Mel's Chicken", "October 13, 2024", "- Php 120.00", false));
     }
 
@@ -224,5 +224,11 @@ public class categories_select extends AppCompatActivity implements AdapterView.
             // Compare amounts (ascending or descending based on the 'descending' flag)
             return descending ? Double.compare(value2, value1) : Double.compare(value1, value2);
         });
+    }
+
+    public void viewCategoryList(View v) {
+
+        Intent intent = new Intent(this, categories_main.class);
+        startActivity(intent);
     }
 }
