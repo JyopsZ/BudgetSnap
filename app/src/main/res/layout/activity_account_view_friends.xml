@@ -7,6 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".accountViewFriends">
 
+    <Button
+        android:id="@+id/savebtn2"
+        android:layout_width="126dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="@color/verydarkcyan"
+        android:fontFamily="@font/poppins_semibold"
+        android:onClick="addExpense"
+        android:text="Edit Profile"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/profilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
     <ImageView
         android:id="@+id/GreenBG"
         android:layout_width="414dp"
@@ -262,13 +276,15 @@
         android:id="@+id/menu_square"
         android:layout_width="75dp"
         android:layout_height="72dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="7dp"
         android:layout_marginBottom="15dp"
+        android:onClick="gosavings"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout1"
+        app:layout_constraintVertical_bias="0.962"
         app:srcCompat="@drawable/menu_square" />
 
     <ImageView
@@ -331,6 +347,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
+        android:onClick="gosavings"
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />

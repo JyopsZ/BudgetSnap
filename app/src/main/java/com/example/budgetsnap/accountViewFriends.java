@@ -241,4 +241,9 @@ public class accountViewFriends extends AppCompatActivity implements AdapterView
         Intent i = new Intent(this, categories_main.class);
         startActivity(i);
     }
+
+    public void gosavings(View v) {
+        Intent intent = new Intent(this, SavingsActivity.class);
+        startActivity(intent);
+    }
 }
