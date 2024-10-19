@@ -89,9 +89,9 @@
       android:layout_marginStart="36dp"
       android:layout_marginTop="40dp"
       android:text="Transactions"
-      android:textColor="@color/red"
-      android:textSize="22sp"
+      android:textColor="#E16162"
       android:fontFamily="@font/poppins_bold"
+      android:textSize="22sp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
@@ -155,10 +155,11 @@
 
     <EditText
         android:id="@+id/editTextName"
-        android:layout_width="358dp"
-        android:layout_height="43dp"
+        android:layout_width="360dp"
+        android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_bold"
         android:hint="Ex. Lunch Food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -177,12 +178,13 @@
 
     <EditText
         android:id="@+id/editTextAmount"
-        android:layout_width="353dp"
-        android:layout_height="42dp"
+        android:layout_width="356dp"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:hint="0.00"
         android:inputType="numberDecimal"
+        android:fontFamily="@font/poppins_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAmount" />
@@ -256,8 +258,8 @@
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="166dp"
-        android:layout_height="42dp"
+        android:layout_width="164dp"
+        android:layout_height="46dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:hint="MM/DD/YY"
@@ -268,10 +270,11 @@
 
     <EditText
         android:id="@+id/editTextTime"
-        android:layout_width="170dp"
-        android:layout_height="41dp"
+        android:layout_width="168dp"
+        android:layout_height="46dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_bold"
         android:hint="2:45 P.M"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
@@ -284,7 +287,7 @@
         android:layout_height="52dp"
         android:layout_marginTop="52dp"
         android:backgroundTint="@color/lightgreen"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_bold"
         android:text="Add Income"
         android:textColor="@color/white"
         android:textSize="18dp"

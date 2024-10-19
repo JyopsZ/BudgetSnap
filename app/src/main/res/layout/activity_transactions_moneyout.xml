@@ -89,9 +89,9 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="40dp"
         android:text="Transactions"
-        android:textColor="@color/red"
-        android:textSize="22sp"
+        android:textColor="#E16162"
         android:fontFamily="@font/poppins_bold"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
@@ -137,7 +137,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/containerrounded"
-        android:elevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -161,6 +160,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="Ex. Lunch Food"
+            android:fontFamily="@font/poppins"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewName" />
@@ -179,9 +179,10 @@
         <EditText
             android:id="@+id/editTextAmount"
             android:layout_width="353dp"
-            android:layout_height="42dp"
+            android:layout_height="49dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins"
             android:hint="0.00"
             android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -257,10 +258,11 @@
 
         <EditText
             android:id="@+id/editTextDate"
-            android:layout_width="161dp"
-            android:layout_height="38dp"
+            android:layout_width="170dp"
+            android:layout_height="47dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/poppins"
             android:hint="MM/DD/YY"
             android:inputType="date"
             app:layout_constraintEnd_toStartOf="@+id/editTextTime"
@@ -269,12 +271,13 @@
 
         <EditText
             android:id="@+id/editTextTime"
-            android:layout_width="165dp"
-            android:layout_height="46dp"
+            android:layout_width="162dp"
+            android:layout_height="52dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:hint="2:45 P.M"
             android:inputType="time"
+            android:fontFamily="@font/poppins"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/editTextDate"
             app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
@@ -288,6 +291,7 @@
             android:text="Add Expense"
             android:textColor="@color/white"
             android:textSize="18dp"
+            android:fontFamily="@font/poppins"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
