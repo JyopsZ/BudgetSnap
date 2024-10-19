@@ -86,5 +86,36 @@ public class transaction_moneyin extends AppCompatActivity {
         dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> {
             dialog.dismiss(); // Close dialog on "Cancel"
         });
+
+        /*
+        public void gonotif(View v) {
+            Intent i = new Intent(transaction_moneyin.this, Notifications.class);
+            startActivity(i);
+        }
+
+        public void gosavings(View v) {
+            Intent i = new Intent(transaction_moneyin.this, savings.class);
+            startActivity(i);
+        }
+
+        public void gobudgeting(View v) {
+            Intent i = new Intent(transaction_moneyin.this, budgeting1.class);
+            startActivity(i);
+        }
+
+        public void gotransactions(View v) {
+            Intent i = new Intent(transaction_moneyin.this, transaction1.class);
+            startActivity(i);
+        }
+
+        public void gocategories(View v) {
+            Intent i = new Intent(transaction_moneyin.this, categories.class);
+            startActivity(i);
+        }
+
+        public void goaccount(View v) {
+            Intent i = new Intent(transaction_moneyin.this, account.class);
+            startActivity(i);
+        }*/
     }
 }
