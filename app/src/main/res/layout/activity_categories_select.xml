@@ -132,6 +132,7 @@
 
     <ImageView
         android:id="@+id/menu_home"
+        android:onClick="gohome"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginStart="13dp"
@@ -152,6 +153,7 @@
 
     <ImageView
         android:id="@+id/menu_account"
+        android:onClick="goaccount"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="13dp"
@@ -172,6 +174,7 @@
 
     <ImageView
         android:id="@+id/menu_transaction"
+        android:onClick="gotransactions"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="79dp"

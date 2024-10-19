@@ -236,6 +236,7 @@
 
     <ImageView
         android:id="@+id/menu_transaction"
+        android:onClick="gotransactions"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="68dp"
@@ -256,6 +257,7 @@
 
     <ImageView
         android:id="@+id/menu_account2"
+        android:onClick="gocategories"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="88dp"
@@ -266,6 +268,7 @@
 
     <ImageView
         android:id="@+id/menu_home"
+        android:onClick="gohome"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
@@ -276,6 +279,7 @@
 
     <ImageView
         android:id="@+id/menu_account"
+        android:onClick="goaccount"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="13dp"

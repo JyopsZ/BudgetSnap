@@ -1,7 +1,6 @@
 package com.example.budgetsnap;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -144,6 +143,23 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
     public void goHome (View v) {
 
         Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
+
+    public void gocategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
+        startActivity(i);
+    }
+
+    public void goaccount(View v) {
+        Intent i = new Intent(this, account.class);
         startActivity(i);
     }
 }

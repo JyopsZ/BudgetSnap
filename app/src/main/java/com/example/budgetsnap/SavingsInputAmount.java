@@ -1,6 +1,8 @@
 package com.example.budgetsnap;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,32 @@ public class SavingsInputAmount extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    public void save (View v) {
+
+        finish();
+    }
+
+    public void goHome (View v) {
+
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
+
+    public void gocategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
+        startActivity(i);
+    }
+
+    public void goaccount(View v) {
+        Intent i = new Intent(this, account.class);
+        startActivity(i);
     }
 }

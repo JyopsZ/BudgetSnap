@@ -22,37 +22,26 @@ public class budgetingEditCategory extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
 
-        /*
-        public void gonotif(View v) {
-            Intent i = new Intent(budgetingEditCategory.this, Notifications.class);
-            startActivity(i);
-        }
+    public void gohome(View v) {
+        Intent i = new Intent(budgetingEditCategory.this, Home.class);
+        startActivity(i);
+    }
 
-        public void gosavings(View v) {
-            Intent i = new Intent(budgetingEditCategory.this, savings.class);
-            startActivity(i);
-        }
+    public void gotransactions(View v) {
+        Intent i = new Intent(budgetingEditCategory.this, Transaction1.class);
+        startActivity(i);
+    }
 
-        public void gobudgeting(View v) {
-            Intent i = new Intent(budgetingEditCategory.this, budgeting1.class);
-            startActivity(i);
-        }
+    public void gocategories(View v) {
+        Intent i = new Intent(budgetingEditCategory.this, categories_main.class);
+        startActivity(i);
+    }
 
-        public void gotransactions(View v) {
-            Intent i = new Intent(budgetingEditCategory.this, transaction1.class);
-            startActivity(i);
-        }
-
-        public void gocategories(View v) {
-            Intent i = new Intent(budgetingEditCategory.this, categories.class);
-            startActivity(i);
-        }
-
-        public void goaccount(View v) {
-            Intent i = new Intent(budgetingEditCategory.this, account.class);
-            startActivity(i);
-        }*/
+    public void goaccount(View v) {
+        Intent i = new Intent(budgetingEditCategory.this, account.class);
+        startActivity(i);
     }
 
     public void back (View v){

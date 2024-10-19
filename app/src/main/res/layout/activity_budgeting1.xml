@@ -169,7 +169,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageTransportation"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/home" />
+            app:srcCompat="@drawable/c_home" />
 
         <TextView
             android:id="@+id/textView19"
@@ -275,6 +275,7 @@
 
     <ImageView
         android:id="@+id/menu_transaction"
+        android:onClick="gotransactions"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="68dp"
@@ -295,6 +296,7 @@
 
     <ImageView
         android:id="@+id/menu_account2"
+        android:onClick="gocategories"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="88dp"
@@ -305,6 +307,7 @@
 
     <ImageView
         android:id="@+id/menu_home"
+        android:onClick="gohome"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
@@ -315,6 +318,7 @@
 
     <ImageView
         android:id="@+id/menu_account"
+        android:onClick="goaccount"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="13dp"
@@ -330,6 +334,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginEnd="144dp"
         android:text="Edit Category"
+        android:onClick="editCategory"
         android:backgroundTint="@color/white"
         android:textColor="@color/verydarkcyan"
         app:layout_constraintBottom_toTopOf="@+id/menu_transaction"
@@ -344,6 +349,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="25dp"
         android:text="Add Expense"
+        android:onClick="addExpense"
         android:backgroundTint="@color/verydarkcyan"
         app:layout_constraintBottom_toTopOf="@+id/menu_account2"
         app:layout_constraintEnd_toEndOf="parent"

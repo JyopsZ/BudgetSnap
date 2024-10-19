@@ -35,6 +35,7 @@
 
     <ImageView
         android:id="@+id/imageBell"
+        android:onClick="gonotif"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_marginTop="12dp"
@@ -341,6 +342,7 @@
 
     <ImageView
         android:id="@+id/menu_home2"
+        android:onClick="gohome"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginStart="13dp"
@@ -353,7 +355,7 @@
         android:id="@+id/menu_circle"
         android:layout_width="5dp"
         android:layout_height="5dp"
-        android:layout_marginStart="34dp"
+        android:layout_marginStart="99dp"
         android:layout_marginBottom="11dp"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
@@ -361,6 +363,7 @@
 
     <ImageView
         android:id="@+id/menu_account"
+        android:onClick="goaccount"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="13dp"
@@ -371,6 +374,7 @@
 
     <ImageView
         android:id="@+id/menu_account2"
+        android:onClick="gocategories"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="79dp"
@@ -381,6 +385,7 @@
 
     <ImageView
         android:id="@+id/menu_transaction"
+        android:onClick="gotransactions"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="79dp"

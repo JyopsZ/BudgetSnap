@@ -31,37 +31,26 @@ public class budgetingAddExpense extends AppCompatActivity {
                 R.array.categories_array, android.R.layout.simple_spinner_item); // values of this array is in res/values/strings.xml
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
+    }
 
-        /*
-        public void gonotif(View v) {
-            Intent i = new Intent(budgetingAddExpense.this, Notifications.class);
-            startActivity(i);
-        }
+    public void gohome(View v) {
+        Intent i = new Intent(budgetingAddExpense.this, Home.class);
+        startActivity(i);
+    }
 
-        public void gosavings(View v) {
-            Intent i = new Intent(budgetingAddExpense.this, savings.class);
-            startActivity(i);
-        }
+    public void gotransactions(View v) {
+        Intent i = new Intent(budgetingAddExpense.this, Transaction1.class);
+        startActivity(i);
+    }
 
-        public void gobudgeting(View v) {
-            Intent i = new Intent(budgetingAddExpense.this, budgeting1.class);
-            startActivity(i);
-        }
+    public void gocategories(View v) {
+        Intent i = new Intent(budgetingAddExpense.this, categories_main.class);
+        startActivity(i);
+    }
 
-        public void gotransactions(View v) {
-            Intent i = new Intent(budgetingAddExpense.this, transaction1.class);
-            startActivity(i);
-        }
-
-        public void gocategories(View v) {
-            Intent i = new Intent(budgetingAddExpense.this, categories.class);
-            startActivity(i);
-        }
-
-        public void goaccount(View v) {
-            Intent i = new Intent(budgetingAddExpense.this, account.class);
-            startActivity(i);
-        }*/
+    public void goaccount(View v) {
+        Intent i = new Intent(budgetingAddExpense.this, account.class);
+        startActivity(i);
     }
 
     public void back (View v){

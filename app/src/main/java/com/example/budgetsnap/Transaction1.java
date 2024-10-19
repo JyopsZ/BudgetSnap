@@ -1,7 +1,6 @@
 package com.example.budgetsnap;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,20 +11,21 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Transaction1 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    ImageView imageBG, imageLogo, imageBadge, imageBell, searchBar, Search_Button;
+    ImageView imageBG, imageLogo, imageBell, searchBar, Search_Button;
     TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
     Spinner dropdown_menu;
     FrameLayout frameLayout;
@@ -41,7 +41,6 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         // Initialize views properly
         imageBG = findViewById(R.id.imageBG);
         imageLogo = findViewById(R.id.imageLogo);
-        imageBadge = findViewById(R.id.imageBadge);
         imageBell = findViewById(R.id.imageBell);
         searchBar = findViewById(R.id.searchBar);
         textTransactions = findViewById(R.id.textTransactions);
@@ -235,36 +234,26 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             // Compare amounts (ascending or descending based on the 'descending' flag)
             return descending ? Double.compare(value2, value1) : Double.compare(value1, value2);
         });
+    }
 
-        /*
-        public void gonotif(View v) {
-            Intent i = new Intent(Transaction1.this, Notifications.class);
-            startActivity(i);
-        }
+    public void gohome(View v) {
 
-        public void gosavings(View v) {
-            Intent i = new Intent(Transaction1.this, savings.class);
-            startActivity(i);
-        }
+        Intent i = new Intent(Transaction1.this, Home.class);
+        startActivity(i);
+    }
 
-        public void gobudgeting(View v) {
-            Intent i = new Intent(Transaction1.this, budgeting1.class);
-            startActivity(i);
-        }
+    public void gonotif(View v) {
+        Intent i = new Intent(Transaction1.this, Notifications.class);
+        startActivity(i);
+    }
 
-        public void gotransactions(View v) {
-            Intent i = new Intent(Transaction1.this, transaction1.class);
-            startActivity(i);
-        }
+    public void gocategories(View v) {
+        Intent i = new Intent(Transaction1.this, categories_main.class);
+        startActivity(i);
+    }
 
-        public void gocategories(View v) {
-            Intent i = new Intent(Transaction1.this, categories.class);
-            startActivity(i);
-        }
-
-        public void goaccount(View v) {
-            Intent i = new Intent(Transaction1.this, account.class);
-            startActivity(i);
-        }*/
+    public void goaccount(View v) {
+        Intent i = new Intent(Transaction1.this, account.class);
+        startActivity(i);
     }
 }

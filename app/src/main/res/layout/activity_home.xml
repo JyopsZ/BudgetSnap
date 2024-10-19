@@ -280,6 +280,7 @@
         android:layout_height="46dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="14dp"
+        android:onClick="goaccount"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/account" />
@@ -290,6 +291,7 @@
         android:layout_height="46dp"
         android:layout_marginEnd="79dp"
         android:layout_marginBottom="14dp"
+        android:onClick="gocategories"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/categories" />
@@ -349,7 +351,7 @@
         android:layout_height="47dp"
         android:layout_marginStart="72dp"
         android:layout_marginTop="36dp"
-        android:onClick="savings"
+        android:onClick="gosavings"
         app:layout_constraintStart_toStartOf="@+id/upper_rectangle"
         app:layout_constraintTop_toTopOf="@+id/upper_rectangle"
         app:srcCompat="@drawable/savings" />
@@ -360,6 +362,7 @@
         android:layout_height="47dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="72dp"
+        android:onClick="gobudgeting"
         app:layout_constraintEnd_toEndOf="@+id/upper_rectangle"
         app:layout_constraintTop_toTopOf="@+id/upper_rectangle"
         app:srcCompat="@drawable/budgeting" />

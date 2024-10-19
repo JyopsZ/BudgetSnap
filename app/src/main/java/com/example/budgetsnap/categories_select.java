@@ -1,7 +1,6 @@
 package com.example.budgetsnap;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,13 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -228,5 +228,20 @@ public class categories_select extends AppCompatActivity implements AdapterView.
             // Compare amounts (ascending or descending based on the 'descending' flag)
             return descending ? Double.compare(value2, value1) : Double.compare(value1, value2);
         });
+    }
+
+    public void gohome(View v) {
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
+    public void goaccount(View v) {
+        Intent i = new Intent(this, account.class);
+        startActivity(i);
     }
 }

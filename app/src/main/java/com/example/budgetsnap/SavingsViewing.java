@@ -132,4 +132,20 @@ public class SavingsViewing extends AppCompatActivity {
         }
     }
 
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
+
+    public void gocategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
+        startActivity(i);
+    }
+
+    public void goaccount(View v) {
+        Intent i = new Intent(this, account.class);
+        startActivity(i);
+    }
+
 }
