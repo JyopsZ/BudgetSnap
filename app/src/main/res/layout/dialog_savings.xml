@@ -5,7 +5,8 @@
     android:layout_height="540dp"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/containerrounded_savings">
 
 
     <ImageView
