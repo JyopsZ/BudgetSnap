@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class account extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class accountViewFriends extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     ImageView imageBG, imageLogo, imageBadge, imageBell, searchBar, Search_Button;
     TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
@@ -35,7 +35,7 @@ public class account extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.activity_account_view_friends);
 
         // Initialize views properly
         frameLayout = findViewById(R.id.frameLayout);
@@ -81,14 +81,14 @@ public class account extends AppCompatActivity implements AdapterView.OnItemSele
         // Handle clicking on "Money In" and "Money Out"
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
             // Start Money In Activity
-            Intent i = new Intent(account.this, transaction_moneyin.class);
+            Intent i = new Intent(accountViewFriends.this, transaction_moneyin.class);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
 
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
             // Start Money Out Activity
-            Intent i = new Intent(account.this, transactions_moneyout.class);
+            Intent i = new Intent(accountViewFriends.this, transactions_moneyout.class);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
@@ -232,18 +232,13 @@ public class account extends AppCompatActivity implements AdapterView.OnItemSele
         startActivity(i);
     }
 
-    public void gocategories(View v) {
-        Intent i = new Intent(this, categories_main.class);
-        startActivity(i);
-    }
-
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
         startActivity(i);
     }
 
-    public void gofriends(View v) {
-        Intent i = new Intent(this, accountViewFriends.class);
+    public void gocategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
         startActivity(i);
     }
 }
