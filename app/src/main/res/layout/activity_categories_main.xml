@@ -46,7 +46,7 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="367dp"
-        android:layout_height="612dp"
+        android:layout_height="635dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_border"
         app:layout_constraintEnd_toEndOf="parent"
@@ -267,7 +267,7 @@
         android:layout_width="75dp"
         android:layout_height="72dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="15dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
