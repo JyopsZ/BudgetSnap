@@ -375,6 +375,7 @@
     <ImageView
         android:id="@+id/menu_transaction"
         android:layout_width="45dp"
+        android:onClick="gotransactions"
         android:layout_height="45dp"
         android:layout_marginStart="79dp"
         android:layout_marginBottom="14dp"

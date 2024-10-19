@@ -93,6 +93,11 @@ public class transaction_moneyin extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
     public void gonotif(View v) {
         Intent i = new Intent(transaction_moneyin.this, Notifications.class);
         startActivity(i);
