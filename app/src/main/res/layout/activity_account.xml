@@ -135,9 +135,10 @@
                 android:id="@+id/friendName1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/poppins"
-                android:text="Dylan Sprouse"
-                android:textSize="9sp"
+                android:text="Dylan Tan"
+                android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/friend1" />
 
@@ -145,10 +146,10 @@
                 android:id="@+id/friendName2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="17dp"
+                android:layout_marginStart="22dp"
                 android:fontFamily="@font/poppins"
                 android:text="Taylor Swift"
-                android:textSize="9sp"
+                android:textSize="10sp"
                 app:layout_constraintStart_toEndOf="@+id/friendName1"
                 app:layout_constraintTop_toBottomOf="@+id/friend2" />
 
@@ -156,10 +157,10 @@
                 android:id="@+id/friendName3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="18dp"
                 android:fontFamily="@font/poppins"
                 android:text="Harry Styles"
-                android:textSize="9sp"
+                android:textSize="10sp"
                 app:layout_constraintStart_toEndOf="@+id/friendName2"
                 app:layout_constraintTop_toBottomOf="@+id/friend3" />
 
@@ -176,10 +177,10 @@
                 android:id="@+id/friendName4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="16dp"
                 android:fontFamily="@font/poppins"
                 android:text="Tyla Seethal"
-                android:textSize="9sp"
+                android:textSize="10sp"
                 app:layout_constraintStart_toEndOf="@+id/friendName3"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
