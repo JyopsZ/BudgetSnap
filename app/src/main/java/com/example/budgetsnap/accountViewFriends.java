@@ -246,4 +246,9 @@ public class accountViewFriends extends AppCompatActivity implements AdapterView
         Intent intent = new Intent(this, SavingsActivity.class);
         startActivity(intent);
     }
+
+    public void goedit(View v) {
+        Intent intent = new Intent(this, accountEditProfile.class);
+        startActivity(intent);
+    }
 }

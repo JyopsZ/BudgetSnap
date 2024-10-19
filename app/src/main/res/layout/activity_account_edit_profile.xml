@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".account">
+    tools:context=".accountEditProfile">
 
     <Button
         android:id="@+id/savebtn"
@@ -15,8 +15,8 @@
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/verydarkcyan"
         android:fontFamily="@font/poppins_semibold"
-        android:onClick="goedit"
-        android:text="Edit Profile"
+        android:onClick="goaccount"
+        android:text="Save"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -57,15 +57,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
-
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Account"
-        app:srcCompat="@drawable/profile_girl1" />
 
     <TextView
         android:id="@+id/profileName"
@@ -372,5 +363,13 @@
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
 
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Account"
+        app:srcCompat="@drawable/profile_change" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
