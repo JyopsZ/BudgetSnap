@@ -341,17 +341,6 @@
       app:srcCompat="@drawable/menu_square" />
 
   <ImageView
-        android:id="@+id/menu_home2"
-      android:onClick="gohome"
-        android:layout_width="47dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/home" />
-
-    <ImageView
         android:id="@+id/menu_circle"
         android:layout_width="5dp"
         android:layout_height="5dp"
