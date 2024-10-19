@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // intent to navigate to onboarding1
-                Intent i = new Intent(MainActivity.this, budgeting1.class);
+
+                Intent i = new Intent(MainActivity.this, SavingsActivity.class);
                 startActivity(i);
 
                 // Optionally finish MainActivity so the user cannot return to it
