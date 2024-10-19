@@ -25,6 +25,15 @@
             android:name=".SavingsViewing"
             android:exported="false" />
         <activity
+            android:name=".account"
+            android:exported="false" />
+        <activity
+            android:name=".categories_select"
+            android:exported="false" />
+        <activity
+            android:name=".categories_main"
+            android:exported="false" />
+        <activity
             android:name=".SavingsChallenge"
             android:exported="false" />
         <activity

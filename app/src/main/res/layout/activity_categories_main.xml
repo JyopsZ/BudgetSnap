@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".categories_main">
+
+    <ImageView
+        android:id="@+id/GreenBG"
+        android:layout_width="414dp"
+        android:layout_height="62dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/budgetsnapbg_1" />
+
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="136dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="136dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logonobg" />
+
+    <TextView
+        android:id="@+id/Categories"
+        android:layout_width="361dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Categories"
+        android:textColor="#E16162"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="367dp"
+        android:layout_height="625dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Categories">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="367dp"
+            android:layout_height="560dp">
+
+            <TextView
+                android:id="@+id/homeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="43dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins"
+                android:text="Home"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeIcon" />
+
+            <TextView
+                android:id="@+id/foodText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="82dp"
+                android:layout_marginTop="10dp"
+                android:text="Food"
+                app:layout_constraintStart_toEndOf="@+id/homeText"
+                app:layout_constraintTop_toBottomOf="@+id/foodIcon" />
+
+            <TextView
+                android:id="@+id/billsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="53dp"
+                android:text="Bills"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/billsIcon" />
+
+            <ImageView
+                android:id="@+id/homeIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/c_home" />
+
+            <ImageView
+                android:id="@+id/foodIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/billsIcon"
+                app:layout_constraintStart_toEndOf="@+id/homeIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/c_food" />
+
+            <ImageView
+                android:id="@+id/billsIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/c_bills" />
+
+            <ImageView
+                android:id="@+id/healthIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeText"
+                app:srcCompat="@drawable/c_health" />
+
+            <ImageView
+                android:id="@+id/leisureIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toStartOf="@+id/educationIcon"
+                app:layout_constraintStart_toEndOf="@+id/healthIcon"
+                app:layout_constraintTop_toBottomOf="@+id/foodText"
+                app:srcCompat="@drawable/c_leisure" />
+
+            <ImageView
+                android:id="@+id/educationIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/billsText"
+                app:srcCompat="@drawable/c_education" />
+
+            <TextView
+                android:id="@+id/healthText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="43dp"
+                android:layout_marginTop="10dp"
+                android:text="Health"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/healthIcon" />
+
+            <TextView
+                android:id="@+id/leisureText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="78dp"
+                android:layout_marginTop="10dp"
+                android:text="Leisure"
+                app:layout_constraintStart_toEndOf="@+id/healthText"
+                app:layout_constraintTop_toBottomOf="@+id/leisureIcon" />
+
+            <TextView
+                android:id="@+id/educationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="33dp"
+                android:text="Education"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/educationIcon" />
+
+            <ImageView
+                android:id="@+id/transportationIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/healthText"
+                app:srcCompat="@drawable/c_transportation" />
+
+            <ImageView
+                android:id="@+id/emergencyIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toStartOf="@+id/othersIcon"
+                app:layout_constraintStart_toEndOf="@+id/transportationIcon"
+                app:layout_constraintTop_toBottomOf="@+id/leisureText"
+                app:srcCompat="@drawable/c_savings" />
+
+            <ImageView
+                android:id="@+id/othersIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/educationText"
+                app:srcCompat="@drawable/c_others" />
+
+            <TextView
+                android:id="@+id/transportationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="10dp"
+                android:text="Transportation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/transportationIcon" />
+
+            <TextView
+                android:id="@+id/emergencyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                android:text="Emergency"
+                app:layout_constraintStart_toEndOf="@+id/transportationText"
+                app:layout_constraintTop_toBottomOf="@+id/emergencyIcon" />
+
+            <TextView
+                android:id="@+id/othersText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="45dp"
+                android:text="Others"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/othersIcon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/menu_rectangle"
+        android:layout_width="371dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/menu_rectangle" />
+
+    <ImageView
+        android:id="@+id/menu_square"
+        android:layout_width="75dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/menu_transaction"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:srcCompat="@drawable/menu_square" />
+
+    <ImageView
+        android:id="@+id/menu_home"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/home" />
+
+    <ImageView
+        android:id="@+id/menu_circle"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="11dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/menu_circle" />
+
+    <ImageView
+        android:id="@+id/menu_account"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/account" />
+
+    <ImageView
+        android:id="@+id/menu_account2"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/categories" />
+
+    <ImageView
+        android:id="@+id/menu_transaction"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/transactions" />
+
+    <ImageView
+        android:id="@+id/menu_plus"
+        android:layout_width="47dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/menu_square"
+        app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
+        app:srcCompat="@drawable/menu_plus" />
+</androidx.constraintlayout.widget.ConstraintLayout>
