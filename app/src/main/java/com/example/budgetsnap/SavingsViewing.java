@@ -63,6 +63,12 @@ public class SavingsViewing extends AppCompatActivity {
         finish();
     }
 
+    public void goHome (View v) {
+
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
     public void edit(View view) {
 
         Intent i = new Intent(this, SavingsEditing.class);
