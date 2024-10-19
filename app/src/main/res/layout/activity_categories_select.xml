@@ -29,12 +29,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logonobg" />
 
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#fef7ff"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="back"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG"
+        app:layout_constraintVertical_bias="0.533"
+        app:srcCompat="@drawable/backbutton" />
+
     <TextView
         android:id="@+id/CategoryFood"
         android:layout_width="361dp"
         android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Category: Food"
         android:textColor="#E16162"
@@ -47,7 +65,7 @@
         android:id="@+id/dropdown_menu"
         android:layout_width="152dp"
         android:layout_height="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,9 +74,9 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="367dp"
-        android:layout_height="612dp"
+        android:layout_height="590dp"
         android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/rounded_border"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
