@@ -113,10 +113,6 @@ public class Home extends AppCompatActivity {
         startActivity(i);
     }
 
-//    public void gosavings(View v) {
-//        Intent i = new Intent(this, savings.class);
-//        startActivity(i);
-//    }
 //    public void gobudgeting(View v) {
 //        Intent i = new Intent(this, budgeting1.class);
 //        startActivity(i);
