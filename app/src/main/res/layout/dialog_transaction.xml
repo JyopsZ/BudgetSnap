@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/containerrounded">
 
     <LinearLayout
         android:id="@+id/moneyInOption"
@@ -30,8 +31,6 @@
             android:paddingStart="8dp" />
     </LinearLayout>
 
-
-    <!-- Option for Money Out -->
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp" />
@@ -60,7 +59,6 @@
             android:paddingStart="8dp" />
     </LinearLayout>
 
-    <!-- Cancel button -->
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="match_parent"

@@ -15,4 +15,11 @@
         <item>Others</item>
     </string-array>
 
+    <string-array name="frequency_options">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
 </resources>
