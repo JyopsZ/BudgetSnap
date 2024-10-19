@@ -387,7 +387,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Php 1,000.00"
+        android:text="Php 900.00"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
@@ -411,10 +411,10 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="122dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Php 0.00"
+        android:text="Php 100.00"
         android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
