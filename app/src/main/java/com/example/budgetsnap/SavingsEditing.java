@@ -161,4 +161,9 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
         Intent i = new Intent(this, categories_main.class);
         startActivity(i);
     }
+
+    public void gosavings(View v) {
+        Intent i = new Intent(this, SavingsActivity.class);
+        startActivity(i);
+    }
 }

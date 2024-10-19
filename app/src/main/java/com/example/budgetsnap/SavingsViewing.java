@@ -148,4 +148,8 @@ public class SavingsViewing extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void gosavings(View v) {
+        Intent i = new Intent(this, SavingsActivity.class);
+        startActivity(i);
+    }
 }

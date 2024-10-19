@@ -50,4 +50,9 @@ public class SavingsInputAmount extends AppCompatActivity {
         Intent i = new Intent(this, account.class);
         startActivity(i);
     }
+
+    public void gosavings(View v) {
+        Intent i = new Intent(this, SavingsActivity.class);
+        startActivity(i);
+    }
 }
