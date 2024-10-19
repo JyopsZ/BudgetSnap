@@ -58,7 +58,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="30dp"
-        android:onClick="notif"
+        android:onClick="gonotif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home_urightbadge" />
@@ -210,7 +210,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="PHP 50000.00"
+        android:text="PHP 6000.00"
         android:textColor="#99000000"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -238,7 +238,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="PHP 30000.00"
+        android:text="PHP 4000.00"
         android:textColor="#99000000"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -381,9 +381,9 @@
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginTop="27dp"
-        android:layout_marginEnd="116dp"
+        android:layout_marginEnd="96dp"
         android:fontFamily="@font/inter"
-        android:text="Php: 20.00/day"
+        android:text="Php: 5000.00/day"
         android:textColor="#F9BB61"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -393,7 +393,7 @@
         android:id="@+id/Savinggoal_Text"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginStart="96dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Savings goal:"
@@ -423,6 +423,30 @@
         android:background="@drawable/spinner_home"
         app:layout_constraintEnd_toEndOf="@+id/mid_rectangle"
         app:layout_constraintTop_toBottomOf="@+id/InsightsSummary" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
+        android:layout_width="351dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="425dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/GreenBG" />
+
+    <TextView
+        android:id="@+id/notif_num"
+        android:layout_width="19dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="27dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:text="3"
+        android:textColor="#F9BB61"
+        android:textColorLink="#BD0101"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
