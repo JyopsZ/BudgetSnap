@@ -111,7 +111,7 @@ public class categories_select extends AppCompatActivity implements AdapterView.
     private void loadTransactionData() {
         transactionList = new ArrayList<>();
         transactionList.add(new Transaction("Dunkin' Donut Coffee", "Food", "- Php 150.00", false));
-        transactionList.add(new Transaction("Kuya Mel's Chicken", "Food", "- Php 120.00", false));
+        transactionList.add(new Transaction("Kuya Mel's Chicken", "October 13, 2024", "- Php 120.00", false));
     }
 
     private void showTransactionsInConstraintLayout() {
@@ -125,10 +125,6 @@ public class categories_select extends AppCompatActivity implements AdapterView.
             // Adding "Today" text once
             if (!isDateAdded) {
                 TextView dateTextView = new TextView(this);
-                dateTextView.setText("Today");
-                dateTextView.setTextSize(16);
-                dateTextView.setTypeface(null, Typeface.BOLD);
-                dateTextView.setTextColor(getResources().getColor(android.R.color.black));
                 transactionContainer.addView(dateTextView);
                 isDateAdded = true;
             }
@@ -153,7 +149,7 @@ public class categories_select extends AppCompatActivity implements AdapterView.
 
             // Create and add the category (smaller and gray color)
             TextView transactionCategoryView = new TextView(this);
-            transactionCategoryView.setText("Category: " + transaction.getCategory());
+            transactionCategoryView.setText(transaction.getCategory());
             transactionCategoryView.setTextSize(14);
             transactionCategoryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
             textLayout.addView(transactionCategoryView);
