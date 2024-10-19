@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
         // automatically go to onboarding1 after 3 seconds
         new Handler().postDelayed(new Runnable() {
-           @Override
+            @Override
             public void run() {
                 // intent to navigate to onboarding1
-                Intent i = new Intent(MainActivity.this, categories_select.class);
+                Intent i = new Intent(MainActivity.this, onboarding1.class);
                 startActivity(i);
 
                 // Optionally finish MainActivity so the user cannot return to it
