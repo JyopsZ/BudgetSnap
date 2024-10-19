@@ -47,8 +47,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayoutBudgeting"
-        android:layout_width="385dp"
-        android:layout_height="258dp"
+        android:layout_width="392dp"
+        android:layout_height="269dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="116dp"
         android:layout_marginEnd="16dp"
@@ -64,35 +64,41 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_bold"
             android:text="Food"
             android:textColor="@color/lime"
-            android:fontFamily="@font/poppins_bold"
-            tools:layout_editor_absoluteX="109dp"
-            tools:layout_editor_absoluteY="4dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.016"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/poppins_bold"
             android:text="Transportation"
             android:textColor="@color/lime"
-            android:fontFamily="@font/poppins_bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintHorizontal_bias="0.023"
             app:layout_constraintStart_toEndOf="@+id/imageTransportation"
-            tools:layout_editor_absoluteY="90dp"
-            android:layout_marginTop="8dp"/>
+            app:layout_constraintTop_toTopOf="@+id/imageTransportation" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Remaining: Php 120.00"
+            android:layout_marginStart="4dp"
+
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_bold"
+            android:text="Remaining: Php 120.00"
             android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintHorizontal_bias="0.024"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -100,12 +106,13 @@
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="8dp"
-            android:text="Remaining: Php 100.00"
             android:fontFamily="@font/poppins_bold"
+            android:text="Remaining: Php 100.00"
             android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintHorizontal_bias="0.031"
             app:layout_constraintStart_toEndOf="@+id/imageTransportation"
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -113,13 +120,14 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="Expenses: Php 0.00"
             android:fontFamily="@font/poppins_bold"
+            android:text="Expenses: Php 0.00"
             android:textSize="10dp"
             app:layout_constraintBottom_toTopOf="@+id/textView14"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintHorizontal_bias="0.021"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
             app:layout_constraintTop_toBottomOf="@+id/textView12"
             app:layout_constraintVertical_bias="0.0" />
@@ -129,7 +137,7 @@
             android:layout_width="95dp"
             android:layout_height="57dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="280dp"
+            android:layout_marginEnd="284dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/food" />
@@ -138,12 +146,13 @@
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
             android:layout_marginTop="8dp"
-            android:text="Expenses: Php 0.00"
             android:fontFamily="@font/poppins_bold"
+            android:text="Expenses: Php 0.00"
             android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.018"
+            app:layout_constraintHorizontal_bias="0.027"
             app:layout_constraintStart_toEndOf="@+id/imageTransportation"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -176,26 +185,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_bold"
             android:text="Home"
             android:textColor="@color/lime"
-            android:fontFamily="@font/poppins_bold"
+            app:layout_constraintBottom_toTopOf="@+id/imageTransportation2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.025"
             app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/textView17"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:text="Remaining: Php 200.00"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_bold"
+            android:text="Remaining: Php 200.00"
             android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.024"
             app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -204,15 +215,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="Expenses: Php 0.00"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_bold"
+            android:text="Expenses: Php 0.00"
             android:textSize="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.021"
             app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
             app:layout_constraintTop_toBottomOf="@+id/textView20"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.111" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -370,12 +382,11 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Php 1,000.00"
         android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.223"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
@@ -383,11 +394,10 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Total Budget"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.154"
+        android:text="Total Budget"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -395,12 +405,14 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="122dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Php 0.00"
         android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -408,12 +420,14 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="71dp"
         android:fontFamily="@font/poppins"
         android:text="Total Expenses"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintEnd_toStartOf="@+id/progressBar"
-        app:layout_constraintHorizontal_bias="0.143"
+        app:layout_constraintEnd_toEndOf="@+id/textView10"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:layout_constraintVertical_bias="0.0" />
@@ -427,22 +441,10 @@
         android:text="Budget Limit: Php 420.00"
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="139dp"
-        android:layout_height="131dp"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.889"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView"
-        app:layout_constraintVertical_bias="0.086" />
+        app:layout_constraintVertical_bias="0.981" />
 
     <ImageView
         android:id="@+id/backButton"
@@ -464,5 +466,18 @@
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/backbutton" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="166dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/remaining_budget" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
