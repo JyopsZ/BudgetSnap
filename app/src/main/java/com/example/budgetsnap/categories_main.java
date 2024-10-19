@@ -23,18 +23,27 @@ public class categories_main extends AppCompatActivity {
             return insets;
         });
     }
+    public void viewCategory(View v) {
 
-    public void gohome(View v) {
+        Intent i = new Intent(this, categories_select.class);
+        startActivity(i);
+    }
+    public void goHome (View v) {
+
         Intent i = new Intent(this, Home.class);
         startActivity(i);
     }
 
-    public void gotransactions(View v) {
+    public void goTransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
         startActivity(i);
     }
 
-    public void goaccount(View v) {
+    public void goCategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
+        startActivity(i);
+    }
+    public void goAccount(View v) {
         Intent i = new Intent(this, account.class);
         startActivity(i);
     }
