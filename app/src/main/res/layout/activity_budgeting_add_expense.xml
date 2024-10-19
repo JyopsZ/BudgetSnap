@@ -221,7 +221,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/home" />
+        app:srcCompat="@drawable/chome" />
 
     <ImageView
         android:id="@+id/menu_plus"
