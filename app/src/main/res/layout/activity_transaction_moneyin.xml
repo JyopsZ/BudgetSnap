@@ -307,17 +307,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/menu_rectangle" />
 
-    <ImageView
-        android:id="@+id/menu_home"
-        android:layout_width="47dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/home" />
+  <ImageView
+      android:id="@+id/menu_home"
+      android:layout_width="47dp"
+      android:layout_height="46dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
+      app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
+      app:srcCompat="@drawable/chome" />
 
-    <ImageView
+  <ImageView
         android:id="@+id/menu_plus"
         android:layout_width="47dp"
         android:layout_height="49dp"
@@ -340,16 +340,6 @@
       app:srcCompat="@drawable/menu_square" />
 
   <ImageView
-        android:id="@+id/menu_home2"
-        android:layout_width="47dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/home" />
-
-    <ImageView
         android:id="@+id/menu_circle"
         android:layout_width="5dp"
         android:layout_height="5dp"

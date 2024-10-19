@@ -221,7 +221,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/home" />
+        app:srcCompat="@drawable/chome" />
 
     <ImageView
         android:id="@+id/menu_plus"
@@ -263,16 +263,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/categories" />
-
-    <ImageView
-        android:id="@+id/menu_home"
-        android:layout_width="47dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
-        app:srcCompat="@drawable/home" />
 
     <ImageView
         android:id="@+id/menu_account"
