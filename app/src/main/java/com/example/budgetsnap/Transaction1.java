@@ -41,7 +41,6 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         // Initialize views properly
         imageBG = findViewById(R.id.imageBG);
         imageLogo = findViewById(R.id.imageLogo);
-        imageBadge = findViewById(R.id.imageBadge);
         imageBell = findViewById(R.id.imageBell);
         searchBar = findViewById(R.id.searchBar);
         textTransactions = findViewById(R.id.textTransactions);
