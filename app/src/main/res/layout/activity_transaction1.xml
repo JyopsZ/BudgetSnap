@@ -113,7 +113,7 @@
         android:layout_height="518dp"
         android:layout_margin="16dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/containerrounded"
+        android:background="@drawable/rounded_border"
         android:elevation="4dp"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
