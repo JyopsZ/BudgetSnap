@@ -223,7 +223,7 @@ public class account extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
     public void gohome(View v) {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, Home.class);
         startActivity(i);
     }
 

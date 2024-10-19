@@ -50,21 +50,22 @@ public class Notifications extends AppCompatActivity {
         finish();
     }
 
-    //    public void gobudgeting(View v) {
-//        Intent i = new Intent(this, budgeting1.class);
-//        startActivity(i);
-//    }
-//    public void gotransactions(View v) {
-//        Intent i = new Intent(this, transaction1.class);
-//        startActivity(i);
-//    }
-//
-//    public void gocategories(View v) {
-//        Intent i = new Intent(this, categories.class);
-//        startActivity(i);
-//    }
-//    public void goaccount(View v) {
-//        Intent i = new Intent(this, account.class);
-//        startActivity(i);
-//    }
+    public void gohome(View v) {
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
+    public void gocategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
+        startActivity(i);
+    }
+    public void goaccount(View v) {
+        Intent i = new Intent(this, account.class);
+        startActivity(i);
+    }
 }

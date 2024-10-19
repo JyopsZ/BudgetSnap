@@ -25,7 +25,7 @@ public class categories_main extends AppCompatActivity {
     }
 
     public void gohome(View v) {
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(this, Home.class);
         startActivity(i);
     }
 
