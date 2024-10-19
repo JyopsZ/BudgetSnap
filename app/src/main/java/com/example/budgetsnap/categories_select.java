@@ -231,4 +231,23 @@ public class categories_select extends AppCompatActivity implements AdapterView.
         Intent intent = new Intent(this, categories_main.class);
         startActivity(intent);
     }
+    public void goHome (View v) {
+
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+    public void goTransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        startActivity(i);
+    }
+
+    public void goCategories(View v) {
+        Intent i = new Intent(this, categories_main.class);
+        startActivity(i);
+    }
+    public void goAccount(View v) {
+        Intent i = new Intent(this, account.class);
+        startActivity(i);
+    }
 }
