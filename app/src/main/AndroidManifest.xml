@@ -29,6 +29,27 @@
             android:exported="false" />
         <activity
             android:name=".SavingsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".budgeting1"
+            android:exported="false"/>
+        <activity
+            android:name=".budgetingEditCategory"
+            android:exported="false"/>
+        <activity
+            android:name=".budgetingAddExpense"
+            android:exported="false"/>
+        <activity
+            android:name=".transactions_moneyout"
+            android:exported="false" />
+        <activity
+            android:name=".moneyout"
+            android:exported="false" />
+        <activity
+            android:name=".transaction_moneyin"
+            android:exported="false" />
+        <activity
+            android:name=".Transaction1"
             android:exported="false" />
         <activity
             android:name=".Home"

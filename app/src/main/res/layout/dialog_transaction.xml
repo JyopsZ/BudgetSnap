@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="16dp"
+    android:background="@drawable/containerrounded">
+
+    <LinearLayout
+        android:id="@+id/moneyInOption"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="BtnClickedMoneyIn">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:srcCompat="@drawable/cashin"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Money In"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="8dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <LinearLayout
+        android:id="@+id/moneyOutOption"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="BtnClickedMoneyOut">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:srcCompat="@drawable/cashout">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Money Out"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="8dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+
+</LinearLayout>
