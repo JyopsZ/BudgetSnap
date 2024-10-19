@@ -4,5 +4,6 @@
         <item>@font/calistoga</item>
         <item>@font/inter</item>
         <item>@font/poppins</item>
+        <item>@font/poppins_semibold</item>
     </array>
 </resources>
