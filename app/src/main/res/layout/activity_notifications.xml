@@ -100,10 +100,9 @@
         android:layout_width="75dp"
         android:layout_height="72dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="23dp"
         android:layout_marginBottom="16dp"
+        android:onClick="gotransactions"
         android:scaleType="fitCenter"
-        android:onClick="addSavings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
 
@@ -111,9 +110,10 @@
 
     <ImageView
         android:id="@+id/menu_plus"
-        android:layout_width="47dp"
-        android:layout_height="49dp"
+        android:layout_width="52dp"
+        android:layout_height="45dp"
 
+        android:onClick="gotransactions"
         app:layout_constraintBottom_toBottomOf="@+id/menu_square"
         app:layout_constraintEnd_toEndOf="@+id/menu_square"
         app:layout_constraintStart_toStartOf="@+id/menu_square"

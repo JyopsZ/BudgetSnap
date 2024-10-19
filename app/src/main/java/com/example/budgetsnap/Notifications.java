@@ -68,4 +68,9 @@ public class Notifications extends AppCompatActivity {
         Intent i = new Intent(this, account.class);
         startActivity(i);
     }
+
+    public void gosavings(View v) {
+        Intent intent = new Intent(this, SavingsActivity.class);
+        startActivity(intent);
+    }
 }
