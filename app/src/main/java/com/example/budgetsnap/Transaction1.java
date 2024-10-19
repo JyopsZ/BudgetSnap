@@ -235,5 +235,36 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             // Compare amounts (ascending or descending based on the 'descending' flag)
             return descending ? Double.compare(value2, value1) : Double.compare(value1, value2);
         });
+
+        /*
+        public void gonotif(View v) {
+            Intent i = new Intent(Transaction1.this, Notifications.class);
+            startActivity(i);
+        }
+
+        public void gosavings(View v) {
+            Intent i = new Intent(Transaction1.this, savings.class);
+            startActivity(i);
+        }
+
+        public void gobudgeting(View v) {
+            Intent i = new Intent(Transaction1.this, budgeting1.class);
+            startActivity(i);
+        }
+
+        public void gotransactions(View v) {
+            Intent i = new Intent(Transaction1.this, transaction1.class);
+            startActivity(i);
+        }
+
+        public void gocategories(View v) {
+            Intent i = new Intent(Transaction1.this, categories.class);
+            startActivity(i);
+        }
+
+        public void goaccount(View v) {
+            Intent i = new Intent(Transaction1.this, account.class);
+            startActivity(i);
+        }*/
     }
 }

@@ -86,5 +86,36 @@ public class transactions_moneyout extends AppCompatActivity {
         dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> {
             dialog.dismiss(); // Close dialog on "Cancel"
         });
+
+        /*
+        public void gonotif(View v) {
+            Intent i = new Intent(transaction_moneyout.this, Notifications.class);
+            startActivity(i);
+        }
+
+        public void gosavings(View v) {
+            Intent i = new Intent(transaction_moneyout.this, savings.class);
+            startActivity(i);
+        }
+
+        public void gobudgeting(View v) {
+            Intent i = new Intent(transaction_moneyout.this, budgeting1.class);
+            startActivity(i);
+        }
+
+        public void gotransactions(View v) {
+            Intent i = new Intent(transaction_moneyout.this, transaction1.class);
+            startActivity(i);
+        }
+
+        public void gocategories(View v) {
+            Intent i = new Intent(transaction_moneyout.this, categories.class);
+            startActivity(i);
+        }
+
+        public void goaccount(View v) {
+            Intent i = new Intent(transaction_moneyout.this, account.class);
+            startActivity(i);
+        }*/
     }
 }
