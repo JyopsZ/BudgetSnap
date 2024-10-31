@@ -94,7 +94,7 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
-                android:onClick="viewCategory"
+                android:onClick="viewHome"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/c_home" />
@@ -104,7 +104,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
-                android:onClick="viewCategory"
+                android:onClick="viewFood"
                 app:layout_constraintEnd_toStartOf="@+id/billsIcon"
                 app:layout_constraintStart_toEndOf="@+id/homeIcon"
                 app:layout_constraintTop_toTopOf="parent"
@@ -116,7 +116,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="15dp"
-                android:onClick="viewCategory"
+                android:onClick="viewBills"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/c_bills" />
@@ -127,7 +127,7 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="24dp"
-                android:onClick="viewCategory"
+                android:onClick="viewHealth"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/homeText"
                 app:srcCompat="@drawable/c_health" />
@@ -137,7 +137,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="25dp"
-                android:onClick="viewCategory"
+                android:onClick="viewLeisure"
                 app:layout_constraintEnd_toStartOf="@+id/educationIcon"
                 app:layout_constraintStart_toEndOf="@+id/healthIcon"
                 app:layout_constraintTop_toBottomOf="@+id/foodText"
@@ -149,7 +149,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
-                android:onClick="viewCategory"
+                android:onClick="viewEducation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/billsText"
                 app:srcCompat="@drawable/c_education" />
@@ -190,7 +190,7 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="25dp"
-                android:onClick="viewCategory"
+                android:onClick="viewTransportation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/healthText"
                 app:srcCompat="@drawable/c_transportation" />
@@ -200,7 +200,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="25dp"
-                android:onClick="viewCategory"
+                android:onClick="viewSavings"
                 app:layout_constraintEnd_toStartOf="@+id/othersIcon"
                 app:layout_constraintStart_toEndOf="@+id/transportationIcon"
                 app:layout_constraintTop_toBottomOf="@+id/leisureText"
@@ -212,7 +212,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="15dp"
-                android:onClick="viewCategory"
+                android:onClick="viewOthers"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/educationText"
                 app:srcCompat="@drawable/c_others" />
@@ -231,9 +231,9 @@
                 android:id="@+id/emergencyText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:text="Emergency"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="12dp"
+                android:text="Savings"
                 app:layout_constraintStart_toEndOf="@+id/transportationText"
                 app:layout_constraintTop_toBottomOf="@+id/emergencyIcon" />
 

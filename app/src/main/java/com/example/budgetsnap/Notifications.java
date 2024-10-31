@@ -16,7 +16,7 @@ import java.util.List;
 public class Notifications extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ReminderAdapter adapter;
+    private NotificationsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<Reminder> reminderList;
 
@@ -42,7 +42,7 @@ public class Notifications extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ReminderAdapter(reminderList);
+        adapter = new NotificationsAdapter(reminderList);
         recyclerView.setAdapter(adapter);
     }
 

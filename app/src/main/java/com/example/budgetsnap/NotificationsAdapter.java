@@ -7,12 +7,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.budgetsnap.R;
-import com.example.budgetsnap.Reminder;
-
 import java.util.List;
 
-public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder> {
+public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ReminderViewHolder> {
 
     private List<Reminder> reminderList;
 
@@ -24,12 +21,12 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         public ReminderViewHolder(View itemView) {
             super(itemView);
             reminderDate = itemView.findViewById(R.id.reminder_date);
-            reminderTitle = itemView.findViewById(R.id.reminder_title);
-            reminderMessage = itemView.findViewById(R.id.reminder_message);
+            reminderTitle = itemView.findViewById(R.id.cat_title);
+            reminderMessage = itemView.findViewById(R.id.cat_date);
         }
     }
 
-    public ReminderAdapter(List<Reminder> reminders) {
+    public NotificationsAdapter(List<Reminder> reminders) {
         this.reminderList = reminders;
     }
 

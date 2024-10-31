@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class categories_main extends AppCompatActivity {
 
+    public String Title_Category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +24,70 @@ public class categories_main extends AppCompatActivity {
             return insets;
         });
     }
-    public void viewCategory(View v) {
-
+    public void viewHome(View v) {
+        Title_Category = "Home";
         Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
         startActivity(i);
     }
-    public void goHome (View v) {
 
+    public void viewFood(View v) {
+        Title_Category = "Food";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewBills(View v) {
+        Title_Category = "Bills";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewHealth(View v) {
+        Title_Category = "Health";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewEducation(View v) {
+        Title_Category = "Education";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewLeisure(View v) {
+        Title_Category = "Leisure";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewTransportation(View v) {
+        Title_Category = "Transportation";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewSavings(View v) {
+        Title_Category = "Savings";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void viewOthers(View v) {
+        Title_Category = "Others";
+        Intent i = new Intent(this, categories_select.class);
+        i.putExtra("Title_Category", Title_Category);
+        startActivity(i);
+    }
+
+    public void goHome (View v) {
         Intent i = new Intent(this, Home.class);
         startActivity(i);
     }
