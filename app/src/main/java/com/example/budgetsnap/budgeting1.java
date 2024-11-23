@@ -37,8 +37,8 @@ public class budgeting1 extends AppCompatActivity {
         // Populate budget list
         budList = new ArrayList<>();
         budList.add(new Budget("Food", "Monthly Groceries", 1200.00, 800.00));
-        budList.add(new Budget("Transport", "Commute Expenses", 300.00, 100.00));
-        budList.add(new Budget("Entertainment", "Streaming Services", 100.00, 10.00));
+        budList.add(new Budget("Transportation", "Commute Expenses", 300.00, 100.00));
+        budList.add(new Budget("Health", "Streaming Services", 100.00, 10.00));
         budList.add(new Budget("Utilities", "Electric Bill", 500.00, 200.00));
 
         // Set adapter

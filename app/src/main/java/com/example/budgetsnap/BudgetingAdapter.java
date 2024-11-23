@@ -54,7 +54,7 @@ public class BudgetingAdapter extends RecyclerView.Adapter<BudgetingAdapter.BudV
             case "Food":
                 holder.budImage.setImageResource(R.drawable.c_food);
                 break;
-            case "Transport":
+            case "Transportation":
                 holder.budImage.setImageResource(R.drawable.c_transportation);
                 break;
             case "Entertainment":
