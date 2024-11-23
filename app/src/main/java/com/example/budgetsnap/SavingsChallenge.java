@@ -129,13 +129,16 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
         // Handle clicking back
         dialogView.findViewById(R.id.backButton).setOnClickListener(v -> {
 
-            Intent i = new Intent(this, SavingsActivity.class);
+            Intent i = new Intent();
             i.putExtra("name", editName.getText().toString());
             i.putExtra("goalAmount", editGoal.getText().toString());
             i.putExtra("frequency", frequency);
             i.putExtra("dateFinish", editDate.getText().toString());
-            startActivity(i);
+            i.putExtra("currentAmount", 0.0);
+            i.putExtra("isActivated", true);
 
+            setResult(RESULT_OK, i);
+            finish();
             dialog.dismiss();
         });
     }

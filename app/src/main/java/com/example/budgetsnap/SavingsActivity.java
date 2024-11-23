@@ -37,6 +37,24 @@ public class SavingsActivity extends AppCompatActivity {
         loadSavings(); // Method call to add values to savingsList arrayList
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1  && resultCode  == RESULT_OK) {
+
+            String name = data.getStringExtra("name");
+            double goalAmount = data.getDoubleExtra("goalAmount", 0.0);
+            String frequency = data.getStringExtra("frequency");
+            String dateFinish = data.getStringExtra("dateFinish");
+            double currentAmount = data.getDoubleExtra("currentAmount", 0.0);
+            boolean isActivated = data.getBooleanExtra("isActivated", true);
+
+            savingsList.add(new SavingsClass(name, goalAmount, frequency, dateFinish, currentAmount, isActivated));
+            recyclerView.getAdapter().notifyItemInserted(savingsList.size() - 1);
+        }
+    }
+
     public void back(View v) { // When the back button is pressed, return to the previous activity (Home)
 
         finish();
@@ -45,7 +63,7 @@ public class SavingsActivity extends AppCompatActivity {
     public void addSavings(View v) { // When either the +Add savings challenge button or orange box is pressed, start a new savings challenge activity
 
         Intent i = new Intent(this, SavingsChallenge.class);
-        startActivity(i);
+        startActivityForResult(i, 1);
     }
 
     public void goHome (View v) {
