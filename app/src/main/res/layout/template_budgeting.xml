@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="25dp">
+
+
+    <TextView
+        android:id="@+id/bud_remain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Remaining: Php 120.00"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/bud_image"
+        app:layout_constraintTop_toBottomOf="@+id/bud_title" />
+
+    <TextView
+        android:id="@+id/bud_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Expenses: Php 0.00"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/bud_image"
+        app:layout_constraintTop_toBottomOf="@+id/bud_remain" />
+
+    <ImageView
+        android:id="@+id/bud_image"
+        android:layout_width="95dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/food" />
+
+
+    <TextView
+        android:id="@+id/bud_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Food"
+        android:textColor="@color/lime"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/bud_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
