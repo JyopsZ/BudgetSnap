@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".budgetingAddExpense">
 
+
     <ImageView
         android:id="@+id/GreenBG"
         android:layout_width="412dp"
@@ -17,6 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/budgetsnapbg_1" />
+
 
     <ImageView
         android:id="@+id/Logo"
@@ -29,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logonobg" />
 
+
     <TextView
         android:id="@+id/BudgetingTitle1"
         android:layout_width="361dp"
@@ -39,11 +42,13 @@
         android:textSize="23sp"
         android:textStyle="bold"
 
+
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
         app:layout_constraintVertical_bias="0.125" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayoutBudgeting"
@@ -60,172 +65,17 @@
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
         app:layout_constraintVertical_bias="0.771">
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="378dp"
+            android:layout_height="245dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Food"
-            android:textColor="@color/lime"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.016"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Transportation"
-            android:textColor="@color/lime"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.023"
-            app:layout_constraintStart_toEndOf="@+id/imageTransportation"
-            app:layout_constraintTop_toTopOf="@+id/imageTransportation" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Remaining: Php 120.00"
-            android:textSize="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.024"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Remaining: Php 100.00"
-            android:textSize="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.031"
-            app:layout_constraintStart_toEndOf="@+id/imageTransportation"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Expenses: Php 0.00"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView14"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.021"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView12"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="95dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="284dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/food" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Expenses: Php 0.00"
-            android:textSize="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.027"
-            app:layout_constraintStart_toEndOf="@+id/imageTransportation"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-        <ImageView
-            android:id="@+id/imageTransportation"
-            android:layout_width="95dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.034"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
-            app:srcCompat="@drawable/transportation" />
-
-        <ImageView
-            android:id="@+id/imageTransportation2"
-            android:layout_width="95dp"
-            android:layout_height="57dp"
-            android:layout_marginTop="31dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.034"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageTransportation"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/c_home" />
-
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Home"
-            android:textColor="@color/lime"
-            app:layout_constraintBottom_toTopOf="@+id/imageTransportation2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.025"
-            app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
-            app:layout_constraintTop_toBottomOf="@+id/textView17"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Remaining: Php 200.00"
-            android:textSize="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.024"
-            app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Expenses: Php 0.00"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.021"
-            app:layout_constraintStart_toEndOf="@+id/imageTransportation2"
-            app:layout_constraintTop_toBottomOf="@+id/textView20"
-            app:layout_constraintVertical_bias="0.111" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <ImageView
         android:id="@+id/menu_rectangle"
@@ -242,6 +92,7 @@
         app:layout_constraintVertical_bias="0.988"
         app:srcCompat="@drawable/menu_rectangle" />
 
+
     <ImageView
         android:id="@+id/menu_plus2"
         android:layout_width="47dp"
@@ -252,6 +103,7 @@
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
+
 
     <ImageView
         android:id="@+id/menu_square"
@@ -264,6 +116,7 @@
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
         app:srcCompat="@drawable/menu_square" />
 
+
     <ImageView
         android:id="@+id/menu_home2"
         android:layout_width="47dp"
@@ -273,6 +126,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/chome" />
+
 
     <ImageView
         android:id="@+id/menu_plus"
@@ -285,6 +139,7 @@
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
 
+
     <ImageView
         android:id="@+id/menu_transaction"
         android:onClick="gotransactions"
@@ -296,6 +151,7 @@
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/transactions" />
 
+
     <ImageView
         android:id="@+id/menu_circle"
         android:layout_width="5dp"
@@ -305,6 +161,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_circle" />
+
 
     <ImageView
         android:id="@+id/menu_account2"
@@ -317,6 +174,7 @@
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/categories" />
 
+
     <ImageView
         android:id="@+id/menu_home"
         android:onClick="gohome"
@@ -328,6 +186,7 @@
         app:layout_constraintStart_toStartOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/home" />
 
+
     <ImageView
         android:id="@+id/menu_account"
         android:onClick="goaccount"
@@ -338,6 +197,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/account" />
+
 
     <Button
         android:id="@+id/button"
@@ -356,6 +216,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayoutBudgeting" />
 
+
     <Button
         android:id="@+id/button2"
         android:layout_width="168dp"
@@ -370,6 +231,7 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayoutBudgeting"
         app:layout_constraintVertical_bias="0.512" />
 
+
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="376dp"
@@ -379,6 +241,7 @@
         app:layout_constraintHorizontal_bias="0.342"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
+
 
     <TextView
         android:id="@+id/textView3"
@@ -392,6 +255,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -402,6 +266,7 @@
         android:text="Total Budget"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
 
     <TextView
         android:id="@+id/textView8"
@@ -418,6 +283,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
@@ -429,6 +295,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
+
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
@@ -439,6 +306,7 @@
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutBudgeting"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
@@ -446,8 +314,10 @@
         android:layout_marginTop="12dp"
         android:background="#fef7ff"
 
+
         android:clickable="true"
         android:focusable="true"
+
 
         android:onClick="back"
         android:textColor="@color/black"
@@ -459,6 +329,7 @@
         app:layout_constraintTop_toBottomOf="@+id/GreenBG"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/backbutton" />
+
 
     <ImageView
         android:id="@+id/imageView7"
@@ -472,5 +343,6 @@
         app:layout_constraintTop_toBottomOf="@+id/calendarView"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/remaining_budget" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
