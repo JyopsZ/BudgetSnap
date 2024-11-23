@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,7 +132,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             // Adding "Today" text once
             if (!isDateAdded) {
                 TextView dateTextView = new TextView(this);
-                dateTextView.setText("Today");
+                dateTextView.setText("Today"); // This can be dynamic if you group by date
                 dateTextView.setTextSize(16);
                 dateTextView.setTypeface(null, Typeface.BOLD);
                 dateTextView.setTextColor(getResources().getColor(android.R.color.black));
@@ -154,7 +155,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             transactionNameView.setText(transaction.getName());
             transactionNameView.setTextSize(18);
             transactionNameView.setTypeface(null, Typeface.BOLD);
-            transactionNameView.setTextColor(getResources().getColor(R.color.verydarkcyan)); // Assuming you have this color defined
+            transactionNameView.setTextColor(getResources().getColor(R.color.verydarkcyan));
             textLayout.addView(transactionNameView);
 
             // Create and add the category (smaller and gray color)
@@ -176,15 +177,18 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             TextView transactionAmountView = new TextView(this);
             transactionAmountView.setText(transaction.getAmount());
             transactionAmountView.setTextSize(18);
-            transactionAmountView.setTextColor(transaction.isPositive() ? getResources().getColor(android.R.color.holo_green_light) : getResources().getColor(android.R.color.holo_red_light));
+            transactionAmountView.setTextColor(transaction.isPositive()
+                    ? getResources().getColor(android.R.color.holo_green_light)
+                    : getResources().getColor(android.R.color.holo_red_light));
             amountLayout.addView(transactionAmountView);
 
             // Create and add the "view image" link below the amount
-            TextView viewImage = new TextView(this);
-            viewImage.setText("> view image");
-            viewImage.setTextSize(12);
-            viewImage.setTextColor(getResources().getColor(android.R.color.darker_gray)); // Assuming "view image" is gray
-            amountLayout.addView(viewImage);
+            TextView viewImageTextView = new TextView(this);
+            viewImageTextView.setText("> view image");
+            viewImageTextView.setTextSize(12);
+            viewImageTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            viewImageTextView.setOnClickListener(v -> showImageDialog()); // Add click listener
+            amountLayout.addView(viewImageTextView);
 
             // Add the amountLayout (for amount and "view image") to the main horizontal container
             transactionLayout.addView(amountLayout);
@@ -198,6 +202,22 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             spacer.setLayoutParams(params);
             transactionContainer.addView(spacer);
         }
+    }
+
+    private void showImageDialog() {
+        // Create a dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_image, null);
+        builder.setView(dialogView);
+
+        // Find the ImageView in the dialog layout and set the image from the drawable folder
+        ImageView imageView = dialogView.findViewById(R.id.dialogImageView);
+        imageView.setImageResource(R.drawable.c_food); // Replace with your drawable image name
+
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
