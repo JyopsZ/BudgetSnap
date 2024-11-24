@@ -10,6 +10,8 @@ constraintlayout = "2.1.4"
 gridlayout = "1.0.0"
 firebaseDatabase = "21.0.0"
 firebaseStorage = "21.0.1"
+firebaseFirestore = "25.1.1"
+googleGmsGoogleServices = "4.4.2"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -22,7 +24,9 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 

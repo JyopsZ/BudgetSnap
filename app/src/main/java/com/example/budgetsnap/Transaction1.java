@@ -65,7 +65,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dropdown_menu.setOnItemSelectedListener(this); // Set listener for item selection
 
         // Load hardcoded data
-        loadTransactionData();
+        //loadTransactionData();
 
         // Show the transactions
         showTransactionsInConstraintLayout();
@@ -114,12 +114,12 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     }
 
     // Hardcoded data for transactions
-    private void loadTransactionData() {
+ /*   private void loadTransactionData() {
         transactionList = new ArrayList<>();
         transactionList.add(new Transaction("Dunkin' Donut Coffee", "Food", "- Php 120.00", false));
         transactionList.add(new Transaction("Academic Commission", "Commission", "+ Php 350.00", true));
         transactionList.add(new Transaction("Kuya Mel's Chicken", "Food", "- Php 120.00", false));
-    }
+    }*/
 
     private void showTransactionsInConstraintLayout() {
         LinearLayout transactionContainer = findViewById(R.id.transactionContainer);

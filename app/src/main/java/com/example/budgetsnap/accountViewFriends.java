@@ -51,7 +51,7 @@ public class accountViewFriends extends AppCompatActivity implements AdapterView
         });
 
         // Load hardcoded data
-        loadTransactionData();
+        //loadTransactionData();
 
         // Show the transactions
         showTransactionsInConstraintLayout();
@@ -100,11 +100,11 @@ public class accountViewFriends extends AppCompatActivity implements AdapterView
     }
 
     // Hardcoded data for transactions
-    private void loadTransactionData() {
+  /*  private void loadTransactionData() {
         transactionList = new ArrayList<>();
         transactionList.add(new Transaction("Dunkin' Donut Coffee", "Food", "- Php 150.00", false));
         transactionList.add(new Transaction("Kuya Mel's Chicken", "Food", "- Php 120.00", false));
-    }
+    }*/
 
     private void showTransactionsInConstraintLayout() {
         LinearLayout transactionContainer = findViewById(R.id.transactionContainer);

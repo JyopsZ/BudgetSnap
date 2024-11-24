@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.budgetsnap" />
+                  <option name="mobileSdkAppId" value="1:753420306760:android:aed2d3782acd899582cb7d" />
+                  <option name="projectId" value="budgetsnap-35d23" />
+                  <option name="projectNumber" value="753420306760" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
