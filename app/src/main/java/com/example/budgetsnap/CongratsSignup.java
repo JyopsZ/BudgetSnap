@@ -26,18 +26,20 @@ public class CongratsSignup extends AppCompatActivity {
 
     public void continueSignup (View v) {
 
+        /* Legacy code from MCO2. Break in case of emergency.
         Intent i = getIntent(); // Retrieve data after sign up
         String name = i.getStringExtra("name");
         String birthday = i.getStringExtra("birthday");
         String email = i.getStringExtra("email");
         String password = i.getStringExtra("password");
 
-        Intent i2 = new Intent(CongratsSignup.this, LoginActivity.class); // Passing data to LoginActivity for verification
         i2.putExtra("name", name);
         i2.putExtra("birthday", birthday);
         i2.putExtra("email", email);
         i2.putExtra("password", password);
+        */
 
+        Intent i2 = new Intent(CongratsSignup.this, LoginActivity.class); // Passing data to LoginActivity for verification
         startActivity(i2);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.budgetsnap;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
@@ -40,8 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         initializeViews();
-        loadUsers(); // Load hard-coded users
-        addUser(); // Add user from sign up to userList array
+        refreshUser(); // Update arrayList with new entries to the db
     }
 
     private void initializeViews() {
@@ -62,28 +62,36 @@ public class LoginActivity extends AppCompatActivity {
         // Reference for Html: https://alfredmyers.com/2018/02/06/warning-cs0618-html-fromhtmlstring-is-obsolete-deprecated/#google_vignette
     }
 
-    private void loadUsers() { // Load hard-coded users into arrayList for testing and demo purposes
+    private void refreshUser() { // Repurposed method from MCO2. Used to add new users to arrayList from SignupActivity intent. (addUser)
+                                // Updated to add new users to arrayList by refreshing database.
 
-        userClassList.add(new UserClass("Liam Anderson", "01/12/1997", "liam_anderson@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Ren Amamiya", "06/24/2004", "ren_amamiya@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Brad Pitt", "12/03/1995", "brad_pitt@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Kevin Villador", "03/04/2005", "admin", "1234"));
-    }
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
 
-    private void addUser() { // Add user from sign up to userList arrayList, only if the textboxes were filled earlier
-                                // meaning that this function essentially does nothing if sign up page was not first traversed
+        userClassList.clear();
 
-        Intent i = getIntent();
+        Cursor cursor = dbManager.fetchUsers(); // Get all users currently in db
 
-        if (i.hasExtra("name") && i.hasExtra("birthday") && i.hasExtra("email") && i.hasExtra("password")) {
-
-            String name = i.getStringExtra("name");
-            String birthday = i.getStringExtra("birthday");
-            String email = i.getStringExtra("email");
-            String password = i.getStringExtra("password");
-
-            userClassList.add(new UserClass(name, birthday, email, password));
+        if (cursor.moveToFirst()) {
+            do {
+                userClassList.add(new UserClass(
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE)))
+                );
+            } while (cursor.moveToNext());
         }
+
+        // FOR DEBUGGING
+        //Toast.makeText(this, "First User UNum: " + userClassList.get(0).getUNum(), Toast.LENGTH_LONG).show();
+
+        cursor.close();
+        dbManager.close();
     }
 
     public void togglePassword(View v) { // Method for toggling password visibility onClick of eye symbol

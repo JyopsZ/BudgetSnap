@@ -7,21 +7,22 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 8;
 
     // User
-    private static final String TABLE_USER = "USER";
-    private static final String PK_UNUM = "UNum";
-    private static final String UNAME = "UName";
-    private static final String UPASS = "UPass";
-    private static final String UEMAIL = "UEmail";
-    private static final String UINCOME = "UIncome";
-    private static final String UIMAGE = "UImage";
-    private static final String UEXPENSE = "UExpense";
+    public static final String TABLE_USER = "USER";
+    public static final String PK_UNUM = "UNum";
+    public static final String UNAME = "UName";
+    public static final String UPASS = "UPass";
+    public static final String UBDAY = "UBday";
+    public static final String UEMAIL = "UEmail";
+    public static final String UIMAGE = "UImage";
+    public static final String UINCOME = "UIncome";
+    public static final String UEXPENSE = "UExpense";
 
-    private static final String TABLE_FRIENDS = "FRIENDS";
-    private static final String FK_FNUM = "FNum";
-    private static final String FK_FUNUM = "UNum";
+    public static final String TABLE_FRIENDS = "FRIENDS";
+    public static final String FK_FNUM = "FNum";
+    public static final String FK_FUNUM = "UNum";
 
     // Savings
     private static final String TABLE_SAVINGS = "SAVINGS";
@@ -80,17 +81,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + PK_UNUM + " TEXT PRIMARY KEY,"
                 + UNAME + " TEXT,"
                 + UPASS + " TEXT,"
+                + UBDAY + " TEXT,"
                 + UEMAIL + " TEXT,"
-                + UIMAGE + "TEXT"
+                + UIMAGE + " TEXT,"
                 + UINCOME + " DOUBLE,"
                 + UEXPENSE + " DOUBLE"
                 + ")";
         db.execSQL(CREATE_USER_TABLE);
 
-        db.execSQL("INSERT INTO USER (Unum, UName, UPass, UEmail, UIncome, UExpense) VALUES " +
-                "('U0001', 'Admin', 'Admin', 'Admin@dlsu.edu.ph', 0, 0), " +
-                "('U0002', 'Fredrick', 'Pogi', 'Fredrick@dlsu.edu.ph', 10, 10)");
-
+        db.execSQL("INSERT INTO USER(Unum, UName, UPass, UBday, UEmail, UImage, UIncome, UExpense) VALUES " +
+                "('U0001', 'admin', '1234', '01/01/2000', 'admin', '', 0, 0), " +
+                "('U0002', 'Fredrick', 'Pogi', '02/02/2000', 'Fredrick@dlsu.edu.ph', '', 10, 10), " +
+                "('U0003', 'Brad Pitt', 'asdf', '03/03/2000', 'brad_pitt@dlsu.edu.ph', '', 10, 10)");
 
         //FRIENDS
         String CREATE_FRIENDS_TABLE = "CREATE TABLE " + TABLE_FRIENDS + "("
@@ -185,7 +187,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('C0007', 'Transportation'), " +
                 "('C0008', 'Savings'), " +
                 "('C0009', 'Others')");
-
     }
 
     @Override
