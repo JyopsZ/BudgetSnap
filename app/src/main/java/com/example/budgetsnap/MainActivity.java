@@ -1,6 +1,7 @@
 package com.example.budgetsnap;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -23,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
 
         });
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // automatically go to onboarding1 after 3 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

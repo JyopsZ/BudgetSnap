@@ -21,12 +21,14 @@
         app:srcCompat="@drawable/budget_rectangle"
         android:background="@drawable/rounded_border"/>
 
+    <!-- CheckBox and EditText for Home -->
+
     <Button
         android:id="@+id/Savebtn"
         android:layout_width="245dp"
         android:layout_height="49dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="76dp"
         android:backgroundTint="@color/verydarkcyan"
         android:fontFamily="@font/poppins_semibold"
         android:onClick="addExpense"
@@ -50,24 +52,15 @@
     <EditText
         android:id="@+id/editTextHomeAmount"
         android:layout_width="330dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:hint="0.0"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHomeAmount" />
-
-    <TextView
-        android:id="@+id/textViewHomeAmount"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Budget Amount *"
-        android:textSize="13sp"
+        android:hint="Enter Home Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxHome" />
 
+    <!-- CheckBox and EditText for Food -->
     <CheckBox
         android:id="@+id/checkBoxFood"
         android:layout_width="335dp"
@@ -80,27 +73,18 @@
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/editTextHomeAmount" />
 
-    <TextView
-        android:id="@+id/textViewFoodAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Budget Amount *"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxFood" />
-
     <EditText
         android:id="@+id/editTextFoodAmount"
         android:layout_width="333dp"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:hint="0.0"
+        android:hint="Enter Food Amount"
         android:inputType="numberDecimal"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodAmount" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxFood" />
 
+    <!-- CheckBox and EditText for Bills -->
     <CheckBox
         android:id="@+id/checkBoxBills"
         android:layout_width="335dp"
@@ -113,6 +97,18 @@
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/editTextFoodAmount" />
 
+    <EditText
+        android:id="@+id/editTextBillsAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="Enter Bills Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxBills" />
+
+    <!-- CheckBox and EditText for Health -->
     <CheckBox
         android:id="@+id/checkBoxHealth"
         android:layout_width="335dp"
@@ -123,8 +119,20 @@
         android:text="Health"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxBills" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextBillsAmount" />
 
+    <EditText
+        android:id="@+id/editTextHealthAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="Enter Health Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxHealth" />
+
+    <!-- CheckBox and EditText for Education -->
     <CheckBox
         android:id="@+id/checkBoxEducation"
         android:layout_width="335dp"
@@ -135,8 +143,20 @@
         android:text="Education"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxHealth" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextHealthAmount" />
 
+    <EditText
+        android:id="@+id/editTextEducationAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="Enter Education Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxEducation" />
+
+    <!-- CheckBox and EditText for Leisure -->
     <CheckBox
         android:id="@+id/checkBoxLeisure"
         android:layout_width="335dp"
@@ -147,32 +167,20 @@
         android:text="Leisure"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxEducation" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEducationAmount" />
 
-    <CheckBox
-        android:id="@+id/checkBoxOthers"
-        android:layout_width="335dp"
-        android:layout_height="30dp"
+    <EditText
+        android:id="@+id/editTextLeisureAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Others"
-        android:textSize="13sp"
+        android:hint="Enter Leisure Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxSavings" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxLeisure" />
 
-    <CheckBox
-        android:id="@+id/checkBoxSavings"
-        android:layout_width="335dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Savings"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxTranspo" />
-
+    <!-- CheckBox and EditText for Transportation -->
     <CheckBox
         android:id="@+id/checkBoxTranspo"
         android:layout_width="335dp"
@@ -183,7 +191,66 @@
         android:text="Transportation"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxLeisure" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextLeisureAmount" />
+
+    <EditText
+        android:id="@+id/editTextTranspoAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="Enter Transportation Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxTranspo" />
+
+    <!-- CheckBox and EditText for Savings -->
+    <CheckBox
+        android:id="@+id/checkBoxSavings"
+        android:layout_width="335dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Savings"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTranspoAmount" />
+
+    <EditText
+        android:id="@+id/editTextSavingsAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="Enter Savings Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxSavings" />
+
+    <!-- CheckBox and EditText for Others -->
+    <CheckBox
+        android:id="@+id/checkBoxOthers"
+        android:layout_width="335dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Others"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSavingsAmount" />
+
+    <EditText
+        android:id="@+id/editTextOthersAmount"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="Enter Other Amount"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/Rectangle"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxOthers" />
 
     <ImageView
         android:id="@+id/GreenBG"
