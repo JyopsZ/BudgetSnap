@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String UPASS = "UPass";
     private static final String UEMAIL = "UEmail";
     private static final String UINCOME = "UIncome";
+    private static final String UIMAGE = "UImage";
     private static final String UEXPENSE = "UExpense";
 
     private static final String TABLE_FRIENDS = "FRIENDS";
@@ -80,6 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + UNAME + " TEXT,"
                 + UPASS + " TEXT,"
                 + UEMAIL + " TEXT,"
+                + UIMAGE + "TEXT"
                 + UINCOME + " DOUBLE,"
                 + UEXPENSE + " DOUBLE"
                 + ")";
