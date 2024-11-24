@@ -10,17 +10,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     // User
-    private static final String TABLE_USER = "USER";
-    private static final String PK_UNUM = "UNum";
-    private static final String UNAME = "UName";
-    private static final String UPASS = "UPass";
-    private static final String UEMAIL = "UEmail";
-    private static final String UINCOME = "UIncome";
-    private static final String UEXPENSE = "UExpense";
+    public static final String TABLE_USER = "USER";
+    public static final String PK_UNUM = "UNum";
+    public static final String UNAME = "UName";
+    public static final String UPASS = "UPass";
+    public static final String UBDAY = "UBday";
+    public static final String UEMAIL = "UEmail";
+    public static final String UINCOME = "UIncome";
+    public static final String UEXPENSE = "UExpense";
 
-    private static final String TABLE_FRIENDS = "FRIENDS";
-    private static final String FK_FNUM = "FNum";
-    private static final String FK_FUNUM = "UNum";
+    public static final String TABLE_FRIENDS = "FRIENDS";
+    public static final String FK_FNUM = "FNum";
+    public static final String FK_FUNUM = "UNum";
 
     // Savings
     private static final String TABLE_SAVINGS = "SAVINGS";
@@ -80,6 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + PK_UNUM + " TEXT PRIMARY KEY,"
                 + UNAME + " TEXT,"
                 + UPASS + " TEXT,"
+                + UBDAY + " TEXT,"
                 + UEMAIL + " TEXT,"
                 + UINCOME + " DOUBLE,"
                 + UEXPENSE + " DOUBLE"

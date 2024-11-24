@@ -64,10 +64,24 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loadUsers() { // Load hard-coded users into arrayList for testing and demo purposes
 
-        userClassList.add(new UserClass("Liam Anderson", "01/12/1997", "liam_anderson@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Ren Amamiya", "06/24/2004", "ren_amamiya@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Brad Pitt", "12/03/1995", "brad_pitt@dlsu.edu.ph", "asdf"));
-        userClassList.add(new UserClass("Kevin Villador", "03/04/2005", "admin", "1234"));
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+
+        UserClass[] defaultUsers = {
+
+                new UserClass("U0001", "Liam Anderson", "01/12/1997", "liam_anderson@dlsu.edu.ph", "asdf", 15000, 10000),
+                new UserClass("U0002", "Ren Amamiya", "06/24/2004", "ren_amamiya@dlsu.edu.ph", "asdf", 13500, 900),
+                new UserClass("U0003", "Brad Pitt", "12/03/1995", "brad_pitt@dlsu.edu.ph", "asdf", 43000, 23400),
+                new UserClass("U0004", "Kevin Villador", "03/04/2005", "admin", "1234", 0, 0)
+        };
+
+        for (UserClass user : defaultUsers) {
+
+            dbManager.insertUser(user);
+            userClassList.add(user);
+        }
+
+        dbManager.close();
     }
 
     private void addUser() { // Add user from sign up to userList arrayList, only if the textboxes were filled earlier
@@ -77,12 +91,29 @@ public class LoginActivity extends AppCompatActivity {
 
         if (i.hasExtra("name") && i.hasExtra("birthday") && i.hasExtra("email") && i.hasExtra("password")) {
 
-            String name = i.getStringExtra("name");
-            String birthday = i.getStringExtra("birthday");
-            String email = i.getStringExtra("email");
-            String password = i.getStringExtra("password");
+            DBManager dbManager = new DBManager(this);
+            dbManager.open();
 
-            userClassList.add(new UserClass(name, birthday, email, password));
+            String maxUNum = dbManager.getUserMax(); // Current Max UNum, for assigning new ones
+
+            int currentNum = Integer.parseInt(maxUNum.substring(1));
+            String nextUNum = String.format("U%04d", currentNum + 1);
+
+            UserClass newUser = new UserClass(
+
+                    nextUNum,
+                    i.getStringExtra("name"),
+                    i.getStringExtra("birthday"),
+                    i.getStringExtra("email"),
+                    i.getStringExtra("password"),
+                    0.0,
+                    0.0
+            );
+
+            dbManager.insertUser(newUser);
+            userClassList.add(newUser);
+
+            dbManager.close();
         }
     }
 
