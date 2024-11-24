@@ -139,7 +139,7 @@ public class transactions_moneyout extends AppCompatActivity {
             // Parse amount and ensure it is negative
             double amount = Double.parseDouble(amountText);
             if (amount > 0) {
-                amount = -amount; // Convert to negative for Money Out
+                amount = amount;
             }
 
             // Map category name to CNUM

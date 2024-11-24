@@ -53,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageLogo"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/home_searchbar"
-        tools:layout_editor_absoluteX="22dp" />
+        tools:layout_editor_absoluteX="31dp" />
 
     <ImageView
         android:id="@+id/Search_Button"
@@ -69,7 +69,7 @@
         android:id="@+id/Search_Text"
         android:layout_width="238dp"
         android:layout_height="24dp"
-        android:layout_marginStart="68dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="88dp"
         android:fontFamily="@font/poppins"
         android:hint="Search transactions..."
@@ -109,14 +109,15 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="367dp"
-        android:layout_height="518dp"
+        android:layout_width="365dp"
+        android:layout_height="554dp"
         android:layout_margin="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_border"
         android:elevation="4dp"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dropdown_menu">
 

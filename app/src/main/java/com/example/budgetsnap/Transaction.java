@@ -1,18 +1,28 @@
 package com.example.budgetsnap;
 
 public class Transaction {
-
     private String name;
     private String category;
     private String amount;
     private String date;
     private boolean isPositive;
+    private byte[] image; // Binary data for the image
 
-    public Transaction(String name, String date, String amount, boolean isPositive, String category) {
+    public Transaction(String name, String date, String amount, boolean isPositive, String category, byte[] image) {
         this.name = name;
         this.date = date;
         this.amount = amount;
         this.isPositive = isPositive;
+        this.category = category;
+        this.image = image;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getName() {
@@ -33,23 +43,5 @@ public class Transaction {
 
     public boolean isPositive() {
         return isPositive;
-    }
-
-    // Setters (if you need them)
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-
-    public void setPositive(boolean positive) {
-        isPositive = positive;
     }
 }
