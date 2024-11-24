@@ -237,8 +237,13 @@ public class transactions_moneyout extends AppCompatActivity {
         selectedImageUriMoneyOut = null;
     }
 
-    public void ButtonMoneyIn2(View v){
+    public void BtnMoneyInBtn2(View v){
         Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
+        startActivity(i);
+    }
+
+    public void BtnMoneyOutBtn2(View v){
+        Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
         startActivity(i);
     }
 
