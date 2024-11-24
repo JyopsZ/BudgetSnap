@@ -257,7 +257,6 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void gohome(View v) {
-
         Intent i = new Intent(Transaction1.this, Home.class);
         startActivity(i);
     }

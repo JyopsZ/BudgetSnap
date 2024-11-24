@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -184,6 +182,11 @@ public class transactions_moneyout extends AppCompatActivity {
         editTextTime.setText("");
         spinnerCategory.setSelection(0);
         selectedImageUriMoneyOut = null;
+    }
+
+    public void ButtonMoneyIn2(View v){
+        Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
+        startActivity(i);
     }
 
     public void gohome(View v) {
