@@ -37,8 +37,8 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final SavingsClass savings = savingsList.get(position);
         holder.textName.setText(savings.getName());
-        holder.textCurrentAmount.setText(String.format("Php %.2f", savings.getCurrentAmount()));
         holder.textGoalAmount.setText(String.format("/ %.2f", savings.getGoalAmount()));
+        holder.textCurrentAmount.setText(String.format("Php %.2f", savings.getCurrentAmount()));
         holder.textIsActivated.setText(savings.getIsActivated() ? "(Activated)" : "");
 
         holder.savingsView.setOnClickListener(v -> {
