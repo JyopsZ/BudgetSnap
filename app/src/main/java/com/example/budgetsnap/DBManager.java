@@ -35,6 +35,7 @@ public class DBManager {
         values.put(DatabaseHelper.UPASS, user.getPassword());
         values.put(DatabaseHelper.UBDAY, user.getBirthday());
         values.put(DatabaseHelper.UEMAIL, user.getEmail());
+        values.put(DatabaseHelper.UIMAGE, user.getImage());
         values.put(DatabaseHelper.UINCOME, user.getIncome());
         values.put(DatabaseHelper.UEXPENSE, user.getExpense());
 
@@ -42,7 +43,7 @@ public class DBManager {
     }
 
     public Cursor fetchUsers() {
-        String[] columns = new String[] { DatabaseHelper.PK_UNUM, DatabaseHelper.UNAME, DatabaseHelper.UPASS, DatabaseHelper.UBDAY, DatabaseHelper.UEMAIL, DatabaseHelper.UINCOME, DatabaseHelper.UEXPENSE };
+        String[] columns = new String[] { DatabaseHelper.PK_UNUM, DatabaseHelper.UNAME, DatabaseHelper.UPASS, DatabaseHelper.UBDAY, DatabaseHelper.UEMAIL, DatabaseHelper.UIMAGE, DatabaseHelper.UINCOME, DatabaseHelper.UEXPENSE };
         Cursor cursor = database.query(DatabaseHelper.TABLE_USER, columns, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();

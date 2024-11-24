@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                         cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)),
                         cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME)),
                         cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE)))
                 );

@@ -134,6 +134,7 @@ public class SignupActivity extends AppCompatActivity {
                 password,
                 birthday,
                 email,
+                "",
                 0.0, // Income and expense are both 0 by default.
                 0.0
         );
