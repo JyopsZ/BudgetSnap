@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -108,13 +109,39 @@ public class SignupActivity extends AppCompatActivity {
 
     public void sign (View v) {
 
+        String name = editName.getText().toString();
+        String birthday = editBirthday.getText().toString();
+        String email = editEmail.getText().toString();
+        String password = editPassword.getText().toString();
+        String rePassword = editRePassword.getText().toString();
+
+        if (!password.equals(rePassword)) {
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+
+        // Get next UNUM
+        String maxUNum = dbManager.getUserMax(); // Current Max UNum from database
+        int currentNum = Integer.parseInt(maxUNum.substring(1));
+        String nextUNum = String.format("U%04d", currentNum + 1);
+
+        UserClass newUser = new UserClass( // Create a new user based on inputs.
+                nextUNum,
+                name,
+                password,
+                birthday,
+                email,
+                0.0, // Income and expense are both 0 by default.
+                0.0
+        );
+
+        dbManager.insertUser(newUser); // Insert new user into database
+        dbManager.close();
+
         Intent i = new Intent(SignupActivity.this, CongratsSignup.class);
-
-        i.putExtra("name", editName.getText().toString());
-        i.putExtra("birthday", editBirthday.getText().toString());
-        i.putExtra("email", editEmail.getText().toString());
-        i.putExtra("password", editPassword.getText().toString());
-
         startActivity(i);
     }
 

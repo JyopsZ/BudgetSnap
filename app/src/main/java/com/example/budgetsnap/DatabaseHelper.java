@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 7;
 
     // User
     public static final String TABLE_USER = "USER";
@@ -87,10 +87,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_USER_TABLE);
 
-        db.execSQL("INSERT INTO USER (Unum, UName, UPass, UEmail, UIncome, UExpense) VALUES " +
-                "('U0001', 'Admin', 'Admin', 'Admin@dlsu.edu.ph', 0, 0), " +
-                "('U0002', 'Fredrick', 'Pogi', 'Fredrick@dlsu.edu.ph', 10, 10)");
-
+        db.execSQL("INSERT INTO USER(Unum, UName, UPass, UBday, UEmail, UIncome, UExpense) VALUES " +
+                "('U0001', 'admin', '1234', '01/01/2000', 'admin', 0, 0), " +
+                "('U0002', 'Fredrick', 'Pogi', '02/02/2000', 'Fredrick@dlsu.edu.ph', 10, 10), " +
+                "('U0003', 'Brad Pitt', 'asdf', '03/03/2000', 'brad_pitt@dlsu.edu.ph', 10, 10)");
 
         //FRIENDS
         String CREATE_FRIENDS_TABLE = "CREATE TABLE " + TABLE_FRIENDS + "("
@@ -185,7 +185,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('C0007', 'Transportation'), " +
                 "('C0008', 'Savings'), " +
                 "('C0009', 'Others')");
-
     }
 
     @Override

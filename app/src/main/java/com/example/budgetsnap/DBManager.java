@@ -17,6 +17,7 @@ public class DBManager {
     }
 
     public DBManager open() throws SQLException {
+
         dbHelper = new DatabaseHelper(context);
         database = dbHelper.getWritableDatabase();
         return this;
@@ -40,9 +41,19 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_USER, null, values);
     }
 
+    public Cursor fetchUsers() {
+        String[] columns = new String[] { DatabaseHelper.PK_UNUM, DatabaseHelper.UNAME, DatabaseHelper.UPASS, DatabaseHelper.UBDAY, DatabaseHelper.UEMAIL, DatabaseHelper.UINCOME, DatabaseHelper.UEXPENSE };
+        Cursor cursor = database.query(DatabaseHelper.TABLE_USER, columns, null, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    // For Assigning new UNUMs. Get latest in table, then add 1
     public String getUserMax() {
 
-        String maxUNum = "";
+        String maxUNum = "U0000";
 
         Cursor cursor = database.rawQuery("SELECT MAX(" + DatabaseHelper.PK_UNUM + ") FROM " + DatabaseHelper.TABLE_USER, null);
 
@@ -52,4 +63,6 @@ public class DBManager {
         cursor.close();
         return maxUNum;
     }
+
+
 }

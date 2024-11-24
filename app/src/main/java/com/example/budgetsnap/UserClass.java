@@ -4,20 +4,20 @@ public class UserClass {
 
     private String Unum;
     private String name;
+    private String password;
     private String birthday;
     private String email;
-    private String password;
     private double income;
     private double expense;
 
 
-    public UserClass(String Unum, String name, String birthday, String email, String password, double income, double expense) {
+    public UserClass(String Unum, String name, String password, String birthday, String email, double income, double expense) {
 
         this.Unum = Unum;
         this.name = name;
+        this.password = password;
         this.birthday = birthday;
         this.email = email;
-        this.password = password;
         this.income = income;
         this.expense = expense;
     }
