@@ -49,13 +49,15 @@ public class SavingsViewing extends AppCompatActivity {
         String goalAmount = i.getStringExtra("goalAmount");
         String frequency = i.getStringExtra("frequency");
         String date = i.getStringExtra("dateFinish");
+        String currentAmount = i.getStringExtra("currentAmount");
+        boolean isActivated = i.getBooleanExtra("isActivated", true);
 
         savingsChallView.setText(Html.fromHtml("<b>Savings Challenge: "+ name + "</b>"));
         nameValue.setText(name);
-        //goalAmountValue.setText(goalAmount);
+        goalAmountValue.setText(String.format("PHP %.2f", goalAmount));
         frequencyValue.setText(frequency);
         dateValue.setText(date);
-        //totalAmountView.setText(Html.fromHtml("<b>/</b>" + goalAmount));
+        totalAmountView.setText(String.format("/ %.2f", currentAmount));
     }
 
     public void back(View view) {
