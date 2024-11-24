@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -26,12 +27,14 @@ import java.util.LinkedHashMap;
 
 public class transaction_moneyin extends AppCompatActivity {
 
+    private static final String TAG = "transaction_moneyin"; // Tag for logging
     private Uri selectedImageUriMoneyIn; // Store the selected image URI
     private EditText editTextName, editTextAmount, editTextDate, editTextTime;
     private Spinner spinnerCategory;
     private Button buttonAttachImage, buttonAddIncome;
     private SQLiteDatabase db;
     private LinkedHashMap<String, String> categoryMap; // Stores CNUM -> CNAME mapping
+    private String currentUserUNum; // Store the current user's UNum
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,16 @@ public class transaction_moneyin extends AppCompatActivity {
         // Initialize SQLite database
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
+
+        // Fetch the current user's UNum (from shared preferences)
+        currentUserUNum = fetchCurrentUserUNum();
+
+        if (currentUserUNum == null) {
+            Toast.makeText(this, "Error: Unable to fetch user session. Please log in again.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class)); // Redirect to login
+            finish();
+            return;
+        }
 
         // Initialize UI components
         editTextName = findViewById(R.id.editTextName);
@@ -66,46 +79,16 @@ public class transaction_moneyin extends AppCompatActivity {
         buttonAddIncome.setOnClickListener(v -> addIncomeToDatabase());
     }
 
-    // Method triggered when "plus" button is pressed
-    public void BtnClickedPlus(View view) {
-        // Call the method to show the dialog
-        showTransactionDialog();
-    }
+    private String fetchCurrentUserUNum() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String userUNum = sharedPreferences.getString("userUNum", null);
 
-    // Show the "Money In" or "Money Out" prompt
-    private void showTransactionDialog() {
-        // Inflate the custom dialog layout
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
-
-        // Create the dialog without the default "Cancel" button
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialogView)
-                .setCancelable(true);  // cancel button
-
-        // Show the dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        // Handle clicking on "Money In" and "Money Out"
-        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
-            // Start Money In Activity
-            Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
-            startActivity(i);
-            dialog.dismiss(); // Close the dialog after starting the activity
-        });
-
-        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
-            // Start Money Out Activity
-            Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
-            startActivity(i);
-            dialog.dismiss(); // Close the dialog after starting the activity
-        });
-
-        // Handle clicking on the custom "Cancel" button inside your layout
-        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> {
-            dialog.dismiss(); // Close dialog on "Cancel"
-        });
+        if (userUNum == null) {
+            Log.e(TAG, "User UNum not found in SharedPreferences. Check login process.");
+        } else {
+            Log.d(TAG, "Fetched UNum from SharedPreferences: " + userUNum);
+        }
+        return userUNum;
     }
 
     private void fetchCategoriesFromDB() {
@@ -155,6 +138,7 @@ public class transaction_moneyin extends AppCompatActivity {
             values.put("CNum", categoryCNUM); // Save CNUM instead of category name
             values.put("TImage", selectedImageUriMoneyIn != null ? selectedImageUriMoneyIn.toString() : null);
             values.put("TStatus", 1); // 1 for Money In
+            values.put("UNum", currentUserUNum); // Save current user's UNum
 
             // Insert into the database
             long result = db.insert("TRANSACTIONS", null, values);
@@ -228,39 +212,54 @@ public class transaction_moneyin extends AppCompatActivity {
         selectedImageUriMoneyIn = null;
     }
 
-    public void BtnMoneyOutBtn1(View v){
-        Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
-        startActivity(i);
+    public void BtnClickedPlus(View view) {
+        showTransactionDialog();
     }
 
-    public void ButtonMoneyIn1(View v){
-        Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
-        startActivity(i);
+    private void showTransactionDialog() {
+        // Inflate the custom dialog layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
+
+        // Create the dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Handle dialog buttons
+        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
+            startActivity(new Intent(this, transaction_moneyin.class));
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
+            startActivity(new Intent(this, transactions_moneyout.class));
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> dialog.dismiss());
     }
 
     public void gohome(View v) {
-        Intent i = new Intent(transaction_moneyin.this, Home.class);
-        startActivity(i);
+        startActivity(new Intent(this, Home.class));
     }
 
     public void gotransactions(View v) {
-        Intent i = new Intent(this, Transaction1.class);
-        startActivity(i);
+        startActivity(new Intent(this, Transaction1.class));
     }
 
     public void gonotif(View v) {
-        Intent i = new Intent(transaction_moneyin.this, Notifications.class);
-        startActivity(i);
+        startActivity(new Intent(this, Notifications.class));
     }
 
     public void gocategories(View v) {
-        Intent i = new Intent(transaction_moneyin.this, categories_main.class);
-        startActivity(i);
+        startActivity(new Intent(this, categories_main.class));
     }
 
     public void goaccount(View v) {
-        Intent i = new Intent(transaction_moneyin.this, account.class);
-        startActivity(i);
+        startActivity(new Intent(this, account.class));
     }
-
 }
