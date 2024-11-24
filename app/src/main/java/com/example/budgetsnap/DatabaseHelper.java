@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 9;
 
     // User
     public static final String TABLE_USER = "USER";
@@ -35,23 +35,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SSTATUS = "SStatus";
     private static final String FK_SUNUM = "UNum";
 
-    // Budget
-    private static final String TABLE_BUDGET = "BUDGET";
-    private static final String PK_BNUM = "BNum";
-    private static final String BNAME = "BName";
-    private static final String BDATE = "BDate";
-    private static final String BBUDGET = "BBudget";
-    private static final String BEXPENSE = "BExpense";
-    private static final String FK_BUNUM = "UNum";
-
-    // Budget Categories
-    private static final String TABLE_BUDGET_CATEGORIES = "BUDGET_CATEGORIES";
-    private static final String PK_BCNUM = "BCNum";
-    private static final String BCNAME = "BCName";
-    private static final String BCDATE = "BCDate";
-    private static final String BCEXPENSE = "BExpense";
-    private static final String FK_BCNUM = "CNum";
-    private static final String FK_BBNUM = "BNum";
 
     // Transactions
     private static final String TABLE_TRANSACTIONS = "TRANSACTIONS";
@@ -69,6 +52,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CATEGORIES = "CATEGORIES";
     private static final String PK_CNUM = "CNum";
     private static final String CNAME = "CName";
+
+    // Budget Tables
+    private static final String TABLE_BUDGET = "BUDGET";
+    private static final String PK_BNUM = "BNum";
+    private static final String FK_BUNUM = "UNum";
+
+    private static final String TABLE_BUDGET_CATEGORY = "BUDGET_CATEGORY";
+    private static final String PK_BCNUM = "BCNum";
+    private static final String BCBUDGET = "BCBudget";
+    private static final String FK_BCBNUM = "BNum";
+    private static final String FK_BCCNUM = "CNum";
+
+    private static final String TABLE_BUDGET_ADD = "BUDGET_ADD";
+    private static final String PK_BANUM = "BANum";
+    private static final String BANAME = "BAName";
+    private static final String BADATE = "BADate";
+    private static final String BAEXPENSE = "BAExpense";
+    private static final String FK_BABNUM = "BNum";
+    private static final String FK_BACNUM = "CNum";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -122,35 +124,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //                "('S0001', ), " +
 
 
-        //BUDGET
-        String CREATE_BUDGET_TABLE = "CREATE TABLE " + TABLE_BUDGET + "("
-                + PK_BNUM + " TEXT PRIMARY KEY,"
-                + BNAME + " TEXT,"
-                + BDATE + " TEXT,"
-                + BBUDGET + " DOUBLE,"
-                + BEXPENSE + " DOUBLE,"
-                + FK_BUNUM + " TEXT,"
-                + "FOREIGN KEY(" + FK_BUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
-                + ")";
-        db.execSQL(CREATE_BUDGET_TABLE);
-        //   db.execSQL("" +
-        //                "('BT0001', ), " +
-
-
-        //BUDGET CATEGORIES
-        String CREATE_BUDGET_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_BUDGET_CATEGORIES + "("
-                + PK_BCNUM + " TEXT PRIMARY KEY,"
-                + BCNAME + " TEXT,"
-                + BCDATE + " TEXT,"
-                + BCEXPENSE + " DOUBLE,"
-                + FK_BCNUM + " TEXT,"
-                + FK_BBNUM + " TEXT,"
-                + "FOREIGN KEY(" + FK_BCNUM + ") REFERENCES " + TABLE_CATEGORIES + "(" + PK_CNUM + "),"
-                + "FOREIGN KEY(" + FK_BBNUM + ") REFERENCES " + TABLE_BUDGET + "(" + PK_BNUM + ")"
-                + ")";
-        db.execSQL(CREATE_BUDGET_CATEGORIES_TABLE);
-        //   db.execSQL("" +
-        //                "('BC0001', ), " +
 
         //TRANSACTIONS
         String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + TABLE_TRANSACTIONS + "("
@@ -187,19 +160,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "('C0007', 'Transportation'), " +
                 "('C0008', 'Savings'), " +
                 "('C0009', 'Others')");
+
+        // BUDGET
+        String CREATE_BUDGET_TABLE = "CREATE TABLE " + TABLE_BUDGET + "("
+                + PK_BNUM + " TEXT PRIMARY KEY,"
+                + FK_BUNUM + " TEXT,"
+                + "FOREIGN KEY(" + FK_BUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
+                + ")";
+        db.execSQL(CREATE_BUDGET_TABLE);
+        //   db.execSQL("" +
+        //                "('B0001', ), " +
+
+        // BUDGET_CATEGORY
+        String CREATE_BUDGET_CATEGORY_TABLE = "CREATE TABLE " + TABLE_BUDGET_CATEGORY + "("
+                + PK_BCNUM + " TEXT PRIMARY KEY,"
+                + BCBUDGET + " DOUBLE,"
+                + FK_BCBNUM + " TEXT,"
+                + FK_BCCNUM + " TEXT,"
+                + "FOREIGN KEY(" + FK_BCBNUM + ") REFERENCES " + TABLE_BUDGET + "(" + PK_BNUM + "),"
+                + "FOREIGN KEY(" + FK_BCCNUM + ") REFERENCES " + TABLE_CATEGORIES + "(" + PK_CNUM + ")"
+                + ")";
+        db.execSQL(CREATE_BUDGET_CATEGORY_TABLE);
+        //   db.execSQL("" +
+        //                "('BC0001', ), " +
+
+        // BUDGET_ADD
+        String CREATE_BUDGET_ADD_TABLE = "CREATE TABLE " + TABLE_BUDGET_ADD + "("
+                + PK_BANUM + " TEXT PRIMARY KEY,"
+                + BANAME + " TEXT,"
+                + BADATE + " TEXT,"
+                + BAEXPENSE + " DOUBLE,"
+                + FK_BABNUM + " TEXT,"
+                + FK_BACNUM + " TEXT,"
+                + "FOREIGN KEY(" + FK_BABNUM + ") REFERENCES " + TABLE_BUDGET + "(" + PK_BNUM + "),"
+                + "FOREIGN KEY(" + FK_BACNUM + ") REFERENCES " + TABLE_CATEGORIES + "(" + PK_CNUM + ")"
+                + ")";
+        db.execSQL(CREATE_BUDGET_ADD_TABLE);
+        //   db.execSQL("" +
+        //                "('BA0001', ), " +
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIENDS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET_ADD);
         onCreate(db);
     }
 }
