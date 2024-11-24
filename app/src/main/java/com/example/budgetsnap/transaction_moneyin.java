@@ -1,5 +1,6 @@
 package com.example.budgetsnap;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,6 +64,48 @@ public class transaction_moneyin extends AppCompatActivity {
 
         // Handle Add Income button
         buttonAddIncome.setOnClickListener(v -> addIncomeToDatabase());
+    }
+
+    // Method triggered when "plus" button is pressed
+    public void BtnClickedPlus(View view) {
+        // Call the method to show the dialog
+        showTransactionDialog();
+    }
+
+    // Show the "Money In" or "Money Out" prompt
+    private void showTransactionDialog() {
+        // Inflate the custom dialog layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
+
+        // Create the dialog without the default "Cancel" button
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);  // cancel button
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Handle clicking on "Money In" and "Money Out"
+        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
+            // Start Money In Activity
+            Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
+            startActivity(i);
+            dialog.dismiss(); // Close the dialog after starting the activity
+        });
+
+        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
+            // Start Money Out Activity
+            Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
+            startActivity(i);
+            dialog.dismiss(); // Close the dialog after starting the activity
+        });
+
+        // Handle clicking on the custom "Cancel" button inside your layout
+        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> {
+            dialog.dismiss(); // Close dialog on "Cancel"
+        });
     }
 
     private void fetchCategoriesFromDB() {

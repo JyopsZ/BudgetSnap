@@ -1,5 +1,6 @@
 package com.example.budgetsnap;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,6 +64,49 @@ public class transactions_moneyout extends AppCompatActivity {
 
         // Handle Add Expense button
         buttonAddExpense.setOnClickListener(v -> addExpenseToDatabase());
+
+    }
+
+    // Method triggered when "plus" button is pressed
+    public void BtnClickedPlus2(View view) {
+        // Call the method to show the dialog
+        showTransactionDialog();
+    }
+
+    // Show the "Money In" or "Money Out" prompt
+    private void showTransactionDialog() {
+        // Inflate the custom dialog layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
+
+        // Create the dialog without the default "Cancel" button
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);  // cancel button
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Handle clicking on "Money In" and "Money Out"
+        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
+            // Start Money In Activity
+            Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
+            startActivity(i);
+            dialog.dismiss(); // Close the dialog after starting the activity
+        });
+
+        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
+            // Start Money Out Activity
+            Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
+            startActivity(i);
+            dialog.dismiss(); // Close the dialog after starting the activity
+        });
+
+        // Handle clicking on the custom "Cancel" button inside your layout
+        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> {
+            dialog.dismiss(); // Close dialog on "Cancel"
+        });
     }
 
     private void fetchCategoriesFromDB() {
@@ -80,15 +125,21 @@ public class transactions_moneyout extends AppCompatActivity {
     private void addExpenseToDatabase() {
         try {
             String name = editTextName.getText().toString().trim();
-            String amount = editTextAmount.getText().toString().trim();
+            String amountText = editTextAmount.getText().toString().trim();
             String date = editTextDate.getText().toString().trim();
             String time = editTextTime.getText().toString().trim();
             String categoryName = spinnerCategory.getSelectedItem().toString();
 
             // Validate inputs
-            if (name.isEmpty() || amount.isEmpty() || date.isEmpty() || time.isEmpty() || categoryName.isEmpty()) {
+            if (name.isEmpty() || amountText.isEmpty() || date.isEmpty() || time.isEmpty() || categoryName.isEmpty()) {
                 Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
                 return;
+            }
+
+            // Parse amount and ensure it is negative
+            double amount = Double.parseDouble(amountText);
+            if (amount > 0) {
+                amount = -amount; // Convert to negative for Money Out
             }
 
             // Map category name to CNUM
@@ -105,7 +156,7 @@ public class transactions_moneyout extends AppCompatActivity {
             ContentValues values = new ContentValues();
             values.put("TNum", newTransactionID); // Use the generated transaction ID
             values.put("TName", name);
-            values.put("TAmount", Double.parseDouble(amount));
+            values.put("TAmount", amount); // Save the negative amount
             values.put("TDate", date);
             values.put("TTime", time);
             values.put("CNum", categoryCNUM); // Save CNUM instead of category name
@@ -121,6 +172,8 @@ public class transactions_moneyout extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
             }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid amount entered. Please enter a valid number.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Log.e("SQLiteError", "Error adding expense: " + e.getMessage());
             Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
