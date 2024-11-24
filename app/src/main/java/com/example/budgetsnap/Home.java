@@ -1,6 +1,7 @@
 package com.example.budgetsnap;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +56,8 @@ public class Home extends AppCompatActivity {
 
 
         firestore = FirebaseFirestore.getInstance();
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Set up Spinner
         Spinner spinner = findViewById(R.id.spinner_frequency);

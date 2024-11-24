@@ -24,10 +24,8 @@ import java.util.List;
 
 public class accountEditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    ImageView imageBG, imageLogo, imageBadge, imageBell, searchBar, Search_Button;
     TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
-    Spinner dropdown_menu;
-    FrameLayout frameLayout;
+
 
     private static final String[] paths = {"Sort By Amount", "Low-High", "High-Low"};
     private List<Transaction> transactionList; // List to store transaction data
@@ -37,8 +35,6 @@ public class accountEditProfile extends AppCompatActivity implements AdapterView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_edit_profile);
 
-        // Initialize views properly
-        frameLayout = findViewById(R.id.frameLayout);
         textRestaurant = findViewById(R.id.textRestaurant);
         textCategory = findViewById(R.id.textCategory);
         textPrice = findViewById(R.id.textPrice);
