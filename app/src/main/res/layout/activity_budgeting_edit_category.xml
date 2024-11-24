@@ -21,8 +21,6 @@
         app:srcCompat="@drawable/budget_rectangle"
         android:background="@drawable/rounded_border"/>
 
-    <!-- CheckBox and EditText for Home -->
-
     <Button
         android:id="@+id/Savebtn"
         android:layout_width="245dp"
@@ -60,7 +58,6 @@
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxHome" />
 
-    <!-- CheckBox and EditText for Food -->
     <CheckBox
         android:id="@+id/checkBoxFood"
         android:layout_width="335dp"
@@ -84,7 +81,6 @@
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxFood" />
 
-    <!-- CheckBox and EditText for Bills -->
     <CheckBox
         android:id="@+id/checkBoxBills"
         android:layout_width="335dp"
@@ -108,7 +104,6 @@
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxBills" />
 
-    <!-- CheckBox and EditText for Health -->
     <CheckBox
         android:id="@+id/checkBoxHealth"
         android:layout_width="335dp"
@@ -132,7 +127,6 @@
         app:layout_constraintStart_toStartOf="@+id/Rectangle"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxHealth" />
 
-    <!-- CheckBox and EditText for Education -->
     <CheckBox
         android:id="@+id/checkBoxEducation"
         android:layout_width="335dp"
