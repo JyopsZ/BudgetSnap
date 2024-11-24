@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     // User
     private static final String TABLE_USER = "USER";
@@ -67,7 +67,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_CATEGORIES = "CATEGORIES";
     private static final String PK_CNUM = "CNum";
     private static final String CNAME = "CName";
-    private static final String FK_CUNUM = "UNum";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -86,6 +85,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_USER_TABLE);
 
+        db.execSQL("INSERT INTO USER (Unum, UName, UPass, UEmail, UIncome, UExpense) VALUES " +
+                "('U0001', 'Admin', 'Admin', 'Admin@dlsu.edu.ph', 0, 0), " +
+                "('U0002', 'Fredrick', 'Pogi', 'Fredrick@dlsu.edu.ph', 10, 10)");
+
+
         //FRIENDS
         String CREATE_FRIENDS_TABLE = "CREATE TABLE " + TABLE_FRIENDS + "("
                 + FK_FNUM + " TEXT PRIMARY KEY,"
@@ -93,6 +97,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_FUNUM + ") REFERENCES " + TABLE_USER + "(" + FK_FUNUM + ")"
                 + ")";
         db.execSQL(CREATE_FRIENDS_TABLE);
+        //   db.execSQL("" +
+        //                "('F0001', ), " +
 
 
         //SAVINGS
@@ -108,6 +114,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_SUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
                 + ")";
         db.execSQL(CREATE_SAVINGS_TABLE);
+        //   db.execSQL("" +
+        //                "('S0001', ), " +
+
 
         //BUDGET
         String CREATE_BUDGET_TABLE = "CREATE TABLE " + TABLE_BUDGET + "("
@@ -120,6 +129,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_BUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
                 + ")";
         db.execSQL(CREATE_BUDGET_TABLE);
+        //   db.execSQL("" +
+        //                "('BT0001', ), " +
+
 
         //BUDGET CATEGORIES
         String CREATE_BUDGET_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_BUDGET_CATEGORIES + "("
@@ -133,6 +145,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_BBNUM + ") REFERENCES " + TABLE_BUDGET + "(" + PK_BNUM + ")"
                 + ")";
         db.execSQL(CREATE_BUDGET_CATEGORIES_TABLE);
+        //   db.execSQL("" +
+        //                "('BC0001', ), " +
 
         //TRANSACTIONS
         String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + TABLE_TRANSACTIONS + "("
@@ -149,15 +163,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_TUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
                 + ")";
         db.execSQL(CREATE_TRANSACTIONS_TABLE);
+    //   db.execSQL("" +
+        //                "('T0001', ), " +
 
-        //CATEGORIES
+        // CATEGORIES
         String CREATE_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_CATEGORIES + "("
                 + PK_CNUM + " TEXT PRIMARY KEY,"
-                + CNAME + " TEXT,"
-                + FK_CUNUM + " TEXT,"
-                + "FOREIGN KEY(" + FK_CUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
+                + CNAME + " TEXT"
                 + ")";
         db.execSQL(CREATE_CATEGORIES_TABLE);
+
+        db.execSQL("INSERT INTO CATEGORIES(CNUM, CNAME) VALUES " +
+                "('C0001', 'Home'), " +
+                "('C0002', 'Food'), " +
+                "('C0003', 'Bills'), " +
+                "('C0004', 'Health'), " +
+                "('C0005', 'Leisure'), " +
+                "('C0006', 'Education'), " +
+                "('C0007', 'Transportation'), " +
+                "('C0008', 'Savings'), " +
+                "('C0009', 'Others')");
+
     }
 
     @Override
