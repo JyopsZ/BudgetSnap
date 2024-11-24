@@ -10,10 +10,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class account extends AppCompatActivity {
-
-    TextView textRestaurant, textCategory, textPrice;
+    private RecyclerView recyclerView;
+    private RecentTransactionsAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<Transaction> transactionList;
     FrameLayout frameLayout;
 
     @Override
@@ -22,17 +29,28 @@ public class account extends AppCompatActivity {
         setContentView(R.layout.activity_account);
 
         frameLayout = findViewById(R.id.frameLayout);
-        textRestaurant = findViewById(R.id.textRestaurant);
-        textCategory = findViewById(R.id.textCategory);
-        textPrice = findViewById(R.id.textPrice);
-
-        // Ensure padding respects system bars (e.g., status bar, navigation bar)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        recyclerView = findViewById(R.id.recycler_view);
+
+        transactionList = new ArrayList<>();
+        transactionList.add(new Transaction("The Barn", "Today", "Php 210", false, "Food", null));
+        transactionList.add(new Transaction("Electricity", "Yesterday", "Php 290", false, "Bills", null));
+        transactionList.add(new Transaction("Angkong", "October 15, 2023", "Php 150", false, "Food", null));
+
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new RecentTransactionsAdapter(transactionList);
+        recyclerView.setAdapter(adapter);
     }
+
+
 
     // Navigation methods
     public void goHome(View v) {
@@ -57,18 +75,13 @@ public class account extends AppCompatActivity {
 
     }
 
-    /*public void goFriends(View v) {
-        Intent intent = new Intent(this, AccountViewFriends.class);
-        startActivity(intent);
-    }*/
-
     public void goSavings(View v) {
         Intent intent = new Intent(this, SavingsActivity.class);
         startActivity(intent);
     }
 
-   /* public void goEdit(View v) {
+   public void goEdit(View v) {
         Intent intent = new Intent(this, accountEditProfile.class);
         startActivity(intent);
-    }*/
+    }
 }

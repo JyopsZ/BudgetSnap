@@ -15,7 +15,7 @@
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/verydarkcyan"
         android:fontFamily="@font/poppins_semibold"
-        android:onClick="goedit"
+        android:onClick="goEdit"
         android:text="Edit Profile"
         android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/profilePicture"
@@ -198,19 +198,6 @@
                 app:layout_constraintStart_toEndOf="@+id/friendName3"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
-            <TextView
-                android:id="@+id/viewButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:fontFamily="@font/poppins"
-                android:onClick="gofriends"
-                android:text=">"
-                android:textSize="34sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
@@ -240,8 +227,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecentTransactions">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/RecentTransactions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
-            android:id="@+id/textRestaurant"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
@@ -252,7 +247,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textCategory"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|start"
@@ -262,7 +257,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/textPrice"
+            android:id="@+id/amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
@@ -299,7 +294,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="15dp"
-        android:onClick="gosavings"
+        android:onClick="goSavings"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
@@ -309,7 +304,7 @@
 
     <ImageView
         android:id="@+id/menu_home"
-        android:onClick="gohome"
+        android:onClick="goHome"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginStart="13dp"
@@ -334,14 +329,14 @@
         android:layout_height="46dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="14dp"
-        android:onClick="goaccount"
+        android:onClick="goAccount"
         app:layout_constraintBottom_toBottomOf="@+id/menu_rectangle"
         app:layout_constraintEnd_toEndOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/account" />
 
     <ImageView
         android:id="@+id/menu_account2"
-        android:onClick="gocategories"
+        android:onClick="goCategories"
         android:layout_width="47dp"
         android:layout_height="46dp"
         android:layout_marginEnd="79dp"
@@ -352,7 +347,7 @@
 
     <ImageView
         android:id="@+id/menu_transaction"
-        android:onClick="gotransactions"
+        android:onClick="goTransactions"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="79dp"
@@ -367,7 +362,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
-        android:onClick="gosavings"
+        android:onClick="goSavings"
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
