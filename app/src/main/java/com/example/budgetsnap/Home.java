@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,6 +54,10 @@ public class Home extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // CURRENT USER'S NUMBER
+        String PK_Unum = getIntent().getStringExtra("PK_UNUM");
+            Log.d("HomeActivity", "PK_UNUM: " + PK_Unum);
 
 
         firestore = FirebaseFirestore.getInstance();
