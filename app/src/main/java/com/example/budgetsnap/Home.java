@@ -49,8 +49,6 @@ public class Home extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
-        unum = getIntent().getStringExtra("unum");
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.Savings), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -127,7 +125,7 @@ public class Home extends AppCompatActivity {
         barChart.getXAxis().setGranularityEnabled(true);
 
         // TODO: Testing only, don't forget to remove
-        Toast.makeText(this, "Current User ID: " + unum, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Current User ID: " + PK_Unum, Toast.LENGTH_SHORT).show();
     }
 
     public void gonotif(View v) {

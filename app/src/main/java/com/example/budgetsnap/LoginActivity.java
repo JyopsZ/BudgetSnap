@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
             if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
                UNum = userClass.getUNum();
                 isValid = true;
-                unum = userClass.getUNum();
                 break;
             }
         }
