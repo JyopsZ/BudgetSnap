@@ -37,6 +37,19 @@ public class SavingsViewing extends AppCompatActivity {
         initializeViews();
     }
 
+    protected void onResume() {
+
+        super.onResume();
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+
+        double currentAmount = dbManager.getCurrentAmount(snum);
+        phpView.setText(String.format("PHP %.2f ", currentAmount));
+
+        dbManager.close();
+    }
+
     public void initializeViews() {
 
         nameValue = findViewById(R.id.nameValue);
@@ -136,6 +149,7 @@ public class SavingsViewing extends AppCompatActivity {
     public void inputMoney(View v) {
 
         Intent i = new Intent(this, SavingsInputAmount.class);
+        i.putExtra("snum", snum);
         startActivity(i);
     }
 

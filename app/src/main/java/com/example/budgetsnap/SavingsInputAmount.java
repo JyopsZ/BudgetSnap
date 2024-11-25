@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class SavingsInputAmount extends AppCompatActivity {
+
+    EditText editInputText;
+
+    String snum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +27,24 @@ public class SavingsInputAmount extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        editInputText = findViewById(R.id.editInput);
+        snum = getIntent().getStringExtra("snum"); // snum for dbManager later on
     }
 
     public void save (View v) {
+
+        if (editInputText.getText().toString().isEmpty()) {
+            editInputText.setError("Please enter an amount");
+            return;
+        }
+
+        double amount = Double.parseDouble(editInputText.getText().toString()); // user inputted amount
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        dbManager.incrementCurSavings(snum, amount);
+        dbManager.close();
 
         finish();
     }
