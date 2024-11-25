@@ -55,20 +55,22 @@ public class budgeting1 extends AppCompatActivity {
         // Initialize TextViews for totals
         totalBudgetTextView = findViewById(R.id.textView3); // Total Budget
         totalExpensesTextView = findViewById(R.id.textView8); // Total Expenses
-        budgetLimitTextView = findViewById(R.id.textView10); // Budget Limit
 
         // Initialize database helper
         databaseHelper = new DatabaseHelper(this);
 
-        // Fetch data from the database and populate the RecyclerView
-        loadBudgetsFromDatabase();
-
-        // Display totals from transactions
-        calculateAndDisplayTotalsFromTransactions();
-
         // CURRENT USER'S NUMBER
         PK_Unum = getIntent().getStringExtra("PK_UNUM");
         Toast.makeText(this, "Current User: " + PK_Unum, Toast.LENGTH_SHORT).show();
+
+        // Fetch data from the database and populate the RecyclerView
+        loadBudgetsFromDatabase();
+
+        calculateAndDisplayExpenses();
+
+        calculateAndDisplayBudget();
+
+        calculateRemainingBalance();
 
         checkAndGenerateBNum();
     }
@@ -202,67 +204,118 @@ public class budgeting1 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // Calculate and display totals for budget and expenses from transactions
-    private void calculateAndDisplayTotalsFromTransactions() {
-        double totalBudget = 0;
-        double totalExpenses = 0;
+    private void calculateAndDisplayExpenses() {
+        double totalExpenses = 0.0;
 
-        // Get readable database
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        // Query to calculate total budget from "money in" transactions
-        String queryMoneyIn = "SELECT SUM(TAmount) AS TotalMoneyIn FROM TRANSACTIONS WHERE TStatus = 1";
-        Cursor cursorMoneyIn = db.rawQuery(queryMoneyIn, null);
-        if (cursorMoneyIn.moveToFirst()) {
-            totalBudget = cursorMoneyIn.getDouble(cursorMoneyIn.getColumnIndexOrThrow("TotalMoneyIn"));
+        String currentBNum = getBNumForCurrentUser();
+        if (currentBNum == null || currentBNum.isEmpty()) {
+            Toast.makeText(this, "No budget found for current user", Toast.LENGTH_SHORT).show();
+            return;
         }
-        cursorMoneyIn.close();
 
-        // Query to calculate total expenses from "money out" transactions
-        String queryMoneyOut = "SELECT SUM(TAmount) AS TotalMoneyOut FROM TRANSACTIONS WHERE TStatus = 0";
-        Cursor cursorMoneyOut = db.rawQuery(queryMoneyOut, null);
-        if (cursorMoneyOut.moveToFirst()) {
-            totalExpenses = cursorMoneyOut.getDouble(cursorMoneyOut.getColumnIndexOrThrow("TotalMoneyOut"));
+        Log.d("Budgeting1", "Current BNum: " + currentBNum);
+
+        // Query to sum up the BAExpense column from the BUDGET_ADD table
+        String query = "SELECT IFNULL(SUM(BAExpense), 0) AS TotalExpenses FROM BUDGET_ADD WHERE BNum = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{currentBNum})) {
+            if (cursor.moveToFirst()) {
+                totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("TotalExpenses"));
+                Log.d("Budgeting1", "Total Expenses: " + totalExpenses);
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error calculating total expenses: " + e.getMessage());
+            Toast.makeText(this, "Error calculating expenses", Toast.LENGTH_SHORT).show();
         }
-        cursorMoneyOut.close();
 
-        db.close(); // Close the database
-
-        // Calculate remaining budget
-        double remainingBudget = totalBudget - totalExpenses;
-
-        // Update TextViews with calculated totals
-        totalBudgetTextView.setText("Php " + String.format("%.2f", totalBudget));
-        totalExpensesTextView.setText("Php " + String.format("%.2f", totalExpenses));
-        budgetLimitTextView.setText("Budget Limit: Php " + String.format("%.2f", remainingBudget));
+        // Update the TextView with the calculated total expenses
+        TextView totalExpensesTextView = findViewById(R.id.textView8);
+        totalExpensesTextView.setText(String.format("Php %.2f", totalExpenses));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Refresh data and totals in case of data changes
-        loadBudgetsFromDatabase();
-        calculateAndDisplayTotalsFromTransactions();
-    }
+    private void calculateAndDisplayBudget() {
+        double totalBudget = 0.0;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Refresh data when returning from budgetingAddExpense
-            loadBudgetsFromDatabase();
-            calculateAndDisplayTotalsFromTransactions();
+        // Query to sum up the BCBudget column from the BUDGET_CATEGORY table
+        String query = "SELECT IFNULL(SUM(BCBudget), 0) AS TotalBudget FROM BUDGET_CATEGORY WHERE BNum = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{getBNumForCurrentUser()})) {
+            if (cursor.moveToFirst()) {
+                totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("TotalBudget"));
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error calculating total budget: " + e.getMessage());
+            Toast.makeText(this, "Error calculating budget", Toast.LENGTH_SHORT).show();
         }
+
+        // Update the TextView with the calculated total budget
+        TextView totalBudgetTextView = findViewById(R.id.textView3);
+        totalBudgetTextView.setText(String.format("Php %.2f", totalBudget));
     }
 
+    private void calculateRemainingBalance() {
+        double totalBudget = 0.0;
+        double totalExpenses = 0.0;
+        double remainingBalance;
+
+        // Query to sum up the BCBudget column from the BUDGET_CATEGORY table
+        String budgetQuery = "SELECT IFNULL(SUM(BCBudget), 0) AS TotalBudget FROM BUDGET_CATEGORY WHERE BNum = ?";
+        try (Cursor cursor = db.rawQuery(budgetQuery, new String[]{getBNumForCurrentUser()})) {
+            if (cursor.moveToFirst()) {
+                totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("TotalBudget"));
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error calculating total budget: " + e.getMessage());
+            Toast.makeText(this, "Error calculating budget", Toast.LENGTH_SHORT).show();
+        }
+
+        // Query to sum up the BAExpense column from the BUDGET_ADD table
+        String expensesQuery = "SELECT IFNULL(SUM(BAExpense), 0) AS TotalExpenses FROM BUDGET_ADD WHERE BNum = ?";
+        try (Cursor cursor = db.rawQuery(expensesQuery, new String[]{getBNumForCurrentUser()})) {
+            if (cursor.moveToFirst()) {
+                totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("TotalExpenses"));
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error calculating total expenses: " + e.getMessage());
+            Toast.makeText(this, "Error calculating expenses", Toast.LENGTH_SHORT).show();
+        }
+
+        // Calculate remaining balance
+        remainingBalance = totalBudget - totalExpenses;
+
+        // Update the TextView with the remaining balance
+        TextView remainingBalanceTextView = findViewById(R.id.textView10);
+        remainingBalanceTextView.setText(String.format("Php %.2f", remainingBalance));
+    }
+
+    private String getBNumForCurrentUser() {
+        String bNum = null;
+        String query = "SELECT BNum FROM BUDGET WHERE UNum = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{PK_Unum})) {
+            if (cursor.moveToFirst()) {
+                bNum = cursor.getString(0); // Get the first result
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error fetching BNum: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return bNum;
+    }
+
+    // Navigate to Add Expenses for Budget (Data Input)
     public void addExpense(View v) {
+        // Fetch BNum for the current user
+        String PK_BNum = getBNumForCurrentUser();
+
+        // Pass BNum via Intent
         Intent i = new Intent(budgeting1.this, budgetingAddExpense.class);
-        startActivityForResult(i, 1); // Launch activity for result
+        i.putExtra("PK_BNUM", PK_BNum); // Pass BNum to the next activity
+        startActivity(i); // Launch activity for result
     }
 
     // Navigate to the Edit Category activity
     public void editCategory(View v) {
+        String PK_BNum = getBNumForCurrentUser();
+
         Intent i = new Intent(budgeting1.this, budgetingEditCategory.class);
+        i.putExtra("PK_BNUM", PK_BNum); // Pass BNum to the next activity
         startActivity(i);
     }
 
@@ -293,13 +346,5 @@ public class budgeting1 extends AppCompatActivity {
     // Go back to the previous activity
     public void back(View v) {
         finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (db != null && db.isOpen()) {
-            db.close();
-        }
     }
 }

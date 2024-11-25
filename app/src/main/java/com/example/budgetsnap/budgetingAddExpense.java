@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,18 +20,28 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 public class budgetingAddExpense extends AppCompatActivity {
 
-    private EditText editEnterName, editEnterAmount, editTextDate;
+    private EditText editEnterName, editEnterAmount;
     private Spinner spinnerCategory;
     private Button buttonBudgeting;
     private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
+    private String PK_BNUM;
+    private List<Budget> budList;
+    SQLiteOpenHelper databaseHelper;
+    private LinkedHashMap<String, String> categoryMap; // To store category CNUM -> CNAME mapping
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_budgeting_add_expense);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -40,105 +51,152 @@ public class budgetingAddExpense extends AppCompatActivity {
 
         // Initialize DatabaseHelper (SQLite)
         dbHelper = new DatabaseHelper(this);
+        db = dbHelper.getWritableDatabase();
 
         // Initialize UI components
         editEnterName = findViewById(R.id.editEnterName);
         editEnterAmount = findViewById(R.id.editTextNumberDecimal);
-        editTextDate = findViewById(R.id.editTextDate2);
         spinnerCategory = findViewById(R.id.spinnerAddbudget);
         buttonBudgeting = findViewById(R.id.buttonBudgeting);
 
+        // Fetch categories and populate Spinner
+        fetchCategoriesFromDB();
+
         // Set up Spinner for categories
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.categories_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>(categoryMap.values()));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
 
-        // Handle Add Budget button
-        buttonBudgeting.setOnClickListener(v -> addBudgetToSQLite());
+        // Handle Add Expense button
+        buttonBudgeting.setOnClickListener(v -> addExpenseToDatabase());
+
+        // CURRENT USER'S NUMBER
+        PK_BNUM = getIntent().getStringExtra("PK_BNUM");
+        Toast.makeText(this, "Current User: " + PK_BNUM, Toast.LENGTH_SHORT).show();
     }
 
-    private void addBudgetToSQLite() {
+    // getting Category name
+    private void fetchCategoriesFromDB() {
+        categoryMap = new LinkedHashMap<>();
+        try (Cursor cursor = db.rawQuery("SELECT CNUM, CNAME FROM CATEGORIES", null)) {
+            while (cursor.moveToNext()) {
+                String cnum = cursor.getString(0);
+                String cname = cursor.getString(1);
+                categoryMap.put(cnum, cname);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error fetching categories: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addExpenseToDatabase() {
         // Get user input
         String name = editEnterName.getText().toString().trim();
-        String amount = editEnterAmount.getText().toString().trim();
-        String date = editTextDate.getText().toString().trim();
-        String category = spinnerCategory.getSelectedItem().toString();
+        String amountText = editEnterAmount.getText().toString().trim();
+        String categoryName = spinnerCategory.getSelectedItem().toString();
 
-        // Validate input fields
-        if (name.isEmpty() || amount.isEmpty() || date.isEmpty() || category.isEmpty()) {
+        // Validate inputs
+        if (name.isEmpty() || amountText.isEmpty() || categoryName.isEmpty()) {
             Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Save data in SQLite Database
         try {
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            double amount = Double.parseDouble(amountText);
 
-            // Generate a new unique BNum
-            String newBNum = generateNewBNum(db);
-
-            ContentValues values = new ContentValues();
-            values.put("BNum", newBNum); // Generated unique BNum
-            values.put("BName", name); // Budget name
-            values.put("BExpense", Double.parseDouble(amount)); // Expense amount
-            values.put("BDate", date); // Date of expense
-            values.put("UNum", "default-user-id"); // Replace with actual user ID
-
-            long result = db.insert("BUDGET", null, values);
-
-            if (result != -1) {
-                Toast.makeText(this, "Budget added successfully!", Toast.LENGTH_SHORT).show();
-                clearFields();
-            } else {
-                Toast.makeText(this, "Failed to add budget.", Toast.LENGTH_SHORT).show();
+            // Validate and fetch `CNum` for the selected category
+            String categoryCNUM = getCategoryCNUM(categoryName);
+            if (categoryCNUM == null) {
+                Toast.makeText(this, "Invalid category selected", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Validate that `BNum` exists
+            if (PK_BNUM == null || PK_BNUM.isEmpty()) {
+                Toast.makeText(this, "No budget assigned to the current user.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Generate a new `BANum`
+            String newBANum = generateNewBANum();
+
+            // Insert expense into `BUDGET_ADD`
+            ContentValues expenseValues = new ContentValues();
+            expenseValues.put("BANum", newBANum); // Unique ID for this expense
+            expenseValues.put("BAName", name); // Expense name
+            expenseValues.put("BAExpense", amount); // Expense amount
+            expenseValues.put("BNum", PK_BNUM); // Foreign key from the `BUDGET` table
+            expenseValues.put("CNum", categoryCNUM); // Foreign key from the `CATEGORIES` table
+
+            long expenseResult = db.insert("BUDGET_ADD", null, expenseValues);
+
+            if (expenseResult == -1) {
+                Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(this, "Expense added successfully", Toast.LENGTH_SHORT).show();
+            clearFields();
+
+            // Navigate back to `budgeting1`
+            Intent intent = new Intent(this, budgeting1.class);
+            setResult(RESULT_OK, intent);
+            finish();
         } catch (SQLiteException e) {
             Toast.makeText(this, "Database error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid amount entered", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private String generateNewBNum(SQLiteDatabase db) {
-        String newBNum = "BT0001"; // Default for first entry
-        try {
-            String query = "SELECT BNum FROM BUDGET ORDER BY BNum DESC LIMIT 1";
-            try (Cursor cursor = db.rawQuery(query, null)) {
-                if (cursor.moveToFirst()) {
-                    String lastBNum = cursor.getString(0); // Get the last BNum
-                    int numericPart = Integer.parseInt(lastBNum.substring(2)); // Remove "BT" prefix and parse as int
-                    numericPart++; // Increment numeric part
-                    newBNum = "BT" + String.format("%04d", numericPart); // Format as BT000X
-                }
+    private String generateNewBANum() {
+        String newBANum = "BA0001"; // Default starting ID
+        String query = "SELECT BANum FROM BUDGET_ADD ORDER BY BANum DESC LIMIT 1"; // Get the last ID
+        try (Cursor cursor = db.rawQuery(query, null)) {
+            if (cursor.moveToFirst()) {
+                String lastBANum = cursor.getString(0); // Retrieve the last BANum
+                int numericPart = Integer.parseInt(lastBANum.substring(2)); // Extract numeric part
+                numericPart++; // Increment the numeric part
+                newBANum = "BA" + String.format("%04d", numericPart); // Format as BA0001, BA0002, etc.
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error generating BNum: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error generating new BANum: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        return newBNum;
+        return newBANum; // Return the newly generated BANum
     }
+
+    private String getCategoryCNUM(String categoryName) {
+        for (String cnum : categoryMap.keySet()) {
+            if (categoryMap.get(cnum).equals(categoryName)) {
+                return cnum;
+            }
+        }
+        return null;
+    }
+
     private void clearFields() {
         editEnterName.setText("");
         editEnterAmount.setText("");
-        editTextDate.setText("");
         spinnerCategory.setSelection(0);
     }
 
     public void gohome(View v) {
-        Intent i = new Intent(budgetingAddExpense.this, Home.class);
+        Intent i = new Intent(this, Home.class);
         startActivity(i);
     }
 
     public void gotransactions(View v) {
-        Intent i = new Intent(budgetingAddExpense.this, Transaction1.class);
+        Intent i = new Intent(this, Transaction1.class);
         startActivity(i);
     }
 
     public void gocategories(View v) {
-        Intent i = new Intent(budgetingAddExpense.this, categories_main.class);
+        Intent i = new Intent(this, categories_main.class);
         startActivity(i);
     }
 
     public void goaccount(View v) {
-        Intent i = new Intent(budgetingAddExpense.this, account.class);
+        Intent i = new Intent(this, account.class);
         startActivity(i);
     }
 
