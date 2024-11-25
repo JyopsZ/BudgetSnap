@@ -67,7 +67,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_BUDGET_ADD = "BUDGET_ADD";
     private static final String PK_BANUM = "BANum";
     private static final String BANAME = "BAName";
-    private static final String BADATE = "BADate";
     private static final String BAEXPENSE = "BAExpense";
     private static final String FK_BABNUM = "BNum";
     private static final String FK_BACNUM = "CNum";
@@ -189,7 +188,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_BUDGET_ADD_TABLE = "CREATE TABLE " + TABLE_BUDGET_ADD + "("
                 + PK_BANUM + " TEXT PRIMARY KEY,"
                 + BANAME + " TEXT,"
-                + BADATE + " TEXT,"
                 + BAEXPENSE + " DOUBLE,"
                 + FK_BABNUM + " TEXT,"
                 + FK_BACNUM + " TEXT,"

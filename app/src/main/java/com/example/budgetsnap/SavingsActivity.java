@@ -80,6 +80,12 @@ public class SavingsActivity extends AppCompatActivity {
         }
     }
 
+    protected void onResume() {
+
+        super.onResume();
+        loadSavings();
+    }
+
     public void back(View v) { // When the back button is pressed, return to the previous activity (Home)
 
         finish();
