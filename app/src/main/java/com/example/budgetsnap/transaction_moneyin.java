@@ -16,14 +16,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 public class transaction_moneyin extends AppCompatActivity {
 
@@ -34,7 +39,8 @@ public class transaction_moneyin extends AppCompatActivity {
     private Button buttonAttachImage, buttonAddIncome;
     private SQLiteDatabase db;
     private LinkedHashMap<String, String> categoryMap; // Stores CNUM -> CNAME mapping
-    private String currentUserUNum; // Store the current user's UNum
+    private String currentUserUNum;
+    private double balance;// Store the current user's UNum
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +151,9 @@ public class transaction_moneyin extends AppCompatActivity {
 
             if (result != -1) {
                 Toast.makeText(this, "Transaction added successfully", Toast.LENGTH_SHORT).show();
+
+
+                updateBalanceForTransaction();
                 clearFields();
             } else {
                 Toast.makeText(this, "Failed to add transaction", Toast.LENGTH_SHORT).show();
@@ -154,6 +163,74 @@ public class transaction_moneyin extends AppCompatActivity {
             Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void updateBalanceForTransaction() {
+        try {
+            String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+            Log.d("BalanceUpdate", "Current date formatted: " + currentDate);
+
+            String queryDateCheck = "SELECT TDate FROM TRANSACTIONS WHERE UNum = ? ORDER BY TNum DESC LIMIT 1";
+            String[] dateCheckArgs = {currentUserUNum};
+
+            Cursor dateCursor = db.rawQuery(queryDateCheck, dateCheckArgs);
+            if (dateCursor != null && dateCursor.moveToFirst()) {
+                String lastTransactionDate = dateCursor.getString(dateCursor.getColumnIndex("TDate"));
+                Log.d("BalanceUpdate", "Last transaction date fetched: " + lastTransactionDate);
+
+
+                if (currentDate.equals(lastTransactionDate)) {
+                    String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? AND TDate = ? ORDER BY TNum DESC LIMIT 1";
+                    String[] transactionArgs = {currentUserUNum, currentDate};
+
+                    Log.d("BalanceUpdate", "Executing query: " + queryTransaction + " with arguments: " + Arrays.toString(transactionArgs));
+                    Cursor transactionCursor = db.rawQuery(queryTransaction, transactionArgs);
+
+                    if (transactionCursor != null && transactionCursor.moveToFirst()) {
+                        double amount = transactionCursor.getDouble(transactionCursor.getColumnIndex("TAmount"));
+                        int status = transactionCursor.getInt(transactionCursor.getColumnIndex("TStatus"));
+
+                        Log.d("BalanceUpdate", "Transaction found: TAmount = " + amount + ", TStatus = " + status);
+
+                        if (status == 1) {
+                            updateUserBalance(amount);
+                        }
+                        transactionCursor.close();
+                    }
+                } else {
+                    Log.d("BalanceUpdate", "No transactions for the current date: " + currentDate);
+                }
+                dateCursor.close();
+            } else {
+                Log.d("BalanceUpdate", "No transactions found for the user.");
+            }
+        } catch (Exception e) {
+            Log.e("BalanceError", "Error updating balance: " + e.getMessage());
+        }
+    }
+
+
+    private void updateUserBalance(double amount) {
+        try {
+            String query = "SELECT UIncome FROM USER WHERE UNum = ?";
+            String[] queryArgs = {currentUserUNum};
+
+            Cursor cursor = db.rawQuery(query, queryArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                double currentBalance = cursor.getDouble(cursor.getColumnIndex("UIncome"));
+                double newBalance = currentBalance + amount;
+
+                ContentValues values = new ContentValues();
+                values.put("UIncome", newBalance);
+
+                int rowsUpdated = db.update("USER", values, "UNum = ?", new String[]{currentUserUNum});
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("BalanceUpdateError", "Error updating user balance: " + e.getMessage());
+        }
+    }
+
 
     private String generateNewTransactionID() {
         String newID = "T0001"; // Default ID for the first transaction
@@ -244,8 +321,11 @@ public class transaction_moneyin extends AppCompatActivity {
     }
 
     public void gohome(View v) {
-        startActivity(new Intent(this, Home.class));
+        Intent intent = new Intent(this, Home.class);
+        intent.putExtra("PK_UNUM", currentUserUNum);
+        startActivity(intent);
     }
+
 
     public void gotransactions(View v) {
         startActivity(new Intent(this, Transaction1.class));
