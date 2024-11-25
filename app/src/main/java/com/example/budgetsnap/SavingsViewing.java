@@ -144,6 +144,12 @@ public class SavingsViewing extends AppCompatActivity {
             AlertDialog deletionConfirmDialog = deletionConfirmBuilder.create();
             deletionConfirmDialog.show();
 
+            // Delete the savings record
+            DBManager dbManager = new DBManager(this);
+            dbManager.open();
+            dbManager.deleteSavingsGoal(snum);
+            dbManager.close();
+
             // Handle clicking Back button
             deletionConfirmView.findViewById(R.id.backButton).setOnClickListener(v2 -> {
                 deletionConfirmDialog.dismiss();

@@ -127,19 +127,6 @@ public class DBManager {
         }
     }
 
-    public double getCurrentAmount(String snum) {
-
-        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[] {snum});
-        double currentAmount = 0.0;
-
-        if (cursor.moveToFirst()) {
-            currentAmount = cursor.getDouble(0);
-        }
-        cursor.close();
-
-        return currentAmount;
-    }
-
     public SavingsClass getSavingsForEdit(String snum) {
 
         Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + "=?", new String[]{snum});
@@ -170,5 +157,10 @@ public class DBManager {
         values.put(DatabaseHelper.SDATE, dateFinish);
 
         database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] {snum});
+    }
+
+    public void deleteSavingsGoal(String snum) {
+
+        database.delete(DatabaseHelper.TABLE_SAVINGS, DatabaseHelper.PK_SNUM + "=?", new String[] {snum});
     }
 }
