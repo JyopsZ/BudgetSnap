@@ -27,6 +27,7 @@ public class DBManager {
         dbHelper.close();
     }
 
+    // ========================== USERS ==========================
     public void insertUser(UserClass user) {
 
         ContentValues values = new ContentValues();
@@ -65,5 +66,76 @@ public class DBManager {
         return maxUNum;
     }
 
+    // ========================== SAVINGS ==========================
+    public Cursor fetchSavings(String unum) {
 
+        String[] columns = new String[] { DatabaseHelper.PK_SNUM, DatabaseHelper.SNAME, DatabaseHelper.SCURRENTAMOUNT, DatabaseHelper.SGOALAMOUNT, DatabaseHelper.SFREQUENCY, DatabaseHelper.SDATE, DatabaseHelper.SSTATUS, DatabaseHelper.FK_SUNUM };
+        Cursor cursor = database.query(DatabaseHelper.TABLE_SAVINGS, columns, DatabaseHelper.FK_SUNUM + "=?", new String[] { unum }, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public String getSavingsMax() {
+
+        String maxSNum = "S0000";
+
+        Cursor cursor = database.rawQuery("SELECT MAX(" + DatabaseHelper.PK_SNUM + ") FROM " + DatabaseHelper.TABLE_SAVINGS, null);
+
+        cursor.moveToFirst();
+        maxSNum = cursor.getString(0);
+
+        cursor.close();
+        return maxSNum;
+    }
+
+    public void insertSavings (SavingsClass savings) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.PK_SNUM, savings.getSNum());
+        values.put(DatabaseHelper.SNAME, savings.getName());
+        values.put(DatabaseHelper.SCURRENTAMOUNT, savings.getCurrentAmount());
+        values.put(DatabaseHelper.SGOALAMOUNT, savings.getGoalAmount());
+        values.put(DatabaseHelper.SFREQUENCY, savings.getFrequency());
+        values.put(DatabaseHelper.SDATE, savings.getDateFinish());
+        values.put(DatabaseHelper.SSTATUS, savings.getStatus());
+        values.put(DatabaseHelper.FK_SUNUM, savings.getUNum());
+
+        database.insert(DatabaseHelper.TABLE_SAVINGS, null, values);
+    }
+
+    public void updateSavingsStatus(String snum, boolean status) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.SSTATUS, status);
+
+        database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+    }
+
+    public void incrementCurSavings(String snum, double amount) {
+
+        ContentValues values = new ContentValues();
+        // get currentAmount of current savings selected
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[]{snum});
+
+        if (cursor.moveToFirst()) {
+            double currentAmount = cursor.getDouble(0);
+            double newAmount = currentAmount += amount;
+            values.put(DatabaseHelper.SCURRENTAMOUNT, newAmount);
+            database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+        }
+    }
+
+    public double getCurrentAmount(String snum) {
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[]{snum});
+        double currentAmount = 0.0;
+
+        if (cursor.moveToFirst()) {
+            currentAmount = cursor.getDouble(0);
+        }
+        cursor.close();
+
+        return currentAmount;
+    }
 }

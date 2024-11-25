@@ -25,15 +25,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String FK_FUNUM = "UNum";
 
     // Savings
-    private static final String TABLE_SAVINGS = "SAVINGS";
-    private static final String PK_SNUM = "SNum";
-    private static final String SNAME = "SName";
-    private static final String SCURRENTAMOUNT = "SCurrentAmount";
-    private static final String SGOALAMOUNT = "SGoalAmount";
-    private static final String SFREQUENCY = "SFrequency";
-    private static final String SDATE = "SDate";
-    private static final String SSTATUS = "SStatus";
-    private static final String FK_SUNUM = "UNum";
+    public static final String TABLE_SAVINGS = "SAVINGS";
+    public static final String PK_SNUM = "SNum";
+    public static final String SNAME = "SName";
+    public static final String SCURRENTAMOUNT = "SCurrentAmount";
+    public static final String SGOALAMOUNT = "SGoalAmount";
+    public static final String SFREQUENCY = "SFrequency";
+    public static final String SDATE = "SDate";
+    public static final String SSTATUS = "SStatus";
+    public static final String FK_SUNUM = "UNum";
 
 
     // Transactions
@@ -121,8 +121,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_SAVINGS_TABLE);
            db.execSQL("INSERT INTO SAVINGS(SNum, SName, SCurrentAmount, SGoalAmount, SFrequency, SDate, SStatus, UNum) VALUES " +
-                        "('S0001', 'Concert', 5000, 'Daily', '10/17/2024', 0.0, true, 'U0002' ), " +
-                        "('S0002', 'Tuition', 100000, 'Monthly', '01/03/2025', 9878.0, false, 'U0002' )");
+                        "('S0001', 'Concert', 0.0, 5000, 'Daily', '10/17/2024', true, 'U0002' ), " +
+                        "('S0002', 'Tuition', 9878.0, 100000, 'Monthly', '01/03/2025', false, 'U0002' )");
 
 
 

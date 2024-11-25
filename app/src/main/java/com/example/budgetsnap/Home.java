@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
@@ -70,7 +71,20 @@ public class Home extends AppCompatActivity {
 
         // CURRENT USER'S NUMBER
         PK_Unum = getIntent().getStringExtra("PK_UNUM");
-            Log.d("HomeActivity", "PK_UNUM: " + PK_Unum);
+
+        if (PK_Unum == null) { // If PK_Unum is not given value by prev activity, get value from sharedPref
+
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            PK_Unum = prefs.getString("PK_UNUM", "");
+        }
+
+        else { // If PK_Unum has value, save it to SharedPrefs
+
+            SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("PK_UNUM", PK_Unum);
+            editor.apply();
+        }
 
 
 
