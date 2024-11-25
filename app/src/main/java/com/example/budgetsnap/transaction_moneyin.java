@@ -46,7 +46,7 @@ public class transaction_moneyin extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         // Fetch the current user's UNum (from shared preferences)
-        currentUserUNum = fetchCurrentUserUNum();
+        currentUserUNum = getCurrentUserUNum();
 
         if (currentUserUNum == null) {
             Toast.makeText(this, "Error: Unable to fetch user session. Please log in again.", Toast.LENGTH_SHORT).show();
@@ -79,7 +79,7 @@ public class transaction_moneyin extends AppCompatActivity {
         buttonAddIncome.setOnClickListener(v -> addIncomeToDatabase());
     }
 
-    private String fetchCurrentUserUNum() {
+    private String getCurrentUserUNum() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
         String userUNum = sharedPreferences.getString("userUNum", null);
 
