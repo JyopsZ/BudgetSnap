@@ -45,29 +45,32 @@ public class BudgetingAdapter extends RecyclerView.Adapter<BudgetingAdapter.BudV
         Budget bud = budList.get(position);
 
         // Set text fields
-        holder.budTitle.setText(bud.getTitle());
-        holder.budExpenses.setText("Php: " + bud.getExpenses());
-        holder.budRemaining.setText("Php: " + bud.getRemaining());
+        holder.budTitle.setText(bud.getCategory());
+        holder.budRemaining.setText(String.format("Remaining: Php %.2f", bud.getRemaining())); // Remaining budget
+        holder.budExpenses.setText(String.format("Expenses: Php %.2f", bud.getExpenses())); // Total expenses
 
         // Set image based on category
         switch (bud.getCategory()) {
+            case "Home":
+                holder.budImage.setImageResource(R.drawable.c_home);
+                break;
             case "Food":
                 holder.budImage.setImageResource(R.drawable.c_food);
                 break;
-            case "Transportation":
-                holder.budImage.setImageResource(R.drawable.c_transportation);
-                break;
-            case "Entertainment":
-                holder.budImage.setImageResource(R.drawable.c_leisure);
-                break;
-            case "Utilities":
+            case "Bills":
                 holder.budImage.setImageResource(R.drawable.c_bills);
                 break;
             case "Health":
                 holder.budImage.setImageResource(R.drawable.c_health);
                 break;
-            case "Home":
-                holder.budImage.setImageResource(R.drawable.c_home);
+            case "Education":
+                holder.budImage.setImageResource(R.drawable.c_education);
+                break;
+            case "Leisure":
+                holder.budImage.setImageResource(R.drawable.c_leisure);
+                break;
+            case "Transportation":
+                holder.budImage.setImageResource(R.drawable.c_transportation);
                 break;
             case "Savings":
                 holder.budImage.setImageResource(R.drawable.c_savings);

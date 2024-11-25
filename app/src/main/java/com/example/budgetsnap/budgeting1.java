@@ -150,56 +150,42 @@ public class budgeting1 extends AppCompatActivity {
     private void loadBudgetsFromDatabase() {
         budList = new ArrayList<>();
 
-        // Prepopulate categories with default values
-        String[] defaultCategories = {
-                "Food", "Transportation", "Health", "Utilities", "Education", "Entertainment", "Savings", "Others"
-        };
-        for (String category : defaultCategories) {
-            budList.add(new Budget(category, 0.0, 0.0)); // Default values
+        // Query to fetch budget and expense data for each category
+        String query = "SELECT CATEGORIES.CName, " +
+                "IFNULL(SUM(BUDGET_CATEGORY.BCBudget), 0) AS TotalBudget, " +
+                "IFNULL(SUM(BUDGET_ADD.BAExpense), 0) AS TotalExpenses " +
+                "FROM CATEGORIES " +
+                "LEFT JOIN BUDGET_CATEGORY ON CATEGORIES.CNum = BUDGET_CATEGORY.CNum AND BUDGET_CATEGORY.BNum = ? " +
+                "LEFT JOIN BUDGET_ADD ON BUDGET_ADD.CNum = CATEGORIES.CNum AND BUDGET_ADD.BNum = ? " +
+                "GROUP BY CATEGORIES.CName";
+
+        String currentBNum = getBNumForCurrentUser();
+
+        if (currentBNum == null || currentBNum.isEmpty()) {
+            Toast.makeText(this, "No budget found for current user", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        // Get readable database
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        try (Cursor cursor = db.rawQuery(query, new String[]{currentBNum, currentBNum})) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String categoryName = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
+                    double totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("TotalBudget"));
+                    double totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("TotalExpenses"));
 
-        // Updated query
-        String query = "SELECT CATEGORIES.CName, BUDGET_CATEGORY.BCBudget, " +
-                "IFNULL(SUM(BUDGET_ADD.BAExpense), 0) AS BExpense " +
-                "FROM BUDGET_CATEGORY " +
-                "INNER JOIN CATEGORIES ON BUDGET_CATEGORY.CNum = CATEGORIES.CNum " +
-                "LEFT JOIN BUDGET_ADD ON BUDGET_CATEGORY.CNum = BUDGET_ADD.CNum " +
-                "GROUP BY CATEGORIES.CName, BUDGET_CATEGORY.BCBudget";
+                    // Calculate remaining budget
+                    double remaining = totalBudget - totalExpenses;
 
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                // Fetch values for each budget entry
-                String category = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
-                double totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("BCBudget")); // Budgeted amount
-                double totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("BExpense")); // Calculated expenses
-
-                // Update or add to the list
-                boolean updated = false;
-                for (Budget budget : budList) {
-                    if (budget.getCategory().equals(category)) {
-                        budget.setRemaining(totalBudget);
-                        budget.setExpenses(totalExpenses);
-                        updated = true;
-                        break;
-                    }
-                }
-
-                if (!updated) {
-                    // Add new Budget to the list
-                    budList.add(new Budget(category, totalBudget, totalExpenses));
-                }
-            } while (cursor.moveToNext());
+                    // Add the category with budget, expenses, and calculated remaining
+                    budList.add(new Budget(categoryName, remaining, totalExpenses));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error loading budgets: " + e.getMessage());
+            Toast.makeText(this, "Error loading budgets", Toast.LENGTH_SHORT).show();
         }
 
-        cursor.close(); // Close the cursor
-        db.close();     // Close the database
-
-        // Set adapter with updated list
+        // Update the RecyclerView adapter with the updated list
         adapter = new BudgetingAdapter(budList);
         recyclerView.setAdapter(adapter);
     }
