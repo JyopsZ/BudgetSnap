@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,8 @@ public class transaction_moneyin extends AppCompatActivity {
     private LinkedHashMap<String, String> categoryMap; // Stores CNUM -> CNAME mapping
     private String currentUserUNum;
     private double balance;// Store the current user's UNum
+
+    private byte[] byteArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +146,7 @@ public class transaction_moneyin extends AppCompatActivity {
             values.put("TDate", date);
             values.put("TTime", time);
             values.put("CNum", categoryCNUM); // Save CNUM instead of category name
-            values.put("TImage", selectedImageUriMoneyIn != null ? selectedImageUriMoneyIn.toString() : null);
+            values.put("TImage", byteArray);
             values.put("TStatus", 1); // 1 for Money In
             values.put("UNum", currentUserUNum); // Save current user's UNum
 
@@ -264,11 +268,18 @@ public class transaction_moneyin extends AppCompatActivity {
     }
 
     private void openImagePicker() {
+
+        /*
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*"); // Filter for image files only
         imagePickerLauncher.launch(intent); // Launch the image picker
+         */
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraLauncher.launch(cameraIntent);
     }
 
+    /*
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -279,6 +290,26 @@ public class transaction_moneyin extends AppCompatActivity {
                     Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
                 }
             });
+     */
+
+    // Method is generated with AI. Claude 3.5 Sonnet. Prompt = "take an image, then save the captured image as a blob data type to be stored in the sqlite database"
+    private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+
+                    // Convert bitmap to byte array for BLOB storage
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byteArray = stream.toByteArray();
+
+                    // The byte array will be stored as BLOB in SQLite
+                    selectedImageUriMoneyIn = Uri.parse("blob://" + System.currentTimeMillis());
+                    Toast.makeText(this, "Image captured and ready for storage", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
 
     private void clearFields() {
         editTextName.setText("");
