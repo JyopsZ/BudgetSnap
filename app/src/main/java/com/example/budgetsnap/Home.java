@@ -56,6 +56,7 @@ public class Home extends AppCompatActivity {
             return insets;
         });
 
+
         // CURRENT USER'S NUMBER
         PK_Unum = getIntent().getStringExtra("PK_UNUM");
             Log.d("HomeActivity", "PK_UNUM: " + PK_Unum);
@@ -64,6 +65,10 @@ public class Home extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        /* Reset db
+        dbHelper.onUpgrade(db, 8, 9);
+*/
 
         // Set up Spinner
         Spinner spinner = findViewById(R.id.spinner_frequency);
@@ -82,6 +87,30 @@ public class Home extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+
+        /*get the TAMOUNT from the transactions table
+          Double  TI = 0;
+        Double      TE = 0;
+         If TUNUM == UNUM {
+            if (TSTATUS == 1){
+
+            }
+        }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         BarChart barChart = findViewById(R.id.chart);
         barChart.getAxisRight().setDrawLabels(false);
