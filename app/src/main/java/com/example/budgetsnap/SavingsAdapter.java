@@ -39,7 +39,7 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.ViewHold
         holder.textName.setText(savings.getName());
         holder.textGoalAmount.setText(String.format("/ %.2f", savings.getGoalAmount()));
         holder.textCurrentAmount.setText(String.format("Php %.2f", savings.getCurrentAmount()));
-        holder.textIsActivated.setText(savings.getIsActivated() ? "(Activated)" : "");
+        holder.textIsActivated.setText(savings.getStatus() ? "(Activated)" : "");
 
         holder.savingsView.setOnClickListener(v -> {
 
@@ -49,7 +49,7 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.ViewHold
             i.putExtra("goalAmount", savings.getGoalAmount());
             i.putExtra("frequency", savings.getFrequency());
             i.putExtra("dateFinish", savings.getDateFinish());
-            i.putExtra("isActivated", savings.getIsActivated());
+            i.putExtra("isActivated", savings.getStatus());
 
             context.startActivity(i);
         });
