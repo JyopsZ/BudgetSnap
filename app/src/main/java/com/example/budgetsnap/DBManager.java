@@ -105,4 +105,37 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_SAVINGS, null, values);
     }
 
+    public void updateSavingsStatus(String snum, boolean status) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.SSTATUS, status);
+
+        database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+    }
+
+    public void incrementCurSavings(String snum, double amount) {
+
+        ContentValues values = new ContentValues();
+        // get currentAmount of current savings selected
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[]{snum});
+
+        if (cursor.moveToFirst()) {
+            double currentAmount = cursor.getDouble(0);
+            double newAmount = currentAmount += amount;
+            values.put(DatabaseHelper.SCURRENTAMOUNT, newAmount);
+            database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+        }
+    }
+
+    public double getCurrentAmount(String snum) {
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[]{snum});
+        double currentAmount = 0.0;
+
+        if (cursor.moveToFirst()) {
+            currentAmount = cursor.getDouble(0);
+        }
+        cursor.close();
+
+        return currentAmount;
+    }
 }

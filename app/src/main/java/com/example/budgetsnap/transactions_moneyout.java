@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -21,17 +22,23 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 public class transactions_moneyout extends AppCompatActivity {
 
+    private static final String TAG = "transactions_moneyout"; // Tag for logging
     private Uri selectedImageUriMoneyOut; // Store the selected image URI
     private EditText editTextName, editTextAmount, editTextDate, editTextTime;
     private Spinner spinnerCategory;
     private Button buttonAttachImage, buttonAddExpense;
     private SQLiteDatabase db;
-    private LinkedHashMap<String, String> categoryMap; // CNUM -> CNAME mapping
+    private LinkedHashMap<String, String> categoryMap;
+    private String currentUserUNum; // CNUM -> CNAME mapping
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,8 @@ public class transactions_moneyout extends AppCompatActivity {
         // Initialize SQLite database
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
+
+        currentUserUNum = getCurrentUserUNum();
 
         // Initialize UI components
         editTextName = findViewById(R.id.editTextName);
@@ -64,49 +73,21 @@ public class transactions_moneyout extends AppCompatActivity {
 
         // Handle Add Expense button
         buttonAddExpense.setOnClickListener(v -> addExpenseToDatabase());
-
     }
 
-    // Method triggered when "plus" button is pressed
-    public void BtnClickedPlus2(View view) {
-        // Call the method to show the dialog
-        showTransactionDialog();
-    }
+    private String getCurrentUserUNum() {
+        // Try fetching directly from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        String userUNum = sharedPreferences.getString("userUNum", null);
 
-    // Show the "Money In" or "Money Out" prompt
-    private void showTransactionDialog() {
-        // Inflate the custom dialog layout
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
+        if (userUNum == null) {
+            Log.e(TAG, "User UNum not found in SharedPreferences. Check login process.");
+            Toast.makeText(this, "User session error. Please log in again.", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d(TAG, "Fetched UNum from SharedPreferences: " + userUNum);
+        }
 
-        // Create the dialog without the default "Cancel" button
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialogView)
-                .setCancelable(true);  // cancel button
-
-        // Show the dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        // Handle clicking on "Money In" and "Money Out"
-        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
-            // Start Money In Activity
-            Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
-            startActivity(i);
-            dialog.dismiss(); // Close the dialog after starting the activity
-        });
-
-        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
-            // Start Money Out Activity
-            Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
-            startActivity(i);
-            dialog.dismiss(); // Close the dialog after starting the activity
-        });
-
-        // Handle clicking on the custom "Cancel" button inside your layout
-        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> {
-            dialog.dismiss(); // Close dialog on "Cancel"
-        });
+        return userUNum;
     }
 
     private void fetchCategoriesFromDB() {
@@ -118,7 +99,7 @@ public class transactions_moneyout extends AppCompatActivity {
                 categoryMap.put(cnum, cname);
             }
         } catch (Exception e) {
-            Log.e("CategoryFetchError", "Error fetching categories from DB: " + e.getMessage());
+            Log.e(TAG, "Error fetching categories from DB: " + e.getMessage());
         }
     }
 
@@ -136,17 +117,20 @@ public class transactions_moneyout extends AppCompatActivity {
                 return;
             }
 
-            // Parse amount and ensure it is negative
+            // Parse amount
             double amount = Double.parseDouble(amountText);
-            if (amount > 0) {
-                amount = amount;
-            }
 
             // Map category name to CNUM
             String categoryCNUM = getCategoryCNUM(categoryName);
             if (categoryCNUM == null) {
                 Toast.makeText(this, "Invalid category selected", Toast.LENGTH_SHORT).show();
                 return;
+            }
+
+            // Fetch the current user's UNum
+            String userUNum = getCurrentUserUNum();
+            if (userUNum == null) {
+                return; // If UNum is null, don't proceed
             }
 
             // Generate a new transaction ID
@@ -156,18 +140,20 @@ public class transactions_moneyout extends AppCompatActivity {
             ContentValues values = new ContentValues();
             values.put("TNum", newTransactionID); // Use the generated transaction ID
             values.put("TName", name);
-            values.put("TAmount", amount); // Save the negative amount
+            values.put("TAmount", amount);
             values.put("TDate", date);
             values.put("TTime", time);
-            values.put("CNum", categoryCNUM); // Save CNUM instead of category name
+            values.put("CNum", categoryCNUM);
             values.put("TImage", selectedImageUriMoneyOut != null ? selectedImageUriMoneyOut.toString() : null);
             values.put("TStatus", 0); // 0 for Money Out
+            values.put("UNum", userUNum); // Automatically retrieved user ID
 
             // Insert into the database
             long result = db.insert("TRANSACTIONS", null, values);
 
             if (result != -1) {
                 Toast.makeText(this, "Expense added successfully", Toast.LENGTH_SHORT).show();
+                updateBalanceForTransaction();
                 clearFields();
             } else {
                 Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
@@ -175,11 +161,77 @@ public class transactions_moneyout extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Invalid amount entered. Please enter a valid number.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Log.e("SQLiteError", "Error adding expense: " + e.getMessage());
+            Log.e(TAG, "Error adding expense: " + e.getMessage());
             Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void updateBalanceForTransaction() {
+        try {
+            String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+            Log.d("BalanceUpdate", "Current date formatted: " + currentDate);
+
+            String queryDateCheck = "SELECT TDate FROM TRANSACTIONS WHERE UNum = ? ORDER BY TNum DESC LIMIT 1";
+            String[] dateCheckArgs = {currentUserUNum};
+
+            Cursor dateCursor = db.rawQuery(queryDateCheck, dateCheckArgs);
+            if (dateCursor != null && dateCursor.moveToFirst()) {
+                String lastTransactionDate = dateCursor.getString(dateCursor.getColumnIndex("TDate"));
+                Log.d("BalanceUpdate", "Last transaction date fetched: " + lastTransactionDate);
+
+
+                if (currentDate.equals(lastTransactionDate)) {
+                    String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? AND TDate = ? ORDER BY TNum DESC LIMIT 1";
+                    String[] transactionArgs = {currentUserUNum, currentDate};
+
+                    Log.d("BalanceUpdate", "Executing query: " + queryTransaction + " with arguments: " + Arrays.toString(transactionArgs));
+                    Cursor transactionCursor = db.rawQuery(queryTransaction, transactionArgs);
+
+                    if (transactionCursor != null && transactionCursor.moveToFirst()) {
+                        double amount = transactionCursor.getDouble(transactionCursor.getColumnIndex("TAmount"));
+                        int status = transactionCursor.getInt(transactionCursor.getColumnIndex("TStatus"));
+
+                        Log.d("BalanceUpdate", "Transaction found: TAmount = " + amount + ", TStatus = " + status);
+
+                        if (status == 0) {
+                            updateUserBalance(amount);
+                        }
+                        transactionCursor.close();
+                    }
+                } else {
+                    Log.d("BalanceUpdate", "No transactions for the current date: " + currentDate);
+                }
+                dateCursor.close();
+            } else {
+                Log.d("BalanceUpdate", "No transactions found for the user.");
+            }
+        } catch (Exception e) {
+            Log.e("BalanceError", "Error updating balance: " + e.getMessage());
+        }
+    }
+
+
+    private void updateUserBalance(double amount) {
+        try {
+            String query = "SELECT UIncome FROM USER WHERE UNum = ?";
+            String[] queryArgs = {currentUserUNum};
+
+            Cursor cursor = db.rawQuery(query, queryArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                double currentBalance = cursor.getDouble(cursor.getColumnIndex("UIncome"));
+                double newBalance = currentBalance - amount;
+
+                ContentValues values = new ContentValues();
+                values.put("UIncome", newBalance);
+
+                int rowsUpdated = db.update("USER", values, "UNum = ?", new String[]{currentUserUNum});
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("BalanceUpdateError", "Error updating user balance: " + e.getMessage());
+        }
+    }
     private String generateNewTransactionID() {
         String newID = "T0001"; // Default ID for the first transaction
         try {
@@ -187,17 +239,14 @@ public class transactions_moneyout extends AppCompatActivity {
             String query = "SELECT TNum FROM TRANSACTIONS ORDER BY TNum DESC LIMIT 1";
             try (Cursor cursor = db.rawQuery(query, null)) {
                 if (cursor.moveToFirst()) {
-                    // Get the last ID
                     String lastID = cursor.getString(0);
-
-                    // Extract the numeric part and increment
                     int numericPart = Integer.parseInt(lastID.substring(1)); // Remove the "T" prefix
                     numericPart++;
                     newID = "T" + String.format("%04d", numericPart); // Format as T000X
                 }
             }
         } catch (Exception e) {
-            Log.e("SQLiteError", "Error generating new transaction ID: " + e.getMessage());
+            Log.e(TAG, "Error generating new transaction ID: " + e.getMessage());
         }
         return newID;
     }
@@ -211,45 +260,68 @@ public class transactions_moneyout extends AppCompatActivity {
         return null;
     }
 
+    // Open image picker
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*"); // Filter for image files only
-        imagePickerLauncher.launch(intent); // Launch the image picker
+        intent.setType("image/*");
+        imagePickerLauncher.launch(intent);
     }
 
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    selectedImageUriMoneyOut = result.getData().getData(); // Get the image URI
+                    selectedImageUriMoneyOut = result.getData().getData();
                     Toast.makeText(this, "Image Selected", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
                 }
             });
 
-    private void clearFields() {
-        editTextName.setText("");
-        editTextAmount.setText("");
-        editTextDate.setText("");
-        editTextTime.setText("");
-        spinnerCategory.setSelection(0);
-        selectedImageUriMoneyOut = null;
+    // Show transaction dialog when "plus" button is clicked
+    public void BtnClickedPlus2(View view) {
+        showTransactionDialog();
     }
 
-    public void BtnMoneyInBtn2(View v){
+    private void showTransactionDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView).setCancelable(true);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
+            Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
+            startActivity(i);
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
+            Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
+            startActivity(i);
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> dialog.dismiss());
+    }
+
+    public void BtnMoneyInBtn2(View v) {
         Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
         startActivity(i);
     }
 
-    public void BtnMoneyOutBtn2(View v){
+    public void BtnMoneyOutBtn2(View v) {
         Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
         startActivity(i);
     }
 
     public void gohome(View v) {
-        Intent i = new Intent(transactions_moneyout.this, Home.class);
-        startActivity(i);
+        Intent intent = new Intent(this, Home.class);
+        intent.putExtra("PK_UNUM", currentUserUNum);
+        startActivity(intent);
     }
 
     public void gotransactions(View v) {
@@ -270,5 +342,14 @@ public class transactions_moneyout extends AppCompatActivity {
     public void goaccount(View v) {
         Intent i = new Intent(transactions_moneyout.this, account.class);
         startActivity(i);
+    }
+
+    private void clearFields() {
+        editTextName.setText("");
+        editTextAmount.setText("");
+        editTextDate.setText("");
+        editTextTime.setText("");
+        spinnerCategory.setSelection(0);
+        selectedImageUriMoneyOut = null;
     }
 }
