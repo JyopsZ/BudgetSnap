@@ -2,24 +2,33 @@ package com.example.budgetsnap;
 
 public class SavingsClass {
 
+    private String Snum;
     private String name;
+    private double currentAmount;
     private double goalAmount;
     private String frequency;
     private String dateFinish;
-    private double currentAmount;
-    private boolean isActivated;
+    private boolean status;
+    private String Unum;
 
-    public SavingsClass(String name, double goalAmount, String frequency, String dateFinish, double currentAmount, boolean isActivated) {
+    public SavingsClass(String Snum, String name, double currentAmount, double goalAmount, String frequency, String dateFinish, boolean status, String Unum) {
 
+        this.Snum = Snum;
         this.name = name;
+        this.currentAmount = currentAmount;
         this.goalAmount = goalAmount;
         this.frequency = frequency;
         this.dateFinish = dateFinish;
-        this.currentAmount = currentAmount;
-        this.isActivated = isActivated;
+        this.status = status;
+        this.Unum = Unum;
     }
 
     // GETTERS
+    public String getSNum() {
+
+        return Snum;
+    }
+
     public String getName() {
 
         return name;
@@ -45,9 +54,13 @@ public class SavingsClass {
         return currentAmount;
     }
 
-    public boolean getIsActivated() {
+    public boolean getStatus() {
 
-        return isActivated;
+        return status;
+    }
+
+    public String getUNum() {
+        return Unum;
     }
 
     // SETTERS FOR EDITING SAVINGS
@@ -78,6 +91,6 @@ public class SavingsClass {
 
     public void setIsActivated(boolean isActivated) {
 
-        this.isActivated = isActivated;
+        this.status = isActivated;
     }
 }

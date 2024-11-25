@@ -1,6 +1,7 @@
 package com.example.budgetsnap;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -38,9 +39,6 @@ public class SavingsActivity extends AppCompatActivity {
 
         unum = getIntent().getStringExtra("PK_UNUM");
 
-        //TODO: Remove toast message after done debugging
-        Toast.makeText(this, "Current User ID: " + unum, Toast.LENGTH_SHORT).show();
-
         loadSavings(); // Method call to add values to savingsList arrayList
     }
 
@@ -51,14 +49,34 @@ public class SavingsActivity extends AppCompatActivity {
         if (requestCode == 1  && resultCode  == RESULT_OK) {
 
             String name = data.getStringExtra("name");
+            double currentAmount = data.getDoubleExtra("currentAmount", 0.0);
             double goalAmount = data.getDoubleExtra("goalAmount", 0.0);
             String frequency = data.getStringExtra("frequency");
             String dateFinish = data.getStringExtra("dateFinish");
-            double currentAmount = data.getDoubleExtra("currentAmount", 0.0);
             boolean isActivated = data.getBooleanExtra("isActivated", true);
 
-            savingsList.add(new SavingsClass(name, goalAmount, frequency, dateFinish, currentAmount, isActivated));
-            recyclerView.getAdapter().notifyItemInserted(savingsList.size() - 1);
+            DBManager dbManager = new DBManager(this);
+            dbManager.open();
+
+            String maxSNum = dbManager.getSavingsMax();
+            int currentSavings = Integer.parseInt(maxSNum.substring(1));
+            String nextSavings = String.format("S%04d", currentSavings + 1);
+
+            SavingsClass newSavings = new SavingsClass (
+                    nextSavings,
+                    name,
+                    currentAmount,
+                    goalAmount,
+                    frequency,
+                    dateFinish,
+                    isActivated,
+                    unum
+            );
+
+            dbManager.insertSavings(newSavings);
+            dbManager.close();
+
+            loadSavings();
         }
     }
 
@@ -81,8 +99,31 @@ public class SavingsActivity extends AppCompatActivity {
 
     private void loadSavings() { // Load hard-coded savings into arrayList for testing and demo purposes
 
-        savingsList.add(new SavingsClass("Concert", 5000, "Daily", "10/17/2024", 0.00, true));
-        savingsList.add(new SavingsClass("Tuition", 100000, "Monthly", "01/03/2025", 9878.00, false));
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+
+        savingsList.clear();
+
+        Cursor cursor = dbManager.fetchSavings(unum);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                savingsList.add(new SavingsClass(
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_SNUM)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SNAME)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.SCURRENTAMOUNT)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.SGOALAMOUNT)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SFREQUENCY)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SDATE)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.SSTATUS)) == 1,
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.FK_SUNUM))
+                ));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        dbManager.close();
 
         SavingsAdapter savingsAdapter = new SavingsAdapter(savingsList, this);
         recyclerView.setAdapter(savingsAdapter);
