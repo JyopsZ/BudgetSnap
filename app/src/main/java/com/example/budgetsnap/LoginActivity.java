@@ -117,14 +117,12 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
-
-        String unum = "";
-
+        String UNum = null;
         boolean isValid = false;
         for (UserClass userClass : userClassList) { // Check every user in the arrayList
 
             if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
-
+               UNum = userClass.getUNum();
                 isValid = true;
                 unum = userClass.getUNum();
                 break;
@@ -132,10 +130,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-
-            Intent i = new Intent(LoginActivity.this, Home.class); // REPLACE WITH ACTUAL POST LOGIN ACTIVITY * PLACEHOLDER ACTIVITY ONLY
-            i.putExtra("unum", unum);
-            startActivity(i); // Start new activity after logging in
+            Intent i = new Intent(LoginActivity.this, Home.class);
+            i.putExtra("PK_UNUM", UNum);
+            startActivity(i);
         }
 
         else {
