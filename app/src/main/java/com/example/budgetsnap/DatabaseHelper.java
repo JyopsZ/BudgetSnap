@@ -120,8 +120,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_SUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
                 + ")";
         db.execSQL(CREATE_SAVINGS_TABLE);
-        //   db.execSQL("" +
-        //                "('S0001', ), " +
+           db.execSQL("INSERT INTO SAVINGS(SNum, SName, SCurrentAmount, SGoalAmount, SFrequency, SDate, SStatus, UNum) VALUES " +
+                        "('S0001', 'Concert', 5000, 'Daily', '10/17/2024', 0.0, true, 'U0002' ), " +
+                        "('S0002', 'Tuition', 100000, 'Monthly', '01/03/2025', 9878.0, false, 'U0002' )");
 
 
 
