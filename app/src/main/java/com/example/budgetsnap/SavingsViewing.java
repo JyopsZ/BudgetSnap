@@ -18,8 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 public class SavingsViewing extends AppCompatActivity {
 
     TextView nameValue, goalAmountValue, frequencyValue, dateValue;
-    TextView savingsChallView, totalAmountView;
+    TextView savingsChallView, totalAmountView, phpView;
     Button activateButton;
+
+    String snum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +45,35 @@ public class SavingsViewing extends AppCompatActivity {
         dateValue = findViewById(R.id.dateValue);
         savingsChallView = findViewById(R.id.savingsChallView);
         totalAmountView = findViewById(R.id.totalAmountView);
+        phpView = findViewById(R.id.phpView);
+        activateButton = findViewById(R.id.activateButton);
 
         Intent i = getIntent();
+        snum = i.getStringExtra("snum");
         String name = i.getStringExtra("name");
-        String goalAmount = i.getStringExtra("goalAmount");
+        double currentAmount = i.getDoubleExtra("currentAmount", 0.0);
+        double goalAmount = i.getDoubleExtra("goalAmount", 0.0);
         String frequency = i.getStringExtra("frequency");
         String date = i.getStringExtra("dateFinish");
-        String currentAmount = i.getStringExtra("currentAmount");
+
         boolean isActivated = i.getBooleanExtra("isActivated", true);
 
         savingsChallView.setText(Html.fromHtml("<b>Savings Challenge: "+ name + "</b>"));
         nameValue.setText(name);
+        phpView.setText(String.format("PHP %.2f ", currentAmount));
+        totalAmountView.setText(String.format("/ %.2f", goalAmount)); // Progress at the bottom
         goalAmountValue.setText(String.format("PHP %.2f", goalAmount));
         frequencyValue.setText(frequency);
         dateValue.setText(date);
-        totalAmountView.setText(String.format("/ %.2f", currentAmount));
+
+        // Set Initial Button Text and Color based on the current status (isActivated)
+        if (isActivated) {
+            activateButton.setText("Deactivate");
+            activateButton.setBackgroundColor(0xFFFF2020); // Red color
+        } else {
+            activateButton.setText("Activate");
+            activateButton.setBackgroundColor(0xFF4CAF50); // Green color
+        }
     }
 
     public void back(View view) {
@@ -125,12 +141,17 @@ public class SavingsViewing extends AppCompatActivity {
 
     public void toggleActivation(View view) {
         activateButton = (Button) view;
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+
         if (activateButton.getText().toString().equals("Deactivate")) {
             activateButton.setText("Activate");
             activateButton.setBackgroundColor(0xFF4CAF50); // Green color
+            dbManager.updateSavingsStatus(snum, false);
         } else {
             activateButton.setText("Deactivate");
             activateButton.setBackgroundColor(0xFFFF2020); // Red color
+            dbManager.updateSavingsStatus(snum, true);
         }
     }
 

@@ -105,4 +105,11 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_SAVINGS, null, values);
     }
 
+    public void updateSavingsStatus(String snum, boolean status) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.SSTATUS, status);
+
+        database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+    }
 }

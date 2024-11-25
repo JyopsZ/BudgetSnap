@@ -48,13 +48,13 @@ public class SavingsChallenge extends AppCompatActivity implements AdapterView.O
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Handle Spinner selection
         switch (position) {
-            case 1:
+            case 0:
                 frequency = "Daily";
                 break;
-            case 2:
+            case 1:
                 frequency = "Weekly";
                 break;
-            case 3:
+            case 2:
                 frequency = "Monthly";
         }
     }

@@ -37,16 +37,17 @@ public class SavingsAdapter extends RecyclerView.Adapter<SavingsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final SavingsClass savings = savingsList.get(position);
         holder.textName.setText(savings.getName());
-        holder.textGoalAmount.setText(String.format("/ %.2f", savings.getGoalAmount()));
         holder.textCurrentAmount.setText(String.format("Php %.2f", savings.getCurrentAmount()));
+        holder.textGoalAmount.setText(String.format("/ %.2f", savings.getGoalAmount()));
         holder.textIsActivated.setText(savings.getStatus() ? "(Activated)" : "");
 
         holder.savingsView.setOnClickListener(v -> {
 
             Intent i = new Intent(context, SavingsViewing.class);
+            i.putExtra("snum", savings.getSNum());
             i.putExtra("name", savings.getName());
-            i.putExtra("currentAmount", savings.getCurrentAmount());
-            i.putExtra("goalAmount", savings.getGoalAmount());
+            i.putExtra("currentAmount", Double.valueOf(savings.getCurrentAmount()));
+            i.putExtra("goalAmount", Double.valueOf(savings.getGoalAmount()));
             i.putExtra("frequency", savings.getFrequency());
             i.putExtra("dateFinish", savings.getDateFinish());
             i.putExtra("isActivated", savings.getStatus());
