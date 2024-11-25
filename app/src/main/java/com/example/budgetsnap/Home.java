@@ -78,7 +78,7 @@ public class Home extends AppCompatActivity {
             PK_Unum = prefs.getString("PK_UNUM", "");
         }
 
-        else { // If PK_Unum has value, save it to SharedPrefs
+        else {
 
             SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -88,7 +88,6 @@ public class Home extends AppCompatActivity {
 
 
 
-        // Set up Spinner
         Spinner spinner = findViewById(R.id.spinner_frequency);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.frequency_options, R.layout.custom_spinner_item);
@@ -156,12 +155,12 @@ public class Home extends AppCompatActivity {
 
 
     private void updateBalanceTextView() {
-        SQLiteDatabase database = dbHelper.getReadableDatabase(); // Open database for reading
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
         String query = "SELECT UIncome FROM USER WHERE UNum = ?";
-        String[] queryArgs = {PK_Unum}; // Assuming PK_Unum is properly initialized
+        String[] queryArgs = {PK_Unum};
 
-        // Find the TextView
-        TextView balanceTextView = findViewById(R.id.balance_Text); // Update with actual TextView ID
+
+        TextView balanceTextView = findViewById(R.id.balance_Text);
 
         Cursor cursor = null;
 
@@ -169,23 +168,20 @@ public class Home extends AppCompatActivity {
             cursor = database.rawQuery(query, queryArgs);
 
             if (cursor != null && cursor.moveToFirst()) {
-                // Fetch the UIncome value
                 int columnIndex = cursor.getColumnIndex("UIncome");
-                if (columnIndex != -1) { // Check if column exists
+                if (columnIndex != -1) {
                     double uIncome = cursor.getDouble(columnIndex);
 
-                    // Format the UIncome to include commas and prefix with "Php"
                     String formattedIncome = String.format(Locale.getDefault(), "Php %,.2f", uIncome);
 
-                    // Update the TextView with the formatted value
                     balanceTextView.setText(formattedIncome);
                 }
             }
         } finally {
             if (cursor != null) {
-                cursor.close(); // Close the cursor
+                cursor.close();
             }
-            database.close(); // Close the database
+            database.close();
         }
     }
 
