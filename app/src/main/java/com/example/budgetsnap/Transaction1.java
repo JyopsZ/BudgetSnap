@@ -42,6 +42,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
     Spinner dropdown_menu;
     FrameLayout frameLayout;
+    String PK_Unum;
 
     private static final String[] paths = {"Sort By Amount", "Low - High", "High - Low"};
     private List<Transaction> transactionList; // List to store transaction data
@@ -63,6 +64,8 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
 
         // Initialize database helper
         databaseHelper = new DatabaseHelper(this);
+
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
 
         // Setup Window Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -349,6 +352,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
 
     public void gohome(View v) {
         Intent i = new Intent(Transaction1.this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
