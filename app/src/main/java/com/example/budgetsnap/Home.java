@@ -32,12 +32,15 @@ import java.util.List;
 public class Home extends AppCompatActivity {
 
     private List<String> xValues = Arrays.asList("Savings Goal Progress", "Total Income", "Total Expenses");
+    private String unum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
+
+        unum = getIntent().getStringExtra("unum");
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.Savings), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -105,6 +108,8 @@ public class Home extends AppCompatActivity {
         barChart.getXAxis().setGranularity(1f);
         barChart.getXAxis().setGranularityEnabled(true);
 
+        // TODO: Testing only, don't forget to remove
+        Toast.makeText(this, "Current User ID: " + unum, Toast.LENGTH_SHORT).show();
     }
 
     public void gonotif(View v) {
