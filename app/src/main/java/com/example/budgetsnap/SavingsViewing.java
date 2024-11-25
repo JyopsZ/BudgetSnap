@@ -44,8 +44,14 @@ public class SavingsViewing extends AppCompatActivity {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
 
-        double currentAmount = dbManager.getCurrentAmount(snum);
-        phpView.setText(String.format("PHP %.2f ", currentAmount));
+        SavingsClass savings = dbManager.getSavingsForEdit(snum);
+        savingsChallView.setText(Html.fromHtml("<b>Savings Challenge: "+ savings.getName() + "</b>"));
+        nameValue.setText(savings.getName());
+        phpView.setText(String.format("PHP %.2f ", savings.getCurrentAmount()));
+        totalAmountView.setText(String.format("/ %.2f", savings.getGoalAmount()));
+        goalAmountValue.setText(String.format("PHP %.2f", savings.getGoalAmount()));
+        frequencyValue.setText(savings.getFrequency());
+        dateValue.setText(savings.getDateFinish());
 
         dbManager.close();
     }
@@ -103,6 +109,7 @@ public class SavingsViewing extends AppCompatActivity {
     public void edit(View view) {
 
         Intent i = new Intent(this, SavingsEditing.class);
+        i.putExtra("snum", snum);
         startActivity(i);
     }
 

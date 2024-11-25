@@ -25,6 +25,7 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
     Spinner editFrequency;
 
     String frequency; // Store frequency chosen by user
+    String snum;
 
     private static final String[] freq = {"Daily", "Weekly", "Monthly"}; // Reference: Adrian Tan Villador for Spinner (dropdown code)
 
@@ -40,21 +41,19 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
         });
 
         initializeViews(); // Print out labels for input fields with red asterisks
-        initializeSpinner();
-
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // Handle Spinner selection
         switch (position) {
-            case 1:
+            case 0:
                 frequency = "Daily";
                 break;
-            case 2:
+            case 1:
                 frequency = "Weekly";
                 break;
-            case 3:
+            case 2:
                 frequency = "Monthly";
         }
     }
@@ -88,6 +87,32 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
         editDate = findViewById(R.id.editDate);
 
         editFrequency = findViewById(R.id.editFrequency);
+        initializeSpinner();
+
+        snum = getIntent().getStringExtra("snum");
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        SavingsClass savings = dbManager.getSavingsForEdit(snum); // Returns an object of type Savings with data to initially populate text fields
+        dbManager.close();
+
+        editName.setText(savings.getName());
+        editGoal.setText(String.valueOf(savings.getGoalAmount()));
+        editDate.setText(savings.getDateFinish());
+
+        int freq = 0;
+        switch (savings.getFrequency()) { // Get the integer equivalent of the selected frequency
+            case "Daily":
+                freq = 0;
+                break;
+            case "Weekly":
+                freq = 1;
+                break;
+            case "Monthly":
+                freq = 2;
+                break;
+        }
+        editFrequency.setSelection(freq); // Set the spinner to the frequency initially selected.
 
         // Reference for Html: https://alfredmyers.com/2018/02/06/warning-cs0618-html-fromhtmlstring-is-obsolete-deprecated/#google_vignette
 
@@ -129,13 +154,17 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
         // Handle clicking
         dialogView.findViewById(R.id.backButton).setOnClickListener(v -> {
 
-            Intent i = new Intent(this, SavingsActivity.class);
-            i.putExtra("name", editName.getText().toString());
-            i.putExtra("goalAmount", editGoal.getText().toString());
-            i.putExtra("frequency", frequency);
-            i.putExtra("dateFinish", editDate.getText().toString());
-            startActivity(i);
+            DBManager dbManager = new DBManager(this);
+            dbManager.open();
 
+            String name = editName.getText().toString();
+            double goalAmount = Double.parseDouble(editGoal.getText().toString());
+            String dateFinish = editDate.getText().toString();
+
+            dbManager.editSavings(snum, name, goalAmount, frequency, dateFinish);
+            dbManager.close();
+
+            finish();
             dialog.dismiss();
         });
     }

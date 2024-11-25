@@ -70,7 +70,7 @@ public class DBManager {
     public Cursor fetchSavings(String unum) {
 
         String[] columns = new String[] { DatabaseHelper.PK_SNUM, DatabaseHelper.SNAME, DatabaseHelper.SCURRENTAMOUNT, DatabaseHelper.SGOALAMOUNT, DatabaseHelper.SFREQUENCY, DatabaseHelper.SDATE, DatabaseHelper.SSTATUS, DatabaseHelper.FK_SUNUM };
-        Cursor cursor = database.query(DatabaseHelper.TABLE_SAVINGS, columns, DatabaseHelper.FK_SUNUM + "=?", new String[] { unum }, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.TABLE_SAVINGS, columns, DatabaseHelper.FK_SUNUM + "=?", new String[] {unum}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -110,25 +110,26 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.SSTATUS, status);
 
-        database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+        database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] {snum});
     }
 
     public void incrementCurSavings(String snum, double amount) {
 
         ContentValues values = new ContentValues();
         // get currentAmount of current savings selected
-        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[]{snum});
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[] {snum});
 
         if (cursor.moveToFirst()) {
             double currentAmount = cursor.getDouble(0);
             double newAmount = currentAmount += amount;
             values.put(DatabaseHelper.SCURRENTAMOUNT, newAmount);
-            database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] { snum });
+            database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] {snum});
         }
     }
 
     public double getCurrentAmount(String snum) {
-        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[]{snum});
+
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.SCURRENTAMOUNT + " FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + " = ?", new String[] {snum});
         double currentAmount = 0.0;
 
         if (cursor.moveToFirst()) {
@@ -137,5 +138,37 @@ public class DBManager {
         cursor.close();
 
         return currentAmount;
+    }
+
+    public SavingsClass getSavingsForEdit(String snum) {
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_SAVINGS + " WHERE " + DatabaseHelper.PK_SNUM + "=?", new String[]{snum});
+        SavingsClass savings = null;
+
+        if (cursor.moveToFirst()) {
+            savings = new SavingsClass(
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_SNUM)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SNAME)),
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.SCURRENTAMOUNT)),
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.SGOALAMOUNT)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SFREQUENCY)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.SDATE)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.SSTATUS)) == 1,
+                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.FK_SUNUM))
+            );
+        }
+        cursor.close();
+        return savings;
+    }
+
+    public void editSavings(String snum, String name, double goalAmount, String frequency, String dateFinish) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.SNAME, name);
+        values.put(DatabaseHelper.SGOALAMOUNT, goalAmount);
+        values.put(DatabaseHelper.SFREQUENCY, frequency);
+        values.put(DatabaseHelper.SDATE, dateFinish);
+
+        database.update(DatabaseHelper.TABLE_SAVINGS, values, DatabaseHelper.PK_SNUM + "=?", new String[] {snum});
     }
 }
