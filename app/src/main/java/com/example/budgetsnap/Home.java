@@ -42,6 +42,7 @@ public class Home extends AppCompatActivity {
 
     private List<String> xValues = Arrays.asList("Savings Goal Progress", "Total Income", "Total Expenses");
     FirebaseFirestore firestore;
+    private String PK_Unum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class Home extends AppCompatActivity {
         });
 
         // CURRENT USER'S NUMBER
-        String PK_Unum = getIntent().getStringExtra("PK_UNUM");
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
             Log.d("HomeActivity", "PK_UNUM: " + PK_Unum);
 
 
@@ -135,8 +136,9 @@ public class Home extends AppCompatActivity {
 
     public void gosavings(View v) {
 
-        Intent intent = new Intent(this, SavingsActivity.class);
-        startActivity(intent);
+        Intent i = new Intent(this, SavingsActivity.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
     }
 
     public void gobudgeting(View v) {

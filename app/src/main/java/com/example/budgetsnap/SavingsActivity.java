@@ -3,6 +3,7 @@ package com.example.budgetsnap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ public class SavingsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ArrayList<SavingsClass> savingsList = new ArrayList<>(); // Sample data for testing
+    private String unum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,11 @@ public class SavingsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        unum = getIntent().getStringExtra("PK_UNUM");
+
+        //TODO: Remove toast message after done debugging
+        Toast.makeText(this, "Current User ID: " + unum, Toast.LENGTH_SHORT).show();
 
         loadSavings(); // Method call to add values to savingsList arrayList
     }
