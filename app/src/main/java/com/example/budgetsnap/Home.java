@@ -172,6 +172,7 @@ public class Home extends AppCompatActivity {
 
     public void gobudgeting(View v) {
         Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 

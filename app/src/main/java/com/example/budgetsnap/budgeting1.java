@@ -1,11 +1,15 @@
 package com.example.budgetsnap;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +24,8 @@ public class budgeting1 extends AppCompatActivity {
     private RecyclerView recyclerView;
     private BudgetingAdapter adapter;
     private List<Budget> budList;
+    private String PK_Unum;
+    private SQLiteDatabase db;
 
     // TextViews for totals
     private TextView totalBudgetTextView, totalExpensesTextView, budgetLimitTextView;
@@ -30,6 +36,10 @@ public class budgeting1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgeting1);
+
+        // Initialize SQLite database
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        db = dbHelper.getWritableDatabase();
 
         // Handle insets for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -55,9 +65,86 @@ public class budgeting1 extends AppCompatActivity {
 
         // Display totals from transactions
         calculateAndDisplayTotalsFromTransactions();
+
+        // CURRENT USER'S NUMBER
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
+        Toast.makeText(this, "Current User: " + PK_Unum, Toast.LENGTH_SHORT).show();
+
+        checkAndGenerateBNum();
     }
 
-    // Fetch budget data from SQLite database
+    private void checkAndGenerateBNum() {
+        // Retrieve the current user's number
+        String currentUnum = getIntent().getStringExtra("PK_UNUM");
+        Toast.makeText(this, "Current User: " + currentUnum, Toast.LENGTH_SHORT).show();
+
+        if (currentUnum != null && !currentUnum.isEmpty()) {
+            // Check if the user already has an associated BNum
+            boolean userExists = checkUserExists(currentUnum);
+
+            if (!userExists) {
+                // Generate a new BNum for the new user
+                String newBNum = generateNewBNum();
+                if (newBNum != null) {
+                    // Save the new BNum and associate it with the current user
+                    saveNewBNumForUser(currentUnum, newBNum);
+                    Toast.makeText(this, "New BNum generated: " + newBNum, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Failed to generate a new BNum.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "User already exists with a BNum.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "No user information provided.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to check if the user already has an associated BNum
+    private boolean checkUserExists(String userUnum) {
+        boolean exists = false;
+        String query = "SELECT COUNT(*) FROM BUDGET WHERE UNum = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{userUnum})) {
+            if (cursor.moveToFirst()) {
+                exists = cursor.getInt(0) > 0; // If the count is greater than 0, the user exists
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error checking user existence: " + e.getMessage());
+        }
+        return exists;
+    }
+
+    // Method to save the new BNum for the user
+    private void saveNewBNumForUser(String userUnum, String bNum) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put("BNum", bNum);
+            values.put("UNum", userUnum);
+            db.insert("BUDGET", null, values);
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error saving new BNum for user: " + e.getMessage());
+        }
+    }
+
+    // Method to generate a new BNum (from earlier)
+    private String generateNewBNum() {
+        String newBNum = "B0001"; // Default ID for the first entry
+        try {
+            String query = "SELECT BNum FROM BUDGET ORDER BY BNum DESC LIMIT 1";
+            try (Cursor cursor = db.rawQuery(query, null)) {
+                if (cursor.moveToFirst()) {
+                    String lastBNum = cursor.getString(0);
+                    int numericPart = Integer.parseInt(lastBNum.substring(1));
+                    numericPart++;
+                    newBNum = "B" + String.format("%04d", numericPart);
+                }
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error generating new BNum ID: " + e.getMessage());
+        }
+        return newBNum;
+    }
+
     private void loadBudgetsFromDatabase() {
         budList = new ArrayList<>();
 
@@ -66,16 +153,19 @@ public class budgeting1 extends AppCompatActivity {
                 "Food", "Transportation", "Health", "Utilities", "Education", "Entertainment", "Savings", "Others"
         };
         for (String category : defaultCategories) {
-            budList.add(new Budget(category, "No title", 0.0, 0.0)); // Default values
+            budList.add(new Budget(category, 0.0, 0.0)); // Default values
         }
 
         // Get readable database
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        // Query to retrieve budget data
-        String query = "SELECT CATEGORIES.CName, BName, BBudget, BExpense " +
-                "FROM BUDGET " +
-                "INNER JOIN CATEGORIES ON BUDGET.BNum = CATEGORIES.CNum";
+        // Updated query
+        String query = "SELECT CATEGORIES.CName, BUDGET_CATEGORY.BCBudget, " +
+                "IFNULL(SUM(BUDGET_ADD.BAExpense), 0) AS BExpense " +
+                "FROM BUDGET_CATEGORY " +
+                "INNER JOIN CATEGORIES ON BUDGET_CATEGORY.CNum = CATEGORIES.CNum " +
+                "LEFT JOIN BUDGET_ADD ON BUDGET_CATEGORY.CNum = BUDGET_ADD.CNum " +
+                "GROUP BY CATEGORIES.CName, BUDGET_CATEGORY.BCBudget";
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -83,15 +173,13 @@ public class budgeting1 extends AppCompatActivity {
             do {
                 // Fetch values for each budget entry
                 String category = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
-                String title = cursor.getString(cursor.getColumnIndexOrThrow("BName"));
-                double totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("BBudget"));
-                double totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("BExpense"));
+                double totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("BCBudget")); // Budgeted amount
+                double totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("BExpense")); // Calculated expenses
 
                 // Update or add to the list
                 boolean updated = false;
                 for (Budget budget : budList) {
                     if (budget.getCategory().equals(category)) {
-                        budget.setTitle(title);
                         budget.setRemaining(totalBudget);
                         budget.setExpenses(totalExpenses);
                         updated = true;
@@ -100,8 +188,8 @@ public class budgeting1 extends AppCompatActivity {
                 }
 
                 if (!updated) {
-                    // If category was not in the default list, add it
-                    budList.add(new Budget(category, title, totalBudget, totalExpenses));
+                    // Add new Budget to the list
+                    budList.add(new Budget(category, totalBudget, totalExpenses));
                 }
             } while (cursor.moveToNext());
         }
@@ -149,15 +237,32 @@ public class budgeting1 extends AppCompatActivity {
         budgetLimitTextView.setText("Budget Limit: Php " + String.format("%.2f", remainingBudget));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data and totals in case of data changes
+        loadBudgetsFromDatabase();
+        calculateAndDisplayTotalsFromTransactions();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Refresh data when returning from budgetingAddExpense
+            loadBudgetsFromDatabase();
+            calculateAndDisplayTotalsFromTransactions();
+        }
+    }
+
+    public void addExpense(View v) {
+        Intent i = new Intent(budgeting1.this, budgetingAddExpense.class);
+        startActivityForResult(i, 1); // Launch activity for result
+    }
+
     // Navigate to the Edit Category activity
     public void editCategory(View v) {
         Intent i = new Intent(budgeting1.this, budgetingEditCategory.class);
-        startActivity(i);
-    }
-
-    // Navigate to Add Expense activity
-    public void addExpense(View v) {
-        Intent i = new Intent(budgeting1.this, budgetingAddExpense.class);
         startActivity(i);
     }
 
@@ -191,10 +296,10 @@ public class budgeting1 extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        // Refresh data and totals in case of data changes
-        loadBudgetsFromDatabase();
-        calculateAndDisplayTotalsFromTransactions();
+    protected void onDestroy() {
+        super.onDestroy();
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
     }
 }
