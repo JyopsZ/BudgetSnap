@@ -151,11 +151,11 @@ public class SignupActivity extends AppCompatActivity {
         FirebaseFirestore dbF = FirebaseFirestore.getInstance();
         CollectionReference usersRef = dbF.collection("USER");
 
-        // Query all documents and sort  by document ID
+        // Query all documents and sort manually by document ID
         usersRef.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        // Find the document with the "highest" ID
+                        // Find the document with the "highest" ID (alphabetical order)
                         String maxDocId = "";
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
                             String docId = doc.getId();
@@ -170,15 +170,16 @@ public class SignupActivity extends AppCompatActivity {
                         Map<String, Object> user = new HashMap<>();
                         user.put("UBDAY", birthday);
                         user.put("UEmail", email);
-                        user.put("UExpense", 0.0);
-                        user.put("UImage", "");
-                        user.put("UIncome", 0.0);
+                        user.put("UExpense", 0.0); // Set default expense
+                        user.put("UImage", ""); // Default empty image
+                        user.put("UIncome", 0.0); // Set default income
                         user.put("UName", name);
                         user.put("UPass", password);
 
                         // Save user to Firestore
                         docRef.set(user)
                                 .addOnSuccessListener(aVoid -> {
+                                    // Navigate to next screen after successful sign-up
                                     Intent i = new Intent(SignupActivity.this, CongratsSignup.class);
                                     startActivity(i);
                                 })
@@ -193,6 +194,8 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Error fetching data from Firebase", Toast.LENGTH_SHORT).show();
                 });
     }
+
+
 
     public void log (View v) {
 
