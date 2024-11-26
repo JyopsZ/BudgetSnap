@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 12;
 
     // User
     public static final String TABLE_USER = "USER";
@@ -114,11 +114,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_SUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
                 + ")";
         db.execSQL(CREATE_SAVINGS_TABLE);
-           db.execSQL("INSERT INTO SAVINGS(SNum, SName, SCurrentAmount, SGoalAmount, SFrequency, SDate, SStatus, UNum) VALUES " +
-                        "('S0001', 'Concert', 0.0, 5000, 'Daily', '10/17/2024', true, 'U0002' ), " +
-                        "('S0002', 'Tuition', 9878.0, 100000, 'Monthly', '01/03/2025', false, 'U0002' )");
-
-
 
         //TRANSACTIONS
         String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + TABLE_TRANSACTIONS + "("

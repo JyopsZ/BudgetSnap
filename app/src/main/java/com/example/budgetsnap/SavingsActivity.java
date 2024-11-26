@@ -14,6 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class SavingsActivity extends AppCompatActivity {
@@ -21,6 +24,8 @@ public class SavingsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<SavingsClass> savingsList = new ArrayList<>(); // Sample data for testing
     private String unum;
+
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class SavingsActivity extends AppCompatActivity {
 
         unum = getIntent().getStringExtra("PK_UNUM");
 
-        loadSavings(); // Method call to add values to savingsList arrayList
+        syncSQLiteSavings(); // Firebase to sqlite, before storing in arrayList
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -76,14 +81,42 @@ public class SavingsActivity extends AppCompatActivity {
             dbManager.insertSavings(newSavings);
             dbManager.close();
 
-            loadSavings();
+            syncSQLiteSavings(); // sync after new savings challenge is created
         }
     }
 
     protected void onResume() {
 
         super.onResume();
-        loadSavings();
+        loadSavings(); // Method call to add values to savingsList arrayList
+    }
+
+    public void syncSQLiteSavings () {
+
+        db = FirebaseFirestore.getInstance();
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+
+        db.collection("SAVINGS").get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+
+                SavingsClass savings = new SavingsClass (
+
+                        doc.getId(),
+                        doc.getString("SName"),
+                        doc.getDouble("SCurrentAmount"),
+                        doc.getDouble("SGoalAmount"),
+                        doc.getString("SFrequency"),
+                        doc.getString("SDate"),
+                        doc.getBoolean("SStatus"),
+                        doc.getString("UNum")
+                );
+                dbManager.insertSavings(savings);
+            }
+            dbManager.close();
+            loadSavings();
+        });
     }
 
     public void back(View v) { // When the back button is pressed, return to the previous activity (Home)
