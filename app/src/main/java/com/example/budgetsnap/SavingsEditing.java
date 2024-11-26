@@ -18,6 +18,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class SavingsEditing extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     TextView nameText, goalText, frequencyText, dateText;
@@ -154,19 +156,26 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
         // Handle clicking
         dialogView.findViewById(R.id.backButton).setOnClickListener(v -> {
 
-            DBManager dbManager = new DBManager(this);
-            dbManager.open();
-
             String name = editName.getText().toString();
             double goalAmount = Double.parseDouble(editGoal.getText().toString());
             String dateFinish = editDate.getText().toString();
 
+            DBManager dbManager = new DBManager(this);
+            dbManager.open();
             dbManager.editSavings(snum, name, goalAmount, frequency, dateFinish);
             dbManager.close();
+
+            editSavingsFB(snum, name, goalAmount, frequency, dateFinish);
 
             finish();
             dialog.dismiss();
         });
+    }
+
+    private void editSavingsFB(String snum, String name, double goalAmount, String frequency, String dateFinish) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SAVINGS").document(snum).update("SName", name, "SGoalAmount", goalAmount, "SFrequency", frequency, "SDate", dateFinish);
     }
 
     public void goHome (View v) {

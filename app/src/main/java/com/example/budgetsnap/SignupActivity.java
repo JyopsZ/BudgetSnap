@@ -168,7 +168,7 @@ public class SignupActivity extends AppCompatActivity {
                         DocumentReference docRef = usersRef.document(nextUNum);
 
                         Map<String, Object> user = new HashMap<>();
-                        user.put("UBDAY", birthday);
+                        user.put("Ubday", birthday);
                         user.put("UEmail", email);
                         user.put("UExpense", 0.0);
                         user.put("UImage", "");

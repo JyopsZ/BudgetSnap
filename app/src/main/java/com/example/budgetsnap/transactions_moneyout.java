@@ -180,9 +180,8 @@ public class transactions_moneyout extends AppCompatActivity {
                 Log.d("BalanceUpdate", "Last transaction date fetched: " + lastTransactionDate);
 
 
-                if (currentDate.equals(lastTransactionDate)) {
-                    String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? AND TDate = ? ORDER BY TNum DESC LIMIT 1";
-                    String[] transactionArgs = {currentUserUNum, currentDate};
+                    String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? ORDER BY TNum DESC LIMIT 1";
+                    String[] transactionArgs = {currentUserUNum};
 
                     Log.d("BalanceUpdate", "Executing query: " + queryTransaction + " with arguments: " + Arrays.toString(transactionArgs));
                     Cursor transactionCursor = db.rawQuery(queryTransaction, transactionArgs);
@@ -202,10 +201,7 @@ public class transactions_moneyout extends AppCompatActivity {
                     Log.d("BalanceUpdate", "No transactions for the current date: " + currentDate);
                 }
                 dateCursor.close();
-            } else {
-                Log.d("BalanceUpdate", "No transactions found for the user.");
-            }
-        } catch (Exception e) {
+            }catch (Exception e) {
             Log.e("BalanceError", "Error updating balance: " + e.getMessage());
         }
     }
@@ -232,6 +228,10 @@ public class transactions_moneyout extends AppCompatActivity {
             Log.e("BalanceUpdateError", "Error updating user balance: " + e.getMessage());
         }
     }
+
+
+
+
     private String generateNewTransactionID() {
         String newID = "T0001"; // Default ID for the first transaction
         try {
@@ -329,10 +329,6 @@ public class transactions_moneyout extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void gonotif(View v) {
-        Intent i = new Intent(transactions_moneyout.this, Notifications.class);
-        startActivity(i);
-    }
 
     public void gocategories(View v) {
         Intent i = new Intent(transactions_moneyout.this, categories_main.class);
