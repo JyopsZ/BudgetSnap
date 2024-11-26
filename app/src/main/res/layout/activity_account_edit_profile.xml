@@ -21,6 +21,18 @@
         app:layout_constraintStart_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
+    <Button
+        android:id="@+id/imagebtn"
+        android:layout_width="144dp"
+        android:layout_height="36dp"
+        android:backgroundTint="@color/verydarkcyan"
+        android:fontFamily="@font/poppins_semibold"
+        android:onClick="goAccount"
+        android:text="Change Image"
+        android:textSize="10sp"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="118dp" />
+
     <ImageView
         android:id="@+id/GreenBG"
         android:layout_width="414dp"
@@ -96,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
     <FrameLayout
-        android:id="@+id/frameLayout1"
+        android:id="@+id/frameLayout"
         android:layout_width="367dp"
         android:layout_height="450dp"
         android:background="@drawable/rounded_border"
@@ -107,7 +119,7 @@
         app:layout_constraintTop_toBottomOf="@+id/RecentTransactions">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
@@ -178,7 +190,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout1"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:layout_constraintVertical_bias="0.98"
         app:srcCompat="@drawable/menu_square" />
 
@@ -254,6 +266,6 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Account"
-        app:srcCompat="@drawable/profile_change" />
+        app:srcCompat="@drawable/profile_girl1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

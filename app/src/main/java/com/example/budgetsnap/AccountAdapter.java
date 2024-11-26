@@ -1,8 +1,11 @@
 package com.example.budgetsnap;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecentTransactionsAdapter extends RecyclerView.Adapter<RecentTransactionsAdapter.TransactionViewHolder> {
+public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.TransactionViewHolder> {
 
-    private List<Transaction> transactionList;
+    private List<AccountList> AccountList;
 
     public static class TransactionViewHolder extends RecyclerView.ViewHolder {
         public TextView transactionName;
@@ -29,8 +32,8 @@ public class RecentTransactionsAdapter extends RecyclerView.Adapter<RecentTransa
         }
     }
 
-    public RecentTransactionsAdapter(List<Transaction> transactionList) {
-        this.transactionList = transactionList;
+    public AccountAdapter(List<AccountList> AccountList) {
+        this.AccountList = AccountList;
     }
 
     @NonNull
@@ -43,15 +46,15 @@ public class RecentTransactionsAdapter extends RecyclerView.Adapter<RecentTransa
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        Transaction transaction = transactionList.get(position);
-        holder.transactionName.setText(transaction.getName());
-        holder.transactionDate.setText(transaction.getDate());
-        holder.transactionAmount.setText(transaction.getAmount());
-        holder.transactionCategory.setText(transaction.getCategory());
+        AccountList accountList = AccountList.get(position);
+        holder.transactionName.setText(accountList.getName());
+        holder.transactionDate.setText(accountList.getDate());
+        holder.transactionAmount.setText(accountList.getAmount());
+        holder.transactionCategory.setText(accountList.getCategory());
     }
 
     @Override
     public int getItemCount() {
-        return transactionList.size();
+        return AccountList.size();
     }
 }
