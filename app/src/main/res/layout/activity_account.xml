@@ -90,117 +90,6 @@
         app:layout_constraintStart_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
-    <TextView
-        android:id="@+id/Friends"
-        android:layout_width="361dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="Friends"
-        android:textColor="#E16162"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="367dp"
-        android:layout_height="110dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/rounded_border"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Friends">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="93dp">
-
-            <ImageView
-                android:id="@+id/friend1"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/profile_boy1" />
-
-            <ImageView
-                android:id="@+id/friend2"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                app:layout_constraintEnd_toStartOf="@+id/friend3"
-                app:layout_constraintStart_toEndOf="@+id/friend1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/profile_girl2" />
-
-            <ImageView
-                android:id="@+id/friend3"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView6"
-                app:layout_constraintStart_toEndOf="@+id/friend2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/profile_boy2" />
-
-            <TextView
-                android:id="@+id/friendName1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/poppins"
-                android:text="Dylan Tan"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/friend1" />
-
-            <TextView
-                android:id="@+id/friendName2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:fontFamily="@font/poppins"
-                android:text="Taylor Swift"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/friendName1"
-                app:layout_constraintTop_toBottomOf="@+id/friend2" />
-
-            <TextView
-                android:id="@+id/friendName3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:fontFamily="@font/poppins"
-                android:text="Harry Styles"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/friendName2"
-                app:layout_constraintTop_toBottomOf="@+id/friend3" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_marginEnd="60dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/profile_girl3" />
-
-            <TextView
-                android:id="@+id/friendName4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/poppins"
-                android:text="Tyla Seethal"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/friendName3"
-                app:layout_constraintTop_toBottomOf="@+id/imageView6" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </FrameLayout>
 
     <TextView
         android:id="@+id/RecentTransactions"
@@ -214,12 +103,12 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
     <FrameLayout
         android:id="@+id/frameLayout1"
         android:layout_width="367dp"
-        android:layout_height="300dp"
+        android:layout_height="450dp"
         android:background="@drawable/rounded_border"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -231,6 +120,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollbars="vertical"
             app:layout_constraintTop_toBottomOf="@+id/RecentTransactions"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
