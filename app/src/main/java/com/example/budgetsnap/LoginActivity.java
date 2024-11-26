@@ -18,6 +18,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView emailText, passwordText;
     EditText editEmail, editPassword;
     ImageButton eyeButton;
+
+    private FirebaseFirestore db; // Results in error if declared in method for some reason >:(
 
     boolean isPasswordVisible = false;
 
@@ -42,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         initializeViews();
-        refreshUser(); // Update arrayList with new entries to the db
+
+        syncFirebaseToSQLite(); // Duplicate Firebase entries into SQLite DB
     }
 
     private void initializeViews() {
@@ -93,6 +103,37 @@ public class LoginActivity extends AppCompatActivity {
 
         cursor.close();
         dbManager.close();
+    }
+
+    private void syncFirebaseToSQLite() { Reference: https://firebase.google.com/docs/firestore/query-data/get-data
+
+        db = FirebaseFirestore.getInstance();
+        DBManager dbManager = new DBManager(this);
+
+        dbManager.open();
+
+        db.collection("USER").get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+
+                UserClass user = new UserClass (
+
+                        doc.getId(),
+                        doc.getString("UName"),
+                        doc.getString("UPass"),
+                        doc.getString("UBday"),
+                        doc.getString("UEmail"),
+                        doc.getString("UImage"),
+                        doc.getDouble("UIncome"),
+                        doc.getDouble("UExpense")
+                );
+
+                dbManager.insertUser(user);
+            }
+
+            dbManager.close();
+            refreshUser(); // Update arrayList with new entries to the db. Start after firebase data is synced.
+        });
     }
 
     public void togglePassword(View v) { // Method for toggling password visibility onClick of eye symbol

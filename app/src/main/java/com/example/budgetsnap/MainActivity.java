@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
