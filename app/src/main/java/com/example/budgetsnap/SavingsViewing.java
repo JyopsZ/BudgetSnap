@@ -152,6 +152,8 @@ public class SavingsViewing extends AppCompatActivity {
             dbManager.deleteSavingsGoal(snum);
             dbManager.close();
 
+            deleteFirebaseSavings(snum);
+
             // Handle clicking Back button
             deletionConfirmView.findViewById(R.id.backButton).setOnClickListener(v2 -> {
                 deletionConfirmDialog.dismiss();
@@ -159,6 +161,12 @@ public class SavingsViewing extends AppCompatActivity {
                 finish();
             });
         });
+    }
+
+    private void deleteFirebaseSavings(String snum) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SAVINGS").document(snum).delete();
     }
 
     public void inputMoney(View v) {
