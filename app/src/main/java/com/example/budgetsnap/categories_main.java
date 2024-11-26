@@ -1,7 +1,10 @@
 package com.example.budgetsnap;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +16,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class categories_main extends AppCompatActivity {
 
     public String Title_Category;
+    private String UNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +28,20 @@ public class categories_main extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Retrieve UNum from the Intent
+        Intent intent = getIntent();
+        UNum = intent.getStringExtra("PK_UNUM");
+
+        // Log the received UNum
+        Log.d(TAG, "Received UNum: " + UNum);
+
+        if (UNum == null || UNum.isEmpty()) {
+            Log.e(TAG, "UNum is null or empty. Cannot query database.");
+            return;
+        }
     }
+
     public void viewHome(View v) {
         Title_Category = "Home";
         Intent i = new Intent(this, categories_select.class);
@@ -89,20 +107,24 @@ public class categories_main extends AppCompatActivity {
 
     public void goHome (View v) {
         Intent i = new Intent(this, Home.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goTransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goCategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
     public void goAccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 }

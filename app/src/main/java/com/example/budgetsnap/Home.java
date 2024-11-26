@@ -342,6 +342,7 @@ public class Home extends AppCompatActivity {
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 

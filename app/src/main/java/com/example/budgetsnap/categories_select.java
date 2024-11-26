@@ -1,7 +1,10 @@
 package com.example.budgetsnap;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,6 +29,8 @@ public class categories_select extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private List<Categories> catList;
     private TextView categoryView;
+    private String UNum;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,17 @@ public class categories_select extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
+        // Retrieve UNum from the Intent
+        Intent intent = getIntent();
+        UNum = intent.getStringExtra("PK_UNUM");
+
+        // Log the received UNum
+        Log.d(TAG, "Received UNum: " + UNum);
+
+        if (UNum == null || UNum.isEmpty()) {
+            Log.e(TAG, "UNum is null or empty. Cannot query database.");
+            return;
+        }
     }
 
     public void back(View v) {
@@ -131,23 +147,27 @@ public class categories_select extends AppCompatActivity {
         Intent intent = new Intent(this, categories_main.class);
         startActivity(intent);
     }
-    public void goHome (View v) {
 
+    public void goHome (View v) {
         Intent i = new Intent(this, Home.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goTransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goCategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
     public void goAccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 }
