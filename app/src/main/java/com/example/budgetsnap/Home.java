@@ -313,9 +313,12 @@ public class Home extends AppCompatActivity {
         dbHelper.close();
     }
 
+    public void returnToMainActivity(View v) {
+        Intent i= new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
 
     public void gosavings(View v) {
-
         Intent i = new Intent(this, SavingsActivity.class);
         i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);

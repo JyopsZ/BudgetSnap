@@ -74,7 +74,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         //USER
@@ -84,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + UPASS + " TEXT,"
                 + UBDAY + " TEXT,"
                 + UEMAIL + " TEXT,"
-                + UIMAGE + " TEXT,"
+                + UIMAGE + " BLOB,"
                 + UINCOME + " DOUBLE,"
                 + UEXPENSE + " DOUBLE"
                 + ")";
@@ -201,4 +200,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET_ADD);
         onCreate(db);
     }
+
+    public void updateUserName(String UNum, String newUserName) {
+        String query = "UPDATE " + TABLE_USER +
+                " SET " + UNAME + " = ? " +
+                " WHERE " + PK_UNUM + " = ?";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query, new Object[]{newUserName, UNum});
+        db.close();
+    }
+
 }

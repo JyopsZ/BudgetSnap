@@ -359,11 +359,13 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
 
     public void gocategories(View v) {
         Intent i = new Intent(Transaction1.this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(Transaction1.this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 }

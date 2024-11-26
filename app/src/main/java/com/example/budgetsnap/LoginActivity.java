@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db; // Results in error if declared in method for some reason >:(
 
     boolean isPasswordVisible = false;
+    String UNum = null;
 
     ArrayList<UserClass> userClassList = new ArrayList<>(); // Sample data for testing
 
@@ -78,66 +80,72 @@ public class LoginActivity extends AppCompatActivity {
         // Reference for Html: https://alfredmyers.com/2018/02/06/warning-cs0618-html-fromhtmlstring-is-obsolete-deprecated/#google_vignette
     }
 
-    private void refreshUser() { // Repurposed method from MCO2. Used to add new users to arrayList from SignupActivity intent. (addUser)
-                                // Updated to add new users to arrayList by refreshing database.
-
+    private void refreshUser() {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
 
         userClassList.clear();
 
-        Cursor cursor = dbManager.fetchUsers(); // Get all users currently in db
+        Cursor cursor = dbManager.fetchUsers();
 
         if (cursor.moveToFirst()) {
             do {
-                userClassList.add(new UserClass(
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE)))
-                );
+                String UNum = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM));
+                String UName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME));
+                String UPass = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS));
+                String UBDay = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY));
+                String UEmail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL));
+                byte[] UImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE));
+                double UIncome = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME));
+                double UExpense = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE));
+
+                userClassList.add(new UserClass(UNum, UName, UPass, UBDay, UEmail, UImage, UIncome, UExpense));
             } while (cursor.moveToNext());
         }
-
-        // FOR DEBUGGING
-        //Toast.makeText(this, "First User UNum: " + userClassList.get(0).getUNum(), Toast.LENGTH_LONG).show();
 
         cursor.close();
         dbManager.close();
     }
 
-    private void syncFirebaseToSQLite() { //Reference: https://firebase.google.com/docs/firestore/query-data/get-data
-                                            // *ONLY FOR USER :(
+    private void syncFirebaseToSQLite() { Reference: https://firebase.google.com/docs/firestore/query-data/get-data
+
         db = FirebaseFirestore.getInstance();
         DBManager dbManager = new DBManager(this);
 
         dbManager.open();
 
         db.collection("USER").get().addOnSuccessListener(queryDocumentSnapshots -> {
-
             for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                byte[] imageBytes = null;
 
-                UserClass user = new UserClass (
 
+                if (doc.contains("UImage") && doc.get("UImage") != null) {
+                    String imageString = doc.getString("UImage");
+
+                    try {
+                        imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                UserClass user = new UserClass(
                         doc.getId(),
                         doc.getString("UName"),
                         doc.getString("UPass"),
                         doc.getString("UBday"),
                         doc.getString("UEmail"),
-                        doc.getString("UImage"),
+                        imageBytes,
                         doc.getDouble("UIncome"),
                         doc.getDouble("UExpense")
                 );
 
+
                 dbManager.insertUser(user);
             }
 
-            dbManager.close();
-            refreshUser(); // Update arrayList with new entries to the db. Start after firebase data is synced.
+            refreshUser();
         });
     }
 
@@ -275,11 +283,10 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
-        String UNum = null;
         boolean isValid = false;
-        for (UserClass userClass : userClassList) { // Check every user in the arrayList
+        for (UserClass userClass : userClassList) {
 
-            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
+            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) {
                UNum = userClass.getUNum();
                 isValid = true;
                 break;
@@ -287,7 +294,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            // for passing of UNum
             SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("userUNum", UNum); // Store the UNum
@@ -304,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent i = getIntent();
             finish();
-            startActivity(i); // Reload activity if incorrect
+            startActivity(i);
         }
     }
 
