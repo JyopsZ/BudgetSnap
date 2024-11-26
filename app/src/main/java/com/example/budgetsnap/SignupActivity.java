@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
             return insets;
         });
 
-        initializeViews(); // Call to initialize views
+        initializeViews();
     }
 
     private void initializeViews() {
@@ -134,13 +135,24 @@ public class SignupActivity extends AppCompatActivity {
         dbManager.open();
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_change);
+        if (bitmap == null) {
+            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, false);
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
 
+        String imageBase64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         String maxUNum = dbManager.getUserMax();
-        int currentNum = Integer.parseInt(maxUNum.substring(1));
-        String nextUNum = String.format("U%04d", currentNum + 1);
+
+        // Fix: Extract the numeric part of maxUNum and increment it
+        String numericPart = maxUNum.substring(1); // Skip the "U" character
+        int currentNum = Integer.parseInt(numericPart); // Convert the numeric part to integer
+        String nextUNum = String.format("U%04d", currentNum + 1); // Generate the next user number
 
         UserClass newUser = new UserClass(
                 nextUNum,
@@ -159,7 +171,7 @@ public class SignupActivity extends AppCompatActivity {
         FirebaseFirestore dbF = FirebaseFirestore.getInstance();
         CollectionReference usersRef = dbF.collection("USER");
 
-        // Query all documents and sort  by document ID
+        // Query all documents and sort by document ID
         usersRef.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
@@ -179,7 +191,7 @@ public class SignupActivity extends AppCompatActivity {
                         user.put("Ubday", birthday);
                         user.put("UEmail", email);
                         user.put("UExpense", 0.0);
-                        user.put("UImage", "");
+                        user.put("UImage", imageBase64);
                         user.put("UIncome", 0.0);
                         user.put("UName", name);
                         user.put("UPass", password);
@@ -201,6 +213,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Error fetching data from Firebase", Toast.LENGTH_SHORT).show();
                 });
     }
+
 
     public void log (View v) {
 

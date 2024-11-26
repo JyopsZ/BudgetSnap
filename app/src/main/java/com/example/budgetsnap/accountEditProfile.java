@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +20,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class accountEditProfile extends AppCompatActivity {
 
@@ -58,10 +64,8 @@ public class accountEditProfile extends AppCompatActivity {
             return;
         }
 
-        // Load user details into the UI
         getUserDetails(UNum);
 
-        // Open gallery when profile image is clicked
         profileImage.setOnClickListener(v -> openGallery());
 
         saveBtn.setOnClickListener(v -> {
@@ -140,8 +144,6 @@ public class accountEditProfile extends AppCompatActivity {
 
     private void updateUserDetails(String UNum, String newUserName, Bitmap profileImageBitmap) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-        // Convert Bitmap to byte array
         byte[] imageBytes = profileImageBitmap != null ? bitmapToByteArray(profileImageBitmap) : null;
 
         ContentValues values = new ContentValues();
@@ -151,7 +153,36 @@ public class accountEditProfile extends AppCompatActivity {
         }
 
         int rowsUpdated = database.update(DatabaseHelper.TABLE_USER, values, DatabaseHelper.PK_UNUM + " = ?", new String[]{UNum});
+
+        if (rowsUpdated > 0) {
+            Log.d("UpdateUserDetails", "User details updated locally in SQLite.");
+        } else {
+            Log.e("UpdateUserDetails", "Failed to update user details in SQLite.");
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference userRef = db.collection("USER").document(UNum);
+
+        String imageString = null;
+        if (profileImageBitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
+
+        Map<String, Object> userUpdates = new HashMap<>();
+        userUpdates.put("UName", newUserName);
+        if (imageString != null) {
+            userUpdates.put("UImage", imageString);  // Store the Base64 encoded image string in Firebase
+        }
+
+        // Update Firebase Firestore
+        userRef.update(userUpdates)
+                .addOnSuccessListener(aVoid -> Log.d("UpdateUserDetails", "User details updated in Firebase."))
+                .addOnFailureListener(e -> Log.e("UpdateUserDetails", "Error updating user details in Firebase", e));
     }
+
 
 
     @Override

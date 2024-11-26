@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -80,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
         userClassList.clear();
 
-        Cursor cursor = dbManager.fetchUsers(); // Get all users currently in db
+        Cursor cursor = dbManager.fetchUsers();
 
         if (cursor.moveToFirst()) {
             do {
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 String UPass = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS));
                 String UBDay = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY));
                 String UEmail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL));
-                byte[] UImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)); // Use getBlob
+                byte[] UImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE));
                 double UIncome = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME));
                 double UExpense = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE));
 
@@ -101,38 +102,49 @@ public class LoginActivity extends AppCompatActivity {
         dbManager.close();
     }
 
-    private void syncFirebaseToSQLite() { Reference: https://firebase.google.com/docs/firestore/query-data/get-data
-
+    private void syncFirebaseToSQLite() {
         db = FirebaseFirestore.getInstance();
         DBManager dbManager = new DBManager(this);
 
         dbManager.open();
 
         db.collection("USER").get().addOnSuccessListener(queryDocumentSnapshots -> {
-
             for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                byte[] imageBytes = null;
 
-                UserClass user = new UserClass (
 
+                if (doc.contains("UImage") && doc.get("UImage") != null) {
+                    String imageString = doc.getString("UImage");
+
+                    try {
+                        imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                UserClass user = new UserClass(
                         doc.getId(),
                         doc.getString("UName"),
                         doc.getString("UPass"),
                         doc.getString("UBday"),
                         doc.getString("UEmail"),
-                        doc.getString("UImage"),
+                        imageBytes,
                         doc.getDouble("UIncome"),
                         doc.getDouble("UExpense")
                 );
 
+
                 dbManager.insertUser(user);
             }
 
-            dbManager.close();
-            refreshUser(); // Update arrayList with new entries to the db. Start after firebase data is synced.
+            refreshUser();
         });
     }
 
-    public void togglePassword(View v) { // Method for toggling password visibility onClick of eye symbol
+
+    public void togglePassword(View v) {
 
         isPasswordVisible = !isPasswordVisible;
 
@@ -156,9 +168,9 @@ public class LoginActivity extends AppCompatActivity {
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
         boolean isValid = false;
-        for (UserClass userClass : userClassList) { // Check every user in the arrayList
+        for (UserClass userClass : userClassList) {
 
-            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
+            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) {
                UNum = userClass.getUNum();
                 isValid = true;
                 break;
@@ -166,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            // for passing of UNum
             SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("userUNum", UNum); // Store the UNum
@@ -183,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent i = getIntent();
             finish();
-            startActivity(i); // Reload activity if incorrect
+            startActivity(i);
         }
     }
 
