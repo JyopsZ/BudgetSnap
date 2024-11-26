@@ -178,15 +178,10 @@ public class transaction_moneyin extends AppCompatActivity {
 
             Cursor dateCursor = db.rawQuery(queryDateCheck, dateCheckArgs);
             if (dateCursor != null && dateCursor.moveToFirst()) {
-                String lastTransactionDate = dateCursor.getString(dateCursor.getColumnIndex("TDate"));
-                Log.d("BalanceUpdate", "Last transaction date fetched: " + lastTransactionDate);
 
+                    String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? ORDER BY TNum DESC LIMIT 1";
+                    String[] transactionArgs = {currentUserUNum};
 
-                if (currentDate.equals(lastTransactionDate)) {
-                    String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? AND TDate = ? ORDER BY TNum DESC LIMIT 1";
-                    String[] transactionArgs = {currentUserUNum, currentDate};
-
-                    Log.d("BalanceUpdate", "Executing query: " + queryTransaction + " with arguments: " + Arrays.toString(transactionArgs));
                     Cursor transactionCursor = db.rawQuery(queryTransaction, transactionArgs);
 
                     if (transactionCursor != null && transactionCursor.moveToFirst()) {
@@ -204,9 +199,6 @@ public class transaction_moneyin extends AppCompatActivity {
                     Log.d("BalanceUpdate", "No transactions for the current date: " + currentDate);
                 }
                 dateCursor.close();
-            } else {
-                Log.d("BalanceUpdate", "No transactions found for the user.");
-            }
         } catch (Exception e) {
             Log.e("BalanceError", "Error updating balance: " + e.getMessage());
         }
@@ -362,9 +354,6 @@ public class transaction_moneyin extends AppCompatActivity {
         startActivity(new Intent(this, Transaction1.class));
     }
 
-    public void gonotif(View v) {
-        startActivity(new Intent(this, Notifications.class));
-    }
 
     public void gocategories(View v) {
         startActivity(new Intent(this, categories_main.class));

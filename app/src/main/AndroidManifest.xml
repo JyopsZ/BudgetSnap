@@ -17,12 +17,6 @@
             android:name=".accountEditProfile"
             android:exported="false" />
         <activity
-            android:name=".accountViewFriends"
-            android:exported="false" />
-        <activity
-            android:name=".Notifications"
-            android:exported="false" />
-        <activity
             android:name=".SavingsEditing"
             android:exported="false" />
         <activity
