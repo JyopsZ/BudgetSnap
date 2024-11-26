@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 12;
+    private static final int DB_VERSION = 15;
 
     // User
     public static final String TABLE_USER = "USER";

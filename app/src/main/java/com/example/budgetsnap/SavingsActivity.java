@@ -14,10 +14,16 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SavingsActivity extends AppCompatActivity {
 
@@ -25,7 +31,7 @@ public class SavingsActivity extends AppCompatActivity {
     ArrayList<SavingsClass> savingsList = new ArrayList<>(); // Sample data for testing
     private String unum;
 
-    FirebaseFirestore db;
+    FirebaseFirestore db, db2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +54,9 @@ public class SavingsActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1  && resultCode  == RESULT_OK) {
-
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             String name = data.getStringExtra("name");
             double currentAmount = data.getDoubleExtra("currentAmount", 0.0);
             double goalAmount = data.getDoubleExtra("goalAmount", 0.0);
@@ -60,28 +64,60 @@ public class SavingsActivity extends AppCompatActivity {
             String dateFinish = data.getStringExtra("dateFinish");
             boolean isActivated = data.getBooleanExtra("isActivated", true);
 
-            DBManager dbManager = new DBManager(this);
-            dbManager.open();
+            FirebaseFirestore dbF = FirebaseFirestore.getInstance();
+            CollectionReference savingsRef = dbF.collection("SAVINGS");
 
-            String maxSNum = dbManager.getSavingsMax();
-            int currentSavings = Integer.parseInt(maxSNum.substring(1));
-            String nextSavings = String.format("S%04d", currentSavings + 1);
+            savingsRef.get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        String nextSavings = "S0001";
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            String maxDocId = "";
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                String docId = doc.getId();
+                                if (docId.compareTo(maxDocId) > 0) {
+                                    maxDocId = docId;
+                                }
+                            }
+                            int currentNum = Integer.parseInt(maxDocId.substring(1));
+                            nextSavings = String.format("S%04d", currentNum + 1);
+                        }
 
-            SavingsClass newSavings = new SavingsClass (
-                    nextSavings,
-                    name,
-                    currentAmount,
-                    goalAmount,
-                    frequency,
-                    dateFinish,
-                    isActivated,
-                    unum
-            );
+                        SavingsClass newSavings = new SavingsClass(
+                                nextSavings,
+                                name,
+                                currentAmount,
+                                goalAmount,
+                                frequency,
+                                dateFinish,
+                                isActivated,
+                                unum
+                        );
 
-            dbManager.insertSavings(newSavings);
-            dbManager.close();
+                        Map<String, Object> savings = new HashMap<>();
+                        savings.put("SName", name);
+                        savings.put("SCurrentAmount", currentAmount);
+                        savings.put("SGoalAmount", goalAmount);
+                        savings.put("SFrequency", frequency);
+                        savings.put("SDate", dateFinish);
+                        savings.put("SStatus", isActivated);
+                        savings.put("UNum", unum);
 
-            syncSQLiteSavings(); // sync after new savings challenge is created
+                        savingsRef.document(nextSavings).set(savings)
+                                .addOnSuccessListener(aVoid -> {
+                                    DBManager dbManager = new DBManager(SavingsActivity.this);
+                                    dbManager.open();
+                                    dbManager.insertSavings(newSavings);
+                                    dbManager.close();
+                                    Toast.makeText(SavingsActivity.this, "Savings created successfully", Toast.LENGTH_SHORT).show();
+                                    syncSQLiteSavings();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(SavingsActivity.this, "Error saving to Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(SavingsActivity.this, "Error fetching data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         }
     }
 
