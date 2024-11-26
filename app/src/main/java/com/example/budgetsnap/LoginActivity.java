@@ -25,6 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -117,6 +119,9 @@ public class LoginActivity extends AppCompatActivity {
 
             for (DocumentSnapshot doc : queryDocumentSnapshots) {
 
+                String imageString = doc.getString("UImage");
+                byte[] imageBytes = imageString.getBytes(StandardCharsets.UTF_8); // Reference: https://stackoverflow.com/questions/18571223/how-to-convert-java-string-into-byte
+
                 UserClass user = new UserClass (
 
                         doc.getId(),
@@ -124,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                         doc.getString("UPass"),
                         doc.getString("UBday"),
                         doc.getString("UEmail"),
-                        doc.getString("UImage"),
+                        imageBytes,
                         doc.getDouble("UIncome"),
                         doc.getDouble("UExpense")
                 );
