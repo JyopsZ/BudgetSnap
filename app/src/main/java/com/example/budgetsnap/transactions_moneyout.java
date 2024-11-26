@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,8 +46,9 @@ public class transactions_moneyout extends AppCompatActivity {
     private SQLiteDatabase db;
     private LinkedHashMap<String, String> categoryMap;
     private String currentUserUNum; // CNUM -> CNAME mapping
-
+    private String PK_Unum;
     private byte[] byteArray;
+    private String base64ImageString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,10 @@ public class transactions_moneyout extends AppCompatActivity {
 
         // Handle Add Expense button
         buttonAddExpense.setOnClickListener(v -> addExpenseToDatabase());
+
+        // CURRENT USER'S NUMBER
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
+        Toast.makeText(this, "Current User: " + PK_Unum, Toast.LENGTH_SHORT).show();
     }
 
     private String getCurrentUserUNum() {
@@ -135,6 +141,9 @@ public class transactions_moneyout extends AppCompatActivity {
             // Generate a new transaction ID
             String newTransactionID = generateNewTransactionID();
 
+            // Set TStatus as boolean (false for Money Out)
+            boolean tStatus = false;
+
             // Prepare SQLite ContentValues
             ContentValues values = new ContentValues();
             values.put("TNum", newTransactionID);
@@ -143,8 +152,8 @@ public class transactions_moneyout extends AppCompatActivity {
             values.put("TDate", date);
             values.put("TTime", time);
             values.put("CNum", categoryCNUM);
-            values.put("TImage", byteArray);
-            values.put("TStatus", 0); // 0 for Money Out
+            values.put("TImage", base64ImageString); // Store Base64 image in SQLite
+            values.put("TStatus", tStatus ? 1 : 0); // SQLite stores TStatus as 1 (true) or 0 (false)
             values.put("UNum", currentUserUNum);
 
             // Insert into SQLite
@@ -154,7 +163,7 @@ public class transactions_moneyout extends AppCompatActivity {
                 Toast.makeText(this, "Transaction added successfully to SQLite", Toast.LENGTH_SHORT).show();
 
                 // Insert into Firebase Firestore
-                insertExpenseIntoFirebase(newTransactionID, name, Double.parseDouble(amount), date, time, categoryCNUM, 1);
+                insertExpenseIntoFirebase(newTransactionID, name, Double.parseDouble(amount), date, time, categoryCNUM, tStatus, base64ImageString);
 
                 updateBalanceForTransaction();
                 clearFields();
@@ -167,19 +176,21 @@ public class transactions_moneyout extends AppCompatActivity {
         }
     }
 
-    private void insertExpenseIntoFirebase(String transactionID, String name, double amount, String date, String time, String categoryCNUM, int status) {
+    private void insertExpenseIntoFirebase(String transactionID, String name, double amount, String date, String time, String categoryCNUM, boolean status, String base64Image) {
         FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
 
         // Create a map of the transaction data
         Map<String, Object> transactionData = new HashMap<>();
-        transactionData.put("TNum", transactionID);
         transactionData.put("TName", name);
         transactionData.put("TAmount", amount);
         transactionData.put("TDate", date);
         transactionData.put("TTime", time);
         transactionData.put("CNum", categoryCNUM);
-        transactionData.put("TStatus", status); // 0 for Money Out
+        transactionData.put("TStatus", status); // Store TStatus as boolean (false for Money Out)
         transactionData.put("UNum", currentUserUNum);
+        if (base64Image != null) {
+            transactionData.put("TImageBase64", base64Image); // Add Base64 image string to Firestore
+        }
 
         // Insert into Firestore
         dbFirebase.collection("TRANSACTIONS")
@@ -255,10 +266,10 @@ public class transactions_moneyout extends AppCompatActivity {
             Log.e("BalanceUpdateError", "Error updating user balance: " + e.getMessage());
         }
     }
+
     private String generateNewTransactionID() {
         String newID = "T0001"; // Default ID for the first transaction
         try {
-            // Query the database for the latest transaction ID
             String query = "SELECT TNum FROM TRANSACTIONS ORDER BY TNum DESC LIMIT 1";
             try (Cursor cursor = db.rawQuery(query, null)) {
                 if (cursor.moveToFirst()) {
@@ -291,7 +302,6 @@ public class transactions_moneyout extends AppCompatActivity {
         intent.setType("image/*"); // Filter for image files only
         imagePickerLauncher.launch(intent); // Launch the image picker
          */
-
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraLauncher.launch(cameraIntent);
     }
@@ -316,14 +326,13 @@ public class transactions_moneyout extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
 
-                    // Convert bitmap to byte array for BLOB storage
+                    // Convert bitmap to Base64 string
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byteArray = stream.toByteArray();
+                    byte[] byteArray = stream.toByteArray();
+                    base64ImageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-                    // The byte array will be stored as BLOB in SQLite
-                    selectedImageUriMoneyOut = Uri.parse("blob://" + System.currentTimeMillis());
-                    Toast.makeText(this, "Image captured and ready for storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Image captured and converted to Base64", Toast.LENGTH_SHORT).show();
                 }
             }
     );

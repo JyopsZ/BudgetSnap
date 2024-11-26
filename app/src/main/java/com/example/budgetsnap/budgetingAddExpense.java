@@ -140,7 +140,6 @@ public class budgetingAddExpense extends AppCompatActivity {
 
             // Insert into Firebase
             Map<String, Object> firebaseData = new HashMap<>();
-            firebaseData.put("BANum", newBANum);
             firebaseData.put("BAName", name);
             firebaseData.put("BAExpense", amount);
             firebaseData.put("BNum", PK_BNUM);

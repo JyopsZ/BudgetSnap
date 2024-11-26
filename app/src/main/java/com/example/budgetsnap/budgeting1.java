@@ -183,7 +183,6 @@ public class budgeting1 extends AppCompatActivity {
 
         // Create a map to store the BNum and UNum
         Map<String, Object> budgetData = new HashMap<>();
-        budgetData.put("BNum", bNum);
         budgetData.put("UNum", userUnum);
 
         dbFirebase.collection("BUDGET")

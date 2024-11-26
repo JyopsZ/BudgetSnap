@@ -158,7 +158,6 @@ public class budgetingEditCategory extends AppCompatActivity {
 
             // Insert into Firebase
             Map<String, Object> firebaseData = new HashMap<>();
-            firebaseData.put("BCNum", newBCNum);
             firebaseData.put("BCBudget", amount);
             firebaseData.put("BNum", PK_BNUM);
             firebaseData.put("CNum", categoryId);

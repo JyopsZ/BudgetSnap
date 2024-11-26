@@ -114,6 +114,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
             // Start Money In Activity
             Intent i = new Intent(Transaction1.this, transaction_moneyin.class);
+            i.putExtra("PK_UNUM", PK_Unum);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
@@ -121,6 +122,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
             // Start Money Out Activity
             Intent i = new Intent(Transaction1.this, transactions_moneyout.class);
+            i.putExtra("PK_UNUM", PK_Unum);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
