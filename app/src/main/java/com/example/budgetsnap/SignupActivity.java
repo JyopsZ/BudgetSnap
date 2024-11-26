@@ -16,6 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignupActivity extends AppCompatActivity {
 
     TextView nameText, birthdayText, emailText, passwordText, rePasswordText;
@@ -107,8 +115,7 @@ public class SignupActivity extends AppCompatActivity {
         passwordText.setSelection(passwordText.getText().length());
     }
 
-    public void sign (View v) {
-
+    public void sign(View v) {
         String name = editName.getText().toString();
         String birthday = editBirthday.getText().toString();
         String email = editEmail.getText().toString();
@@ -123,27 +130,68 @@ public class SignupActivity extends AppCompatActivity {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
 
-        // Get next UNUM
-        String maxUNum = dbManager.getUserMax(); // Current Max UNum from database
+        String maxUNum = dbManager.getUserMax();
         int currentNum = Integer.parseInt(maxUNum.substring(1));
         String nextUNum = String.format("U%04d", currentNum + 1);
 
-        UserClass newUser = new UserClass( // Create a new user based on inputs.
+        UserClass newUser = new UserClass(
                 nextUNum,
                 name,
                 password,
                 birthday,
                 email,
                 "",
-                0.0, // Income and expense are both 0 by default.
+                0.0,
                 0.0
         );
 
-        dbManager.insertUser(newUser); // Insert new user into database
+        dbManager.insertUser(newUser);
         dbManager.close();
 
-        Intent i = new Intent(SignupActivity.this, CongratsSignup.class);
-        startActivity(i);
+        FirebaseFirestore dbF = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = dbF.collection("USER");
+
+        // Query all documents and sort  by document ID
+        usersRef.get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Find the document with the "highest" ID
+                        String maxDocId = "";
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            String docId = doc.getId();
+                            if (docId.compareTo(maxDocId) > 0) {
+                                maxDocId = docId;
+                            }
+                        }
+
+                        // Use the nextUNum for the new user
+                        DocumentReference docRef = usersRef.document(nextUNum);
+
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("UBDAY", birthday);
+                        user.put("UEmail", email);
+                        user.put("UExpense", 0.0);
+                        user.put("UImage", "");
+                        user.put("UIncome", 0.0);
+                        user.put("UName", name);
+                        user.put("UPass", password);
+
+                        // Save user to Firestore
+                        docRef.set(user)
+                                .addOnSuccessListener(aVoid -> {
+                                    Intent i = new Intent(SignupActivity.this, CongratsSignup.class);
+                                    startActivity(i);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(SignupActivity.this, "Error saving data to Firebase", Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        Toast.makeText(SignupActivity.this, "No user found to generate UNum", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(SignupActivity.this, "Error fetching data from Firebase", Toast.LENGTH_SHORT).show();
+                });
     }
 
     public void log (View v) {
