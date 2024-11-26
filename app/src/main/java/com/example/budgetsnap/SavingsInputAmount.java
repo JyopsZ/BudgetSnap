@@ -11,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class SavingsInputAmount extends AppCompatActivity {
 
     EditText editInputText;
@@ -46,7 +48,21 @@ public class SavingsInputAmount extends AppCompatActivity {
         dbManager.incrementCurSavings(snum, amount);
         dbManager.close();
 
+        incrementCurSavingsFB(snum, amount);
+
         finish();
+    }
+
+    private void incrementCurSavingsFB(String snum, double amount) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SAVINGS").document(snum).get().addOnSuccessListener(documentSnapshot -> {
+
+            double currentAmount = documentSnapshot.getDouble("SCurrentAmount");
+            double newAmount = currentAmount += amount;
+
+            db.collection("SAVINGS").document(snum).update("SCurrentAmount", newAmount);
+        });
     }
 
     public void goHome (View v) {
