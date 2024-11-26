@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     ImageButton eyeButton;
 
     boolean isPasswordVisible = false;
+    String UNum = null;
 
     ArrayList<UserClass> userClassList = new ArrayList<>(); // Sample data for testing
 
@@ -118,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
-        String UNum = null;
         boolean isValid = false;
         for (UserClass userClass : userClassList) { // Check every user in the arrayList
 
