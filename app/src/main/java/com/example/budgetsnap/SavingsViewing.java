@@ -25,6 +25,8 @@ public class SavingsViewing extends AppCompatActivity {
 
     String snum;
 
+    String UNum = getIntent().getStringExtra("PK_UNUM");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,22 +204,26 @@ public class SavingsViewing extends AppCompatActivity {
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void gosavings(View v) {
         Intent i = new Intent(this, SavingsActivity.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 }

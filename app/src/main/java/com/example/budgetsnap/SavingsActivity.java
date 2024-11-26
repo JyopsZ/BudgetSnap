@@ -29,7 +29,7 @@ public class SavingsActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ArrayList<SavingsClass> savingsList = new ArrayList<>(); // Sample data for testing
-    private String unum;
+    private String UNum;
 
     FirebaseFirestore db, db2;
 
@@ -48,7 +48,7 @@ public class SavingsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        unum = getIntent().getStringExtra("PK_UNUM");
+        UNum = getIntent().getStringExtra("PK_UNUM");
 
         syncSQLiteSavings(); // Firebase to sqlite, before storing in arrayList
     }
@@ -90,7 +90,7 @@ public class SavingsActivity extends AppCompatActivity {
                                 frequency,
                                 dateFinish,
                                 isActivated,
-                                unum
+                                UNum
                         );
 
                         Map<String, Object> savings = new HashMap<>();
@@ -100,7 +100,7 @@ public class SavingsActivity extends AppCompatActivity {
                         savings.put("SFrequency", frequency);
                         savings.put("SDate", dateFinish);
                         savings.put("SStatus", isActivated);
-                        savings.put("UNum", unum);
+                        savings.put("UNum", UNum);
 
                         savingsRef.document(nextSavings).set(savings)
                                 .addOnSuccessListener(aVoid -> {
@@ -179,7 +179,7 @@ public class SavingsActivity extends AppCompatActivity {
 
         savingsList.clear();
 
-        Cursor cursor = dbManager.fetchSavings(unum);
+        Cursor cursor = dbManager.fetchSavings(UNum);
 
         if (cursor.moveToFirst()) {
             do {
@@ -204,20 +204,22 @@ public class SavingsActivity extends AppCompatActivity {
         recyclerView.setAdapter(savingsAdapter);
     }
 
-
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 }

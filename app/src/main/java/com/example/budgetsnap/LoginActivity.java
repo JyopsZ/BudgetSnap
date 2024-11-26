@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         syncBudgets();
         syncBudgetAdditions();
         syncTransactions();
+        syncSavings();
     }
 
     private void initializeViews() {
@@ -219,6 +220,32 @@ public class LoginActivity extends AppCompatActivity {
                         doc.getString("CNum"),
                         doc.getString("UNum")
                 );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncSavings() {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("SAVINGS").get().addOnSuccessListener(savingsSnapshots -> {
+
+            for (DocumentSnapshot doc : savingsSnapshots) {
+
+                SavingsClass savings = new SavingsClass(
+                        doc.getId(),
+                        doc.getString("SName"),
+                        doc.getDouble("SCurrentAmount"),
+                        doc.getDouble("SGoalAmount"),
+                        doc.getString("SFrequency"),
+                        doc.getString("SDate"),
+                        doc.getBoolean("SStatus"),
+                        doc.getString("UNum")
+                );
+
+                dbManager.insertSavings(savings);
             }
 
             dbManager.close();
