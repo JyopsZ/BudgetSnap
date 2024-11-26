@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class categories_main extends AppCompatActivity {
 
     public String Title_Category;
+    private String PK_Unum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +23,18 @@ public class categories_main extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
         });
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
     }
+
+
+
     public void viewHome(View v) {
         Title_Category = "Home";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -35,6 +42,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Food";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -42,6 +50,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Bills";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -49,6 +58,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Health";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -56,6 +66,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Education";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -63,6 +74,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Leisure";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -70,6 +82,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Transportation";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -77,6 +90,7 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Savings";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -84,25 +98,30 @@ public class categories_main extends AppCompatActivity {
         Title_Category = "Others";
         Intent i = new Intent(this, categories_select.class);
         i.putExtra("Title_Category", Title_Category);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goHome (View v) {
         Intent i = new Intent(this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goTransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goCategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
     public void goAccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 }
