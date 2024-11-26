@@ -21,6 +21,18 @@
         app:layout_constraintStart_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
+    <Button
+        android:id="@+id/imagebtn"
+        android:layout_width="144dp"
+        android:layout_height="36dp"
+        android:backgroundTint="@color/verydarkcyan"
+        android:fontFamily="@font/poppins_semibold"
+        android:onClick="goAccount"
+        android:text="Change Image"
+        android:textSize="10sp"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="118dp" />
+
     <ImageView
         android:id="@+id/GreenBG"
         android:layout_width="414dp"
@@ -254,6 +266,6 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Account"
-        app:srcCompat="@drawable/profile_change" />
+        app:srcCompat="@drawable/profile_girl1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

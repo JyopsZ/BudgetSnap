@@ -26,7 +26,7 @@ public class account extends AppCompatActivity {
     private RecentTransactionsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<Transaction> transactionList;
-    FrameLayout frameLayout;
+    private FrameLayout frameLayout;
 
     private TextView userNameTextView;
     private TextView userEmailTextView;
@@ -35,6 +35,7 @@ public class account extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
     private String UNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,34 +60,58 @@ public class account extends AppCompatActivity {
         Intent intent = getIntent();
         UNum = intent.getStringExtra("PK_UNUM");
 
-// Log the received UNum
+        // Log the received UNum
         Log.d(TAG, "Received UNum: " + UNum);
 
-// Check for null or empty UNum
+        // Check for null or empty UNum
         if (UNum == null || UNum.isEmpty()) {
             Log.e(TAG, "UNum is null or empty. Cannot query database.");
-            // You can show an error message to the user or navigate back
             return;
         }
-
 
         // Query the database
         getUserDetails(UNum);
 
+        // Initialize the transaction list
         transactionList = new ArrayList<>();
 
+        // SQL query to get transaction details
+        String query = "SELECT T.TName, T.TDate, T.TAmount, T.TStatus, T.TImage, T.CNum, C.CName " +
+                "FROM Transactions T " +
+                "JOIN Categories C ON T.CNum = C.CNum " +
+                "WHERE T.UNum = ? " +  // Filtering by UNum
+                "ORDER BY T.TDate DESC";
 
-        /*transactionList.add(new Transaction("The Barn", "Today", "Php 210", false, "Food", null));
-        transactionList.add(new Transaction("Electricity", "Yesterday", "Php 290", false, "Bills", null));
-        transactionList.add(new Transaction("Angkong", "October 15, 2024", "Php 150", false, "Food", null));
-        transactionList.add(new Transaction("PITX", "October 15, 2024", "Php 20", false, "Transportation", null));
-        transactionList.add(new Transaction("Water", "October 14, 2024", "Php 1000", false, "Bills", null));
-        transactionList.add(new Transaction("Sisig", "October 13, 2024", "Php 150", false, "Food", null));*/
+        Cursor cursor = database.rawQuery(query, new String[]{UNum});
 
+        if (cursor.moveToFirst()) {
+            do {
+                String tName = cursor.getString(cursor.getColumnIndex("TName"));
+                String tDate = cursor.getString(cursor.getColumnIndex("TDate"));
+                String tAmount = cursor.getString(cursor.getColumnIndex("TAmount"));
+
+                // Retrieve TStatus as a string and convert to boolean
+                String tStatusString = cursor.getString(cursor.getColumnIndex("TStatus"));
+                boolean tStatus = Boolean.parseBoolean(tStatusString);
+
+                // Retrieve TImage as a byte array (Blob)
+                byte[] tImage = cursor.getBlob(cursor.getColumnIndex("TImage"));
+
+                int cNum = cursor.getInt(cursor.getColumnIndex("CNum"));
+                String cName = cursor.getString(cursor.getColumnIndex("CName"));
+
+                // Add the result to the transactionList
+                transactionList.add(new Transaction(tName, tDate, tAmount, tStatus, cName, tImage));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        // Set up RecyclerView
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        // Initialize adapter with transaction list
         adapter = new RecentTransactionsAdapter(transactionList);
         recyclerView.setAdapter(adapter);
     }

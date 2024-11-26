@@ -211,4 +211,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET_ADD);
         onCreate(db);
     }
+
+    public void updateUserName(String UNum, String newUserName) {
+        String query = "UPDATE " + TABLE_USER +
+                " SET " + UNAME + " = ? " +
+                " WHERE " + PK_UNUM + " = ?";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query, new Object[]{newUserName, UNum});
+        db.close();
+    }
+
 }
