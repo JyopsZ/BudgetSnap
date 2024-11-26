@@ -61,19 +61,14 @@ public class account extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         database = dbHelper.getReadableDatabase();
 
-        // Retrieve UNum from the Intent
         Intent intent = getIntent();
         UNum = intent.getStringExtra("PK_UNUM");
-
-        // Log the received UNum
-        Log.d(TAG, "Received UNum: " + UNum);
 
         if (UNum == null || UNum.isEmpty()) {
             Log.e(TAG, "UNum is null or empty. Cannot query database.");
             return;
         }
 
-        // Query user details
         getUserDetails(UNum);
 
         loadTransactions(UNum);
@@ -90,21 +85,30 @@ public class account extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             String userName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UNAME));
             String userEmail = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UEMAIL));
-            String userImage = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UIMAGE)); // Assuming UImage is a String
+            byte[] userImageBlob = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.UIMAGE)); // Get the BLOB
 
             // Log retrieved values
             Log.d(TAG, "User details - UName: " + userName + ", UEmail: " + userEmail);
-            //+ ", UImage: " + userImage
-            // Display retrieved values
+
+            // Set text for name and email
             userNameTextView.setText(userName);
             userEmailTextView.setText(userEmail);
-            //userImageTextView.setText(userImage);
+
+            // Convert BLOB to Bitmap and display in ImageView
+            if (userImageBlob != null) {
+                Bitmap userImageBitmap = BitmapFactory.decodeByteArray(userImageBlob, 0, userImageBlob.length);
+                userImageTextView.setImageBitmap(userImageBitmap);
+            } else {
+                // Optionally set a default image if no image is found
+                userImageTextView.setImageResource(R.drawable.profile_boy1);
+            }
 
             cursor.close();
         } else {
             Log.w(TAG, "No user found with UNum: " + UNum);
         }
     }
+
 
 
     private void loadTransactions(String UNum) {
@@ -120,47 +124,30 @@ public class account extends AppCompatActivity {
 
         Cursor cursor = null;
         try {
-            // Execute query and retrieve data
             cursor = database.rawQuery(query, new String[]{UNum});
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    // Fetch transaction details from the cursor
                     String tName = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
                     String tDate = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
                     String tAmount = cursor.getString(cursor.getColumnIndexOrThrow("TAmount"));
-                    boolean tStatus = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) > 0;
                     String cName = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
 
-
-                    // Add transaction to the list
                     AccountList.add(new AccountList(tName, tDate, tAmount, cName));
                 } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // Ensure the cursor is closed to avoid memory leaks
             if (cursor != null) {
                 cursor.close();
             }
         }
-
-        // Set up RecyclerView and adapter after loading the transactions
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new AccountAdapter(AccountList);
         recyclerView.setAdapter(adapter);
-    }
-
-    // Method to return a default image as byte array
-    private byte[] getDefaultImageBlob() {
-        // Example: Convert a drawable resource to a byte array
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_boy1);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
     }
 
 
@@ -174,7 +161,6 @@ public class account extends AppCompatActivity {
     }
 
 
-    // Navigation methods
     public void goHome(View v) {
         Intent intent = new Intent(this, Home.class);
         intent.putExtra("PK_UNUM", UNum);

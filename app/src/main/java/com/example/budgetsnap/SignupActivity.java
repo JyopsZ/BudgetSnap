@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -130,6 +133,11 @@ public class SignupActivity extends AppCompatActivity {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
 
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_change);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+
         String maxUNum = dbManager.getUserMax();
         int currentNum = Integer.parseInt(maxUNum.substring(1));
         String nextUNum = String.format("U%04d", currentNum + 1);
@@ -140,7 +148,7 @@ public class SignupActivity extends AppCompatActivity {
                 password,
                 birthday,
                 email,
-                "",
+                imageBytes,
                 0.0,
                 0.0
         );

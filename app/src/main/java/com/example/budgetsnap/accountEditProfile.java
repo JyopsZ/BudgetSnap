@@ -1,190 +1,156 @@
 package com.example.budgetsnap;
 
-import static android.content.ContentValues.TAG;
-
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 public class accountEditProfile extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private AccountAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private List<AccountList> AccountList;
-    private FrameLayout frameLayout;
 
-    private TextView userNameTextView;
-    private TextView userEmailTextView;
-    private ImageView userImageTextView;
+    private static final int PICK_IMAGE_REQUEST = 1;
 
+    private EditText profileName;
+    private Button saveBtn;
+    private ImageView profileImage;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
     private String UNum;
+    private Bitmap selectedBitmap;
+    private TextView userEmailTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_edit_profile);
 
-        frameLayout = findViewById(R.id.frameLayout);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
-        recyclerView = findViewById(R.id.recyclerView);
-        userNameTextView = findViewById(R.id.profileName);
+        profileName = findViewById(R.id.profileName);
+        saveBtn = findViewById(R.id.savebtn);
+        profileImage = findViewById(R.id.profilePicture);
         userEmailTextView = findViewById(R.id.email);
-        userImageTextView = findViewById(R.id.profilePicture);
-
 
         dbHelper = new DatabaseHelper(this);
         database = dbHelper.getReadableDatabase();
 
-        // Retrieve UNum from the Intent
         Intent intent = getIntent();
         UNum = intent.getStringExtra("PK_UNUM");
 
-        // Log the received UNum
-        Log.d(TAG, "Received UNum: " + UNum);
+        Log.d("AccountEditProfile", "Received UNum: " + UNum);
 
         if (UNum == null || UNum.isEmpty()) {
-            Log.e(TAG, "UNum is null or empty. Cannot query database.");
+            Log.e("AccountEditProfile", "UNum is null or empty. Cannot query database.");
             return;
         }
 
-        // Query user details
+        // Load user details into the UI
         getUserDetails(UNum);
 
-        loadTransactions(UNum);
+        // Open gallery when profile image is clicked
+        profileImage.setOnClickListener(v -> openGallery());
 
-    }
+        saveBtn.setOnClickListener(v -> {
+            String newUserName = profileName.getText().toString().trim();
 
-    private void getUserDetails(String UNum) {
-        // Define the query
-        String query = "SELECT UName, UEmail, UImage FROM " + DatabaseHelper.TABLE_USER +
-                " WHERE " + DatabaseHelper.PK_UNUM + " = ?";
-        Log.d(TAG, "Executing query: " + query + " with UNum: " + UNum);
+            if (!newUserName.isEmpty()) {
+                updateUserDetails(UNum, newUserName, selectedBitmap);
 
-        Cursor cursor = database.rawQuery(query, new String[]{UNum});
-        if (cursor != null && cursor.moveToFirst()) {
-            String userName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UNAME));
-            String userEmail = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UEMAIL));
-            String userImage = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UIMAGE)); // Assuming UImage is a String
+                Intent intent1 = new Intent(accountEditProfile.this, account.class);
+                intent1.putExtra("PK_UNUM", UNum);
+                startActivity(intent1);
 
-            // Log retrieved values
-            Log.d(TAG, "User details - UName: " + userName + ", UEmail: " + userEmail);
-            //+ ", UImage: " + userImage
-            // Display retrieved values
-            userNameTextView.setText(userName);
-            userEmailTextView.setText(userEmail);
-            //userImageTextView.setText(userImage);
-
-            cursor.close();
-        } else {
-            Log.w(TAG, "No user found with UNum: " + UNum);
-        }
-    }
-
-
-    private void loadTransactions(String UNum) {
-        // Initialize the transaction list
-        AccountList = new ArrayList<>();
-
-        // SQL query to fetch transaction details
-        String query = "SELECT T.TName, T.TDate, T.TAmount, T.TStatus, T.CNum, C.CName, T.TImage " +
-                "FROM Transactions T " +
-                "JOIN Categories C ON T.CNum = C.CNum " +
-                "WHERE T.UNum = ? " +
-                "ORDER BY T.TDate DESC";
-
-        Cursor cursor = null;
-        try {
-            // Execute query and retrieve data
-            cursor = database.rawQuery(query, new String[]{UNum});
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    // Fetch transaction details from the cursor
-                    String tName = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
-                    String tDate = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
-                    String tAmount = cursor.getString(cursor.getColumnIndexOrThrow("TAmount"));
-                    boolean tStatus = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) > 0;
-                    String cName = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
-
-
-                    // Add transaction to the list
-                    AccountList.add(new AccountList(tName, tDate, tAmount, cName));
-                } while (cursor.moveToNext());
+                finish();
+            } else {
+                Toast.makeText(accountEditProfile.this, "Please enter a valid name.", Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // Ensure the cursor is closed to avoid memory leaks
-            if (cursor != null) {
-                cursor.close();
+        });
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            try {
+                selectedBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                profileImage.setImageBitmap(selectedBitmap);
+            } catch (IOException e) {
+                Log.e("AccountEditProfile", "Error loading image", e);
             }
         }
-
-        // Set up RecyclerView and adapter after loading the transactions
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new AccountAdapter(AccountList);
-        recyclerView.setAdapter(adapter);
     }
 
-    // Method to return a default image as byte array
-    private byte[] getDefaultImageBlob() {
-        // Example: Convert a drawable resource to a byte array
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_boy1);
+    private byte[] bitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
 
-    public void saveProfile(View view) {
-        // Get the updated name from the TextView
-        String updatedName = userNameTextView.getText().toString().trim();
-
-        if (updatedName.isEmpty()) {
-            Log.e(TAG, "Name is empty, cannot save.");
-            return;
-        }
-
-        // Update the database
-        String updateQuery = "UPDATE " + DatabaseHelper.TABLE_USER +
-                " SET " + DatabaseHelper.UNAME + " = ? WHERE " + DatabaseHelper.PK_UNUM + " = ?";
-        SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
+    private void getUserDetails(String UNum) {
+        String query = "SELECT " + DatabaseHelper.UNAME + ", " + DatabaseHelper.UIMAGE + ", " + DatabaseHelper.UEMAIL +
+                " FROM " + DatabaseHelper.TABLE_USER +
+                " WHERE " + DatabaseHelper.PK_UNUM + " = ?";
+        Cursor cursor = null;
 
         try {
-            writableDatabase.execSQL(updateQuery, new String[]{updatedName, UNum});
-            Log.d(TAG, "User name updated successfully to: " + updatedName);
+            cursor = database.rawQuery(query, new String[]{UNum});
+            if (cursor != null && cursor.moveToFirst()) {
+                String userName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME));
+                String userEmail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL));
+                byte[] imageBytes = cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE));
+
+                profileName.setText(userName);
+                userEmailTextView.setText(userEmail);
+
+                if (imageBytes != null) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    profileImage.setImageBitmap(bitmap);
+                }
+            } else {
+                Log.w("AccountEditProfile", "No user found with UNum: " + UNum);
+            }
         } catch (Exception e) {
-            Log.e(TAG, "Error updating user name: ", e);
+            Log.e("AccountEditProfile", "Error querying user details", e);
         } finally {
-            writableDatabase.close();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+    }
+
+    private void updateUserDetails(String UNum, String newUserName, Bitmap profileImageBitmap) {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        // Convert Bitmap to byte array
+        byte[] imageBytes = profileImageBitmap != null ? bitmapToByteArray(profileImageBitmap) : null;
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.UNAME, newUserName);
+        if (imageBytes != null) {
+            values.put(DatabaseHelper.UIMAGE, imageBytes);
+        }
+
+        int rowsUpdated = database.update(DatabaseHelper.TABLE_USER, values, DatabaseHelper.PK_UNUM + " = ?", new String[]{UNum});
     }
 
 
@@ -194,43 +160,5 @@ public class accountEditProfile extends AppCompatActivity {
         if (database != null && database.isOpen()) {
             database.close();
         }
-    }
-
-
-    // Navigation methods
-    public void goHome(View v) {
-        Intent intent = new Intent(this, Home.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
-    }
-
-    public void goTransactions(View v) {
-        Intent intent = new Intent(this, Transaction1.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
-    }
-
-    public void goCategories(View v) {
-        Intent intent = new Intent(this, categories_main.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
-    }
-
-    public void goAccount(View v) {
-        Intent intent = new Intent(this, account.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
-    }
-
-    public void goSavings(View v) {
-        Intent intent = new Intent(this, SavingsActivity.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
-    }
-
-    public void goEdit(View v) {
-        Intent intent = new Intent(this, accountEditProfile.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
     }
 }

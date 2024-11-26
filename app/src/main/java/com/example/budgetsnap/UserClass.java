@@ -7,12 +7,12 @@ public class UserClass {
     private String password;
     private String birthday;
     private String email;
-    private String image;
+    private byte[] image;
     private double income;
     private double expense;
 
 
-    public UserClass(String Unum, String name, String password, String birthday, String email, String image, double income, double expense) {
+    public UserClass(String Unum, String name, String password, String birthday, String email, byte[] image, double income, double expense) {
 
         this.Unum = Unum;
         this.name = name;
@@ -52,7 +52,11 @@ public class UserClass {
         return expense;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

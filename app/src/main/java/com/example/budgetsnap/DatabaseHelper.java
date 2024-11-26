@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 14;
 
     // User
     public static final String TABLE_USER = "USER";
@@ -74,7 +74,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         //USER
@@ -84,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + UPASS + " TEXT,"
                 + UBDAY + " TEXT,"
                 + UEMAIL + " TEXT,"
-                + UIMAGE + " TEXT,"
+                + UIMAGE + " BLOB,"
                 + UINCOME + " DOUBLE,"
                 + UEXPENSE + " DOUBLE"
                 + ")";
