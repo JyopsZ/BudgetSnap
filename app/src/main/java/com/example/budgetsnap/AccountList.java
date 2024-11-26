@@ -1,47 +1,35 @@
 package com.example.budgetsnap;
 
 public class AccountList {
-    private String Name;
-    private String Category;
-    private String Amount;
-    private String Date;
+    private String name;
+    private String category;
+    private String amount;
+    private String date;
+ // Binary data for the image
 
-    public AccountList(String Name, String Category, String Amount, String Date) {
-        this.Name = Name;
-        this.Category = Category;
-        this.Amount = Amount;
-        this.Date = Date;
+    public AccountList(String name, String date, String amount,  String category) {
+        this.name = name;
+        this.date = date;
+        this.amount = amount;
+        this.category = category;
     }
+
+
 
     public String getName() {
-        return Name;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
+        return name;
     }
 
     public String getCategory() {
-        return Category;
-    }
-
-    public void setCategory(String Category) {
-        this.Category = Category;
+        return category;
     }
 
     public String getAmount() {
-        return Amount;
-    }
-
-    public void setAmount(String Amount) {
-        this.Amount = Amount;
+        return amount;
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
-    public void setDate(String Date) {
-        this.Date = Date;
-    }
 }

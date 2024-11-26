@@ -5,10 +5,13 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,19 +21,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class account extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private RecentTransactionsAdapter adapter;
+    private AccountAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private List<Transaction> transactionList;
+    private List<AccountList> AccountList;
     private FrameLayout frameLayout;
 
     private TextView userNameTextView;
     private TextView userEmailTextView;
-    private TextView userImageTextView;
+    private ImageView userImageTextView;
 
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
@@ -51,7 +55,8 @@ public class account extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         userNameTextView = findViewById(R.id.profileName);
         userEmailTextView = findViewById(R.id.email);
-        //userImageTextView = findViewById(R.id.userImageTextView);
+        userImageTextView = findViewById(R.id.profilePicture);
+
 
         dbHelper = new DatabaseHelper(this);
         database = dbHelper.getReadableDatabase();
@@ -63,57 +68,16 @@ public class account extends AppCompatActivity {
         // Log the received UNum
         Log.d(TAG, "Received UNum: " + UNum);
 
-        // Check for null or empty UNum
         if (UNum == null || UNum.isEmpty()) {
             Log.e(TAG, "UNum is null or empty. Cannot query database.");
             return;
         }
 
-        // Query the database
+        // Query user details
         getUserDetails(UNum);
 
-        // Initialize the transaction list
-        transactionList = new ArrayList<>();
+        loadTransactions(UNum);
 
-        // SQL query to get transaction details
-        String query = "SELECT T.TName, T.TDate, T.TAmount, T.TStatus, T.TImage, T.CNum, C.CName " +
-                "FROM Transactions T " +
-                "JOIN Categories C ON T.CNum = C.CNum " +
-                "WHERE T.UNum = ? " +  // Filtering by UNum
-                "ORDER BY T.TDate DESC";
-
-        Cursor cursor = database.rawQuery(query, new String[]{UNum});
-
-        if (cursor.moveToFirst()) {
-            do {
-                String tName = cursor.getString(cursor.getColumnIndex("TName"));
-                String tDate = cursor.getString(cursor.getColumnIndex("TDate"));
-                String tAmount = cursor.getString(cursor.getColumnIndex("TAmount"));
-
-                // Retrieve TStatus as a string and convert to boolean
-                String tStatusString = cursor.getString(cursor.getColumnIndex("TStatus"));
-                boolean tStatus = Boolean.parseBoolean(tStatusString);
-
-                // Retrieve TImage as a byte array (Blob)
-                byte[] tImage = cursor.getBlob(cursor.getColumnIndex("TImage"));
-
-                int cNum = cursor.getInt(cursor.getColumnIndex("CNum"));
-                String cName = cursor.getString(cursor.getColumnIndex("CName"));
-
-                // Add the result to the transactionList
-                transactionList.add(new Transaction(tName, tDate, tAmount, tStatus, cName, tImage));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        // Set up RecyclerView
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        // Initialize adapter with transaction list
-        adapter = new RecentTransactionsAdapter(transactionList);
-        recyclerView.setAdapter(adapter);
     }
 
     private void getUserDetails(String UNum) {
@@ -126,7 +90,7 @@ public class account extends AppCompatActivity {
         if (cursor != null && cursor.moveToFirst()) {
             String userName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UNAME));
             String userEmail = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UEMAIL));
-            //String userImage = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UIMAGE)); // Assuming UImage is a String
+            String userImage = cursor.getString(cursor.getColumnIndex(DatabaseHelper.UIMAGE)); // Assuming UImage is a String
 
             // Log retrieved values
             Log.d(TAG, "User details - UName: " + userName + ", UEmail: " + userEmail);
@@ -141,6 +105,65 @@ public class account extends AppCompatActivity {
             Log.w(TAG, "No user found with UNum: " + UNum);
         }
     }
+
+
+    private void loadTransactions(String UNum) {
+        // Initialize the transaction list
+        AccountList = new ArrayList<>();
+
+        // SQL query to fetch transaction details
+        String query = "SELECT T.TName, T.TDate, T.TAmount, T.TStatus, T.CNum, C.CName, T.TImage " +
+                "FROM Transactions T " +
+                "JOIN Categories C ON T.CNum = C.CNum " +
+                "WHERE T.UNum = ? " +
+                "ORDER BY T.TDate DESC";
+
+        Cursor cursor = null;
+        try {
+            // Execute query and retrieve data
+            cursor = database.rawQuery(query, new String[]{UNum});
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    // Fetch transaction details from the cursor
+                    String tName = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
+                    String tDate = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
+                    String tAmount = cursor.getString(cursor.getColumnIndexOrThrow("TAmount"));
+                    boolean tStatus = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) > 0;
+                    String cName = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
+
+
+                    // Add transaction to the list
+                    AccountList.add(new AccountList(tName, tDate, tAmount, cName));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Ensure the cursor is closed to avoid memory leaks
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        // Set up RecyclerView and adapter after loading the transactions
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new AccountAdapter(AccountList);
+        recyclerView.setAdapter(adapter);
+    }
+
+    // Method to return a default image as byte array
+    private byte[] getDefaultImageBlob() {
+        // Example: Convert a drawable resource to a byte array
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.profile_boy1);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
+
 
     @Override
     protected void onDestroy() {
