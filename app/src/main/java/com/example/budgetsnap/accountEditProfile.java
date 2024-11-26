@@ -47,7 +47,7 @@ public class accountEditProfile extends AppCompatActivity {
             return insets;
         });
 
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recyclerView);
         userNameTextView = findViewById(R.id.profileName);
         userEmailTextView = findViewById(R.id.email);
         //userImageTextView = findViewById(R.id.userImageTextView);
