@@ -35,11 +35,13 @@ public class account extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
     private String UNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
+        // Initialize UI elements
         frameLayout = findViewById(R.id.frameLayout);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -47,50 +49,57 @@ public class account extends AppCompatActivity {
             return insets;
         });
 
-        recyclerView = findViewById(R.id.recycler_view);
-        userNameTextView = findViewById(R.id.profileName);
-        userEmailTextView = findViewById(R.id.email);
-        //userImageTextView = findViewById(R.id.userImageTextView);
+        recyclerView = findViewById(R.id.recyclerView);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         dbHelper = new DatabaseHelper(this);
         database = dbHelper.getReadableDatabase();
 
-        // Retrieve UNum from the Intent
-        // Retrieve UNum from the Intent
-        Intent intent = getIntent();
-        UNum = intent.getStringExtra("PK_UNUM");
-
-// Log the received UNum
-        Log.d(TAG, "Received UNum: " + UNum);
-
-// Check for null or empty UNum
-        if (UNum == null || UNum.isEmpty()) {
-            Log.e(TAG, "UNum is null or empty. Cannot query database.");
-            // You can show an error message to the user or navigate back
-            return;
-        }
-
-
-        // Query the database
-        getUserDetails(UNum);
-
-        transactionList = new ArrayList<>();
-
-
-        /*transactionList.add(new Transaction("The Barn", "Today", "Php 210", false, "Food", null));
-        transactionList.add(new Transaction("Electricity", "Yesterday", "Php 290", false, "Bills", null));
-        transactionList.add(new Transaction("Angkong", "October 15, 2024", "Php 150", false, "Food", null));
-        transactionList.add(new Transaction("PITX", "October 15, 2024", "Php 20", false, "Transportation", null));
-        transactionList.add(new Transaction("Water", "October 14, 2024", "Php 1000", false, "Bills", null));
-        transactionList.add(new Transaction("Sisig", "October 13, 2024", "Php 150", false, "Food", null));*/
-
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
+        // Fetch transactions
+        transactionList = fetchTransactionsFromDatabase();
         adapter = new RecentTransactionsAdapter(transactionList);
         recyclerView.setAdapter(adapter);
     }
+
+    private List<Transaction> fetchTransactionsFromDatabase() {
+        List<Transaction> transactions = new ArrayList<>();
+
+        String[] columns = {
+                "TName",
+                "TDate",
+                "TAmount",
+                "TStatus",
+                "CNum",
+                "TImage"
+        };
+
+        try (Cursor cursor = database.query(
+                "TRANSACTIONS",
+                columns,
+                null,  // Where clause
+                null,  // Where args
+                null,  // Group by
+                null,  // Having
+                "TDate DESC" // Order by
+        )) {
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
+                double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("TAmount"));
+                boolean isPositive = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) == 1;
+                String category = cursor.getString(cursor.getColumnIndexOrThrow("CNum"));
+                byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("TImage"));
+
+                transactions.add(new Transaction(name, date, String.valueOf(amount), isPositive, category, image));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error fetching transactions: ", e);
+        }
+
+        return transactions;
+    }
+
 
     private void getUserDetails(String UNum) {
         // Define the query
