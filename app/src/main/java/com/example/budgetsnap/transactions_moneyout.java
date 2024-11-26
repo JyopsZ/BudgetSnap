@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,12 +23,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class transactions_moneyout extends AppCompatActivity {
 
@@ -39,6 +45,8 @@ public class transactions_moneyout extends AppCompatActivity {
     private SQLiteDatabase db;
     private LinkedHashMap<String, String> categoryMap;
     private String currentUserUNum; // CNUM -> CNAME mapping
+
+    private byte[] byteArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,19 +114,16 @@ public class transactions_moneyout extends AppCompatActivity {
     private void addExpenseToDatabase() {
         try {
             String name = editTextName.getText().toString().trim();
-            String amountText = editTextAmount.getText().toString().trim();
+            String amount = editTextAmount.getText().toString().trim();
             String date = editTextDate.getText().toString().trim();
             String time = editTextTime.getText().toString().trim();
             String categoryName = spinnerCategory.getSelectedItem().toString();
 
             // Validate inputs
-            if (name.isEmpty() || amountText.isEmpty() || date.isEmpty() || time.isEmpty() || categoryName.isEmpty()) {
+            if (name.isEmpty() || amount.isEmpty() || date.isEmpty() || time.isEmpty() || categoryName.isEmpty()) {
                 Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            // Parse amount
-            double amount = Double.parseDouble(amountText);
 
             // Map category name to CNUM
             String categoryCNUM = getCategoryCNUM(categoryName);
@@ -127,43 +132,61 @@ public class transactions_moneyout extends AppCompatActivity {
                 return;
             }
 
-            // Fetch the current user's UNum
-            String userUNum = getCurrentUserUNum();
-            if (userUNum == null) {
-                return; // If UNum is null, don't proceed
-            }
-
             // Generate a new transaction ID
             String newTransactionID = generateNewTransactionID();
 
-            // Prepare content values
+            // Prepare SQLite ContentValues
             ContentValues values = new ContentValues();
-            values.put("TNum", newTransactionID); // Use the generated transaction ID
+            values.put("TNum", newTransactionID);
             values.put("TName", name);
-            values.put("TAmount", amount);
+            values.put("TAmount", Double.parseDouble(amount));
             values.put("TDate", date);
             values.put("TTime", time);
             values.put("CNum", categoryCNUM);
-            values.put("TImage", selectedImageUriMoneyOut != null ? selectedImageUriMoneyOut.toString() : null);
+            values.put("TImage", byteArray);
             values.put("TStatus", 0); // 0 for Money Out
-            values.put("UNum", userUNum); // Automatically retrieved user ID
+            values.put("UNum", currentUserUNum);
 
-            // Insert into the database
+            // Insert into SQLite
             long result = db.insert("TRANSACTIONS", null, values);
 
             if (result != -1) {
-                Toast.makeText(this, "Expense added successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Transaction added successfully to SQLite", Toast.LENGTH_SHORT).show();
+
+                // Insert into Firebase Firestore
+                insertExpenseIntoFirebase(newTransactionID, name, Double.parseDouble(amount), date, time, categoryCNUM, 1);
+
                 updateBalanceForTransaction();
                 clearFields();
             } else {
-                Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to add transaction to SQLite", Toast.LENGTH_SHORT).show();
             }
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid amount entered. Please enter a valid number.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Log.e(TAG, "Error adding expense: " + e.getMessage());
+            Log.e("SQLiteError", "Error adding transaction: " + e.getMessage());
             Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void insertExpenseIntoFirebase(String transactionID, String name, double amount, String date, String time, String categoryCNUM, int status) {
+        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+
+        // Create a map of the transaction data
+        Map<String, Object> transactionData = new HashMap<>();
+        transactionData.put("TNum", transactionID);
+        transactionData.put("TName", name);
+        transactionData.put("TAmount", amount);
+        transactionData.put("TDate", date);
+        transactionData.put("TTime", time);
+        transactionData.put("CNum", categoryCNUM);
+        transactionData.put("TStatus", status); // 0 for Money Out
+        transactionData.put("UNum", currentUserUNum);
+
+        // Insert into Firestore
+        dbFirebase.collection("TRANSACTIONS")
+                .document(transactionID)
+                .set(transactionData)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Expense added to Firebase"))
+                .addOnFailureListener(e -> Log.e("FirestoreError", "Error adding expense to Firebase", e));
     }
 
     private void updateBalanceForTransaction() {
@@ -262,25 +285,56 @@ public class transactions_moneyout extends AppCompatActivity {
 
     // Open image picker
     private void openImagePicker() {
+
+        /*
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        imagePickerLauncher.launch(intent);
+        intent.setType("image/*"); // Filter for image files only
+        imagePickerLauncher.launch(intent); // Launch the image picker
+         */
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraLauncher.launch(cameraIntent);
     }
 
+/*
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    selectedImageUriMoneyOut = result.getData().getData();
+                    selectedImageUriMoneyIn = result.getData().getData(); // Get the image URI
                     Toast.makeText(this, "Image Selected", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
                 }
             });
+     */
 
-    // Show transaction dialog when "plus" button is clicked
-    public void BtnClickedPlus2(View view) {
-        showTransactionDialog();
+    // Method is generated with AI. Claude 3.5 Sonnet. Prompt = "take an image, then save the captured image as a blob data type to be stored in the sqlite database"
+    private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+
+                    // Convert bitmap to byte array for BLOB storage
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byteArray = stream.toByteArray();
+
+                    // The byte array will be stored as BLOB in SQLite
+                    selectedImageUriMoneyOut = Uri.parse("blob://" + System.currentTimeMillis());
+                    Toast.makeText(this, "Image captured and ready for storage", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
+
+    private void clearFields() {
+        editTextName.setText("");
+        editTextAmount.setText("");
+        editTextDate.setText("");
+        editTextTime.setText("");
+        spinnerCategory.setSelection(0);
+        selectedImageUriMoneyOut = null;
     }
 
     private void showTransactionDialog() {
@@ -306,6 +360,11 @@ public class transactions_moneyout extends AppCompatActivity {
         });
 
         dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> dialog.dismiss());
+    }
+
+    // Show transaction dialog when "plus" button is clicked
+    public void BtnClickedPlus2(View view) {
+        showTransactionDialog();
     }
 
     public void BtnMoneyInBtn2(View v) {
@@ -342,14 +401,5 @@ public class transactions_moneyout extends AppCompatActivity {
     public void goaccount(View v) {
         Intent i = new Intent(transactions_moneyout.this, account.class);
         startActivity(i);
-    }
-
-    private void clearFields() {
-        editTextName.setText("");
-        editTextAmount.setText("");
-        editTextDate.setText("");
-        editTextTime.setText("");
-        spinnerCategory.setSelection(0);
-        selectedImageUriMoneyOut = null;
     }
 }

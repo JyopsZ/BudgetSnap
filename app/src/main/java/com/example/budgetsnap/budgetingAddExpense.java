@@ -20,9 +20,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class budgetingAddExpense extends AppCompatActivity {
 
@@ -120,20 +124,33 @@ public class budgetingAddExpense extends AppCompatActivity {
             // Generate a new `BANum`
             String newBANum = generateNewBANum();
 
-            // Insert expense into `BUDGET_ADD`
+            // Insert into SQLite
             ContentValues expenseValues = new ContentValues();
-            expenseValues.put("BANum", newBANum); // Unique ID for this expense
-            expenseValues.put("BAName", name); // Expense name
-            expenseValues.put("BAExpense", amount); // Expense amount
-            expenseValues.put("BNum", PK_BNUM); // Foreign key from the `BUDGET` table
-            expenseValues.put("CNum", categoryCNUM); // Foreign key from the `CATEGORIES` table
+            expenseValues.put("BANum", newBANum);
+            expenseValues.put("BAName", name);
+            expenseValues.put("BAExpense", amount);
+            expenseValues.put("BNum", PK_BNUM);
+            expenseValues.put("CNum", categoryCNUM);
 
             long expenseResult = db.insert("BUDGET_ADD", null, expenseValues);
-
             if (expenseResult == -1) {
                 Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // Insert into Firebase
+            Map<String, Object> firebaseData = new HashMap<>();
+            firebaseData.put("BANum", newBANum);
+            firebaseData.put("BAName", name);
+            firebaseData.put("BAExpense", amount);
+            firebaseData.put("BNum", PK_BNUM);
+            firebaseData.put("CNum", categoryCNUM);
+
+            FirebaseFirestore.getInstance().collection("BUDGET_ADD")
+                    .document(newBANum)
+                    .set(firebaseData)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(this, "Expense added to Firebase", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to add expense to Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
             Toast.makeText(this, "Expense added successfully", Toast.LENGTH_SHORT).show();
             clearFields();

@@ -16,6 +16,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class budgetingEditCategory extends AppCompatActivity {
 
     private CheckBox checkBoxHome, checkBoxFood, checkBoxBills, checkBoxHealth, checkBoxEducation,
@@ -138,13 +143,31 @@ public class budgetingEditCategory extends AppCompatActivity {
             double amount = Double.parseDouble(amountStr);
             String newBCNum = generateNewBCNum(db);
 
+            // Insert into SQLite
             ContentValues values = new ContentValues();
             values.put("BCNum", newBCNum);
             values.put("BCBudget", amount);
             values.put("BNum", PK_BNUM);
             values.put("CNum", categoryId);
 
-            db.insert("BUDGET_CATEGORY", null, values);
+            long result = db.insert("BUDGET_CATEGORY", null, values);
+            if (result == -1) {
+                Toast.makeText(this, "Failed to add category to SQLite", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Insert into Firebase
+            Map<String, Object> firebaseData = new HashMap<>();
+            firebaseData.put("BCNum", newBCNum);
+            firebaseData.put("BCBudget", amount);
+            firebaseData.put("BNum", PK_BNUM);
+            firebaseData.put("CNum", categoryId);
+
+            FirebaseFirestore.getInstance().collection("BUDGET_CATEGORY")
+                    .document(newBCNum)
+                    .set(firebaseData)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(this, "Category added to Firebase", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to add category to Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 

@@ -43,14 +43,14 @@ public class accountEditProfile extends AppCompatActivity {
         profileNameEditText = findViewById(R.id.profileName);
 
         recyclerView = findViewById(R.id.recycler_view);
-
+        /*
         transactionList = new ArrayList<>();
         transactionList.add(new Transaction("The Barn", "Today", "Php 210", false, "Food", null));
         transactionList.add(new Transaction("Electricity", "Yesterday", "Php 290", false, "Bills", null));
         transactionList.add(new Transaction("Angkong", "October 15, 2024", "Php 150", false, "Food", null));
         transactionList.add(new Transaction("PITX", "October 15, 2024", "Php 20", false, "Transportation", null));
         transactionList.add(new Transaction("Water", "October 14, 2024", "Php 1000", false, "Bills", null));
-        transactionList.add(new Transaction("Sisig", "October 13, 2024", "Php 150", false, "Food", null));
+        transactionList.add(new Transaction("Sisig", "October 13, 2024", "Php 150", false, "Food", null));*/
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);

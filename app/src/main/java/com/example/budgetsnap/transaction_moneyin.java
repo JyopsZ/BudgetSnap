@@ -24,13 +24,18 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class transaction_moneyin extends AppCompatActivity {
 
@@ -138,35 +143,60 @@ public class transaction_moneyin extends AppCompatActivity {
             // Generate a new transaction ID
             String newTransactionID = generateNewTransactionID();
 
-            // Prepare content values
+            // Prepare SQLite ContentValues
             ContentValues values = new ContentValues();
-            values.put("TNum", newTransactionID); // Use the generated transaction ID
+            values.put("TNum", newTransactionID);
             values.put("TName", name);
             values.put("TAmount", Double.parseDouble(amount));
             values.put("TDate", date);
             values.put("TTime", time);
-            values.put("CNum", categoryCNUM); // Save CNUM instead of category name
+            values.put("CNum", categoryCNUM);
             values.put("TImage", byteArray);
             values.put("TStatus", 1); // 1 for Money In
-            values.put("UNum", currentUserUNum); // Save current user's UNum
+            values.put("UNum", currentUserUNum);
 
-            // Insert into the database
+            // Insert into SQLite
             long result = db.insert("TRANSACTIONS", null, values);
 
             if (result != -1) {
-                Toast.makeText(this, "Transaction added successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Transaction added successfully to SQLite", Toast.LENGTH_SHORT).show();
 
+                // Insert into Firebase Firestore
+                insertIntoFirebase(newTransactionID, name, amount, date, time, categoryCNUM, 1);
 
                 updateBalanceForTransaction();
                 clearFields();
             } else {
-                Toast.makeText(this, "Failed to add transaction", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to add transaction to SQLite", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Log.e("SQLiteError", "Error adding transaction: " + e.getMessage());
             Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void insertIntoFirebase(String transactionID, String name, String amount, String date, String time, String categoryCNUM, int status) {
+        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+
+        // Create a map of the transaction data
+        Map<String, Object> transactionData = new HashMap<>();
+        transactionData.put("TNum", transactionID);
+        transactionData.put("TName", name);
+        transactionData.put("TAmount", Double.parseDouble(amount));
+        transactionData.put("TDate", date);
+        transactionData.put("TTime", time);
+        transactionData.put("CNum", categoryCNUM);
+        transactionData.put("TStatus", status); // 1 for Money In
+        transactionData.put("UNum", currentUserUNum);
+
+        // Insert into Firestore
+        dbFirebase.collection("TRANSACTIONS")
+                .document(transactionID)
+                .set(transactionData)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Transaction added to Firebase"))
+                .addOnFailureListener(e -> Log.e("FirestoreError", "Error adding transaction to Firebase", e));
+    }
+
 
     private void updateBalanceForTransaction() {
         try {
@@ -320,10 +350,6 @@ public class transaction_moneyin extends AppCompatActivity {
         selectedImageUriMoneyIn = null;
     }
 
-    public void BtnClickedPlus(View view) {
-        showTransactionDialog();
-    }
-
     private void showTransactionDialog() {
         // Inflate the custom dialog layout
         LayoutInflater inflater = getLayoutInflater();
@@ -351,12 +377,25 @@ public class transaction_moneyin extends AppCompatActivity {
         dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> dialog.dismiss());
     }
 
+    public void BtnClickedPlus(View view) {
+        showTransactionDialog();
+    }
+
     public void gohome(View v) {
         Intent intent = new Intent(this, Home.class);
         intent.putExtra("PK_UNUM", currentUserUNum);
         startActivity(intent);
     }
 
+    public void BtnMoneyOutBtn1(View v) {
+        Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
+        startActivity(i);
+    }
+
+    public void ButtonMoneyIn1(View v) {
+        Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
+        startActivity(i);
+    }
 
     public void gotransactions(View v) {
         startActivity(new Intent(this, Transaction1.class));

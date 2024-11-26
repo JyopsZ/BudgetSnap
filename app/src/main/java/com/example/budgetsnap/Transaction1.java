@@ -26,6 +26,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.File;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
@@ -63,8 +65,6 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         // Initialize database helper
         databaseHelper = new DatabaseHelper(this);
 
-        PK_Unum = getIntent().getStringExtra("PK_UNUM");
-
         // Setup Window Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -78,6 +78,9 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dropdown_menu.setAdapter(adapter);
         dropdown_menu.setOnItemSelectedListener(this); // Set listener for item selection
 
+        // CURRENT USER'S NUMBER
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
+        Toast.makeText(this, "Current User: " + PK_Unum, Toast.LENGTH_SHORT).show();
 
         // Load transaction data from the database
         loadTransactionData();
@@ -131,8 +134,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     private void loadTransactionData() {
         transactionList = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        String query = "SELECT TName, TDate, TAmount, TStatus, CName, TImage " +
+        String query = "SELECT TRANSACTIONS.TNum, TName, TDate, TAmount, TStatus, CName, TImage " +
                 "FROM TRANSACTIONS " +
                 "INNER JOIN CATEGORIES ON TRANSACTIONS.CNum = CATEGORIES.CNum";
 
@@ -140,6 +142,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
 
         if (cursor.moveToFirst()) {
             do {
+                String tNum = cursor.getString(cursor.getColumnIndexOrThrow("TNum"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
                 String amount = cursor.getString(cursor.getColumnIndexOrThrow("TAmount"));
@@ -147,7 +150,8 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
                 boolean isPositive = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) > 0;
                 byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("TImage")); // Retrieve BLOB data
 
-                transactionList.add(new Transaction(name, date, amount, isPositive, category, image));
+                // Add the transaction to the list
+                transactionList.add(new Transaction(tNum, name, date, amount, isPositive, category, image));
             } while (cursor.moveToNext());
         }
 
@@ -396,12 +400,19 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     private void deleteTransactionFromDatabase(Transaction transaction) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        // Use a query to delete the transaction by name and amount (adjust as needed for uniqueness)
+        // Delete from SQLite
         String whereClause = "TName = ? AND TAmount = ?";
         String[] whereArgs = {transaction.getName(), transaction.getAmount()};
-
         db.delete("TRANSACTIONS", whereClause, whereArgs);
         db.close();
+
+        // Delete from Firebase Firestore
+        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+        dbFirebase.collection("TRANSACTIONS")
+                .document(transaction.getTNum()) // Assuming TNum is the unique transaction ID
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Transaction deleted from Firebase"))
+                .addOnFailureListener(e -> Log.e("FirestoreError", "Error deleting transaction from Firebase", e));
     }
 
     public void onDeleteTransactionClicked(View view) {
