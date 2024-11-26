@@ -104,7 +104,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         cursor.close();
-        dbManager.close();
     }
 
     private void syncFirebaseToSQLite() { Reference: https://firebase.google.com/docs/firestore/query-data/get-data
