@@ -23,6 +23,7 @@ public class budgetingEditCategory extends AppCompatActivity {
     private EditText editTextHomeAmount, editTextFoodAmount, editTextBillsAmount, editTextHealthAmount,
             editTextEducationAmount, editTextLeisureAmount, editTextTranspoAmount, editTextSavingsAmount, editTextOthersAmount;
     private DatabaseHelper dbHelper;
+    private String PK_BNUM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +70,12 @@ public class budgetingEditCategory extends AppCompatActivity {
         setCheckboxListener(checkBoxTranspo, editTextTranspoAmount);
         setCheckboxListener(checkBoxSavings, editTextSavingsAmount);
         setCheckboxListener(checkBoxOthers, editTextOthersAmount);
+
+        // Retrieve PK_BNUM from Intent
+        PK_BNUM = getIntent().getStringExtra("PK_BNUM");
+        Toast.makeText(this, "Current Budget: " + PK_BNUM, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * code for toggling input fields (initial state: hidden)
-     *
-     * @param checkBox  The CheckBox to observe.
-     * @param editText  The EditText to show or hide.
-     */
     private void setCheckboxListener(CheckBox checkBox, EditText editText) {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -87,7 +86,6 @@ public class budgetingEditCategory extends AppCompatActivity {
         });
     }
 
-    // add data to fields and error checking
     public void addExpense(View v) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         try {
@@ -106,7 +104,6 @@ public class budgetingEditCategory extends AppCompatActivity {
 
             db.setTransactionSuccessful();
             Toast.makeText(this, "Categories updated successfully!", Toast.LENGTH_SHORT).show();
-
         } catch (Exception e) {
             Toast.makeText(this, "Error updating categories: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         } finally {
@@ -114,33 +111,9 @@ public class budgetingEditCategory extends AppCompatActivity {
         }
     }
 
-    // insertion logic code to SQLite
-    private void insertBudgetCategoryIfChecked(SQLiteDatabase db, CheckBox checkBox, String categoryId, EditText editText) {
-        if (checkBox.isChecked()) {
-            String amountStr = editText.getText().toString().trim();
-            if (amountStr.isEmpty()) {
-                Toast.makeText(this, "Amount for category " + categoryId + " is empty!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            double amount = Double.parseDouble(amountStr);
-
-            // Generate new BCNum
-            String newBCNum = generateNewBCNum(db);
-
-            ContentValues values = new ContentValues();
-            values.put("BCNum", newBCNum);
-            values.put("BCName", categoryId);
-            values.put("BCExpense", amount); // Assuming this is for budget expenses
-            values.put("BNum", "default-budget-id"); // Replace with actual budget ID
-
-            db.insert("BUDGET_CATEGORIES", null, values);
-        }
-    }
-
     private String generateNewBCNum(SQLiteDatabase db) {
-        String newBCNum = "BC0001"; // Default for first entry
-        String query = "SELECT BCNum FROM BUDGET_CATEGORIES ORDER BY BCNum DESC LIMIT 1";
+        String newBCNum = "BC0001";
+        String query = "SELECT BCNum FROM BUDGET_CATEGORY ORDER BY BCNum DESC LIMIT 1";
         try (Cursor cursor = db.rawQuery(query, null)) {
             if (cursor.moveToFirst()) {
                 String lastBCNum = cursor.getString(0);
@@ -152,6 +125,27 @@ public class budgetingEditCategory extends AppCompatActivity {
             Toast.makeText(this, "Error generating BCNum: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return newBCNum;
+    }
+
+    private void insertBudgetCategoryIfChecked(SQLiteDatabase db, CheckBox checkBox, String categoryId, EditText editText) {
+        if (checkBox.isChecked()) {
+            String amountStr = editText.getText().toString().trim();
+            if (amountStr.isEmpty()) {
+                Toast.makeText(this, "Amount for category " + categoryId + " is empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double amount = Double.parseDouble(amountStr);
+            String newBCNum = generateNewBCNum(db);
+
+            ContentValues values = new ContentValues();
+            values.put("BCNum", newBCNum);
+            values.put("BCBudget", amount);
+            values.put("BNum", PK_BNUM);
+            values.put("CNum", categoryId);
+
+            db.insert("BUDGET_CATEGORY", null, values);
+        }
     }
 
     public void gohome(View v) {

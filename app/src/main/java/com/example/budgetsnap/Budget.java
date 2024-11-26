@@ -6,9 +6,8 @@ public class Budget {
     private Double expenses;
     private String category;
 
-    public Budget(String category, String title, Double remaining, Double expenses) {
+    public Budget(String category, Double remaining, Double expenses) {
         this.category = category;
-        this.title = title;
         this.remaining = remaining;
         this.expenses = expenses;
     }

@@ -32,22 +32,21 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Home extends AppCompatActivity {
 
     private List<String> xValues = Arrays.asList("Savings Goal Progress", "Total Income", "Total Expenses");
-    private FirebaseFirestore firestore;
     private String PK_Unum;
     private DatabaseHelper dbHelper;
     private String selectedItem = "Daily";
@@ -67,7 +66,6 @@ public class Home extends AppCompatActivity {
         });
 
         dbHelper = new DatabaseHelper(this);
-        firestore = FirebaseFirestore.getInstance();
 
         // CURRENT USER'S NUMBER
         PK_Unum = getIntent().getStringExtra("PK_UNUM");
@@ -86,7 +84,7 @@ public class Home extends AppCompatActivity {
             editor.apply();
         }
 
-
+        updateSavingsGoal();
 
         Spinner spinner = findViewById(R.id.spinner_frequency);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -191,6 +189,7 @@ public class Home extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateTransactionValues();
+        updateSavingsGoal();
     }
 
     private void updateTransactionValues() {
@@ -330,6 +329,7 @@ public class Home extends AppCompatActivity {
 
     public void gobudgeting(View v) {
         Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -349,5 +349,73 @@ public class Home extends AppCompatActivity {
         Intent i = new Intent(this, account.class);
         i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
+    }
+
+    public void updateSavingsGoal() { // Based on the same algorithm and implementation as SavingsChallenge
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        String query = "SELECT SGoalAmount, SDate, SFrequency FROM SAVINGS WHERE UNum = ? ORDER BY SNum ASC LIMIT 1";
+        String[] queryString = {PK_Unum};
+        TextView savingsGoalText = findViewById(R.id.savinggoal_Text2);
+
+        Cursor cursor = database.rawQuery(query, queryString);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int goalAmountIndex = cursor.getColumnIndex("SGoalAmount");
+            int dateIndex = cursor.getColumnIndex("SDate");
+            int frequencyIndex = cursor.getColumnIndex("SFrequency");
+
+            double goalAmount = cursor.getDouble(goalAmountIndex);
+            String date = cursor.getString(dateIndex);
+            String frequency = cursor.getString(frequencyIndex);
+
+            Date dateFinish = stringToDate(date, "MM/dd/yyyy");
+            Date currentDate = new Date();
+            long dayDiff = getDifferenceDays(currentDate, dateFinish);
+
+            double perAmount = 0.0;
+            if (frequency.equals("Daily")) {
+
+                perAmount = goalAmount / dayDiff;
+            }
+
+            else if (frequency.equals("Weekly") && dayDiff > 7) {
+
+                perAmount = goalAmount / (dayDiff / 7);
+            }
+
+            else if (frequency.equals("Monthly") && dayDiff > 30) {
+
+                perAmount = goalAmount / (dayDiff / 30);
+            }
+
+            else if ((frequency.equals("Weekly") && dayDiff < 7) ||
+                    (frequency.equals("Monthly") && dayDiff < 30)) {
+
+                perAmount = goalAmount;
+            }
+
+            savingsGoalText.setText(String.format(Locale.getDefault(), "Php: %.2f/%s", perAmount, frequency.toLowerCase()));
+        } else {
+            savingsGoalText.setText("Php: 0.00/day");
+        }
+
+        cursor.close();
+        database.close();
+    }
+
+    public static long getDifferenceDays(Date d1, Date d2) { // Reference: https://stackoverflow.com/questions/20165564/calculating-days-between-two-dates-with-java
+
+        long diff = d2.getTime() - d1.getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
+
+    public Date stringToDate(String date, String format) { // Reference: https://stackoverflow.com/questions/8573250/android-how-can-i-convert-string-to-date
+
+        if(date==null) return null;
+        ParsePosition pos = new ParsePosition(0);
+        SimpleDateFormat simpledateformat = new SimpleDateFormat(format);
+        Date stringDate = simpledateformat.parse(date, pos);
+
+        return stringDate;
     }
 }
