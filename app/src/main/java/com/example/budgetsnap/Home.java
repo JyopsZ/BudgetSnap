@@ -32,10 +32,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +43,6 @@ import java.util.Map;
 public class Home extends AppCompatActivity {
 
     private List<String> xValues = Arrays.asList("Savings Goal Progress", "Total Income", "Total Expenses");
-    private FirebaseFirestore firestore;
     private String PK_Unum;
     private DatabaseHelper dbHelper;
     private String selectedItem = "Daily";
@@ -67,7 +62,6 @@ public class Home extends AppCompatActivity {
         });
 
         dbHelper = new DatabaseHelper(this);
-        firestore = FirebaseFirestore.getInstance();
 
         // CURRENT USER'S NUMBER
         PK_Unum = getIntent().getStringExtra("PK_UNUM");
