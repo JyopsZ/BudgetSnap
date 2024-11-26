@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseFirestore db; // Results in error if declared in method for some reason >:(
 
     boolean isPasswordVisible = false;
+    String UNum = null;
 
     ArrayList<UserClass> userClassList = new ArrayList<>(); // Sample data for testing
 
@@ -78,9 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         // Reference for Html: https://alfredmyers.com/2018/02/06/warning-cs0618-html-fromhtmlstring-is-obsolete-deprecated/#google_vignette
     }
 
-    private void refreshUser() { // Repurposed method from MCO2. Used to add new users to arrayList from SignupActivity intent. (addUser)
-                                // Updated to add new users to arrayList by refreshing database.
-
+    private void refreshUser() {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
 
@@ -90,21 +89,18 @@ public class LoginActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             do {
-                userClassList.add(new UserClass(
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE)))
-                );
+                String UNum = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM));
+                String UName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME));
+                String UPass = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS));
+                String UBDay = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY));
+                String UEmail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL));
+                byte[] UImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)); // Use getBlob
+                double UIncome = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME));
+                double UExpense = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE));
+
+                userClassList.add(new UserClass(UNum, UName, UPass, UBDay, UEmail, UImage, UIncome, UExpense));
             } while (cursor.moveToNext());
         }
-
-        // FOR DEBUGGING
-        //Toast.makeText(this, "First User UNum: " + userClassList.get(0).getUNum(), Toast.LENGTH_LONG).show();
 
         cursor.close();
         dbManager.close();
@@ -275,7 +271,6 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
-        String UNum = null;
         boolean isValid = false;
         for (UserClass userClass : userClassList) { // Check every user in the arrayList
 
