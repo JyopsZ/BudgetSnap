@@ -147,6 +147,13 @@ public class transaction_moneyin extends AppCompatActivity {
             // Set TStatus as boolean (true for Money In)
             boolean tStatus = true;
 
+            // Convert the image to a byte array (if image exists)
+            byte[] imageBytes = null;
+            if (base64ImageString != null) {
+                // Convert Base64 to byte array for SQLite storage as BLOB
+                imageBytes = Base64.decode(base64ImageString, Base64.DEFAULT);
+            }
+
             // Prepare SQLite ContentValues
             ContentValues values = new ContentValues();
             values.put("TNum", newTransactionID);
@@ -155,7 +162,9 @@ public class transaction_moneyin extends AppCompatActivity {
             values.put("TDate", date);
             values.put("TTime", time);
             values.put("CNum", categoryCNUM);
-            values.put("TImage", base64ImageString); // Store Base64 string as text in SQLite
+            if (imageBytes != null) {
+                values.put("TImage", imageBytes); // Store image as BLOB in SQLite
+            }
             values.put("TStatus", tStatus ? 1 : 0); // SQLite stores TStatus as an integer (1 for true, 0 for false)
             values.put("UNum", currentUserUNum);
 
@@ -229,10 +238,32 @@ public class transaction_moneyin extends AppCompatActivity {
     }
 
     private void openImagePicker() {
+
+         /*
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*"); // Filter for image files only
+        imagePickerLauncher.launch(intent); // Launch the image picker
+         */
+
+        
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraLauncher.launch(cameraIntent);
     }
 
+    /*
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    selectedImageUriMoneyIn = result.getData().getData(); // Get the image URI
+                    Toast.makeText(this, "Image Selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
+                }
+            });
+     */
+
+    // Method is generated with AI. Claude 3.5 Sonnet. Prompt = "take an image, then save the captured image as a blob data type to be stored in the sqlite database"
     private final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -259,4 +290,68 @@ public class transaction_moneyin extends AppCompatActivity {
         selectedImageUriMoneyIn = null;
         base64ImageString = null;
     }
+    private void showTransactionDialog() {
+        // Inflate the custom dialog layout
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_transaction, null);
+
+        // Create the dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Handle dialog buttons
+        dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
+            startActivity(new Intent(this, transaction_moneyin.class));
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
+            startActivity(new Intent(this, transactions_moneyout.class));
+            dialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> dialog.dismiss());
+    }
+
+    public void BtnClickedPlus(View view) {
+        showTransactionDialog();
+    }
+
+    public void gohome(View v) {
+        Intent intent = new Intent(this, Home.class);
+        intent.putExtra("PK_UNUM", currentUserUNum);
+        startActivity(intent);
+    }
+
+    public void BtnMoneyOutBtn1(View v) {
+        Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
+    }
+
+    public void ButtonMoneyIn1(View v) {
+        Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
+    }
+
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
+    }
+
+    public void gocategories(View v) {
+        startActivity(new Intent(this, categories_main.class));
+    }
+
+    public void goaccount(View v) {
+        startActivity(new Intent(this, account.class));
+        base64ImageString = null;
+    }
 }
+

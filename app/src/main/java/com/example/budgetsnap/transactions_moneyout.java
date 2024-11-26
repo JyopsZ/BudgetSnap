@@ -152,7 +152,13 @@ public class transactions_moneyout extends AppCompatActivity {
             values.put("TDate", date);
             values.put("TTime", time);
             values.put("CNum", categoryCNUM);
-            values.put("TImage", base64ImageString); // Store Base64 image in SQLite
+
+            // If there's an image, convert it to a byte array and store it as a blob in SQLite
+            if (base64ImageString != null) {
+                byte[] imageBlob = Base64.decode(base64ImageString, Base64.DEFAULT);
+                values.put("TImage", imageBlob); // Store image as a blob in SQLite
+            }
+
             values.put("TStatus", tStatus ? 1 : 0); // SQLite stores TStatus as 1 (true) or 0 (false)
             values.put("UNum", currentUserUNum);
 
@@ -160,7 +166,7 @@ public class transactions_moneyout extends AppCompatActivity {
             long result = db.insert("TRANSACTIONS", null, values);
 
             if (result != -1) {
-                Toast.makeText(this, "Transaction added successfully to SQLite", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Expense added successfully to SQLite", Toast.LENGTH_SHORT).show();
 
                 // Insert into Firebase Firestore
                 insertExpenseIntoFirebase(newTransactionID, name, Double.parseDouble(amount), date, time, categoryCNUM, tStatus, base64ImageString);
@@ -188,8 +194,10 @@ public class transactions_moneyout extends AppCompatActivity {
         transactionData.put("CNum", categoryCNUM);
         transactionData.put("TStatus", status); // Store TStatus as boolean (false for Money Out)
         transactionData.put("UNum", currentUserUNum);
+
+        // Add Base64 image to Firestore if available
         if (base64Image != null) {
-            transactionData.put("TImageBase64", base64Image); // Add Base64 image string to Firestore
+            transactionData.put("TImageBase64", base64Image); // Store Base64 image string in Firestore
         }
 
         // Insert into Firestore
@@ -378,11 +386,13 @@ public class transactions_moneyout extends AppCompatActivity {
 
     public void BtnMoneyInBtn2(View v) {
         Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void BtnMoneyOutBtn2(View v) {
         Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
@@ -394,11 +404,7 @@ public class transactions_moneyout extends AppCompatActivity {
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
-        startActivity(i);
-    }
-
-    public void gonotif(View v) {
-        Intent i = new Intent(transactions_moneyout.this, Notifications.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
