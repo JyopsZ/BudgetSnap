@@ -53,6 +53,10 @@ public class LoginActivity extends AppCompatActivity {
         initializeViews();
 
         syncFirebaseToSQLite(); // Duplicate Firebase entries into SQLite DB
+        syncBudgetCategories(); // Duplicate the rest of the tables, except user, categories, savings'
+        syncBudgets();
+        syncBudgetAdditions();
+        syncTransactions();
     }
 
     private void initializeViews() {
@@ -105,8 +109,8 @@ public class LoginActivity extends AppCompatActivity {
         dbManager.close();
     }
 
-    private void syncFirebaseToSQLite() { Reference: https://firebase.google.com/docs/firestore/query-data/get-data
-
+    private void syncFirebaseToSQLite() { //Reference: https://firebase.google.com/docs/firestore/query-data/get-data
+                                            // *ONLY FOR USER :(
         db = FirebaseFirestore.getInstance();
         DBManager dbManager = new DBManager(this);
 
@@ -133,6 +137,91 @@ public class LoginActivity extends AppCompatActivity {
 
             dbManager.close();
             refreshUser(); // Update arrayList with new entries to the db. Start after firebase data is synced.
+        });
+    }
+
+    private void syncBudgetCategories () {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("BUDGET_CATEGORY").get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+
+                dbManager.insertBudgetCategory(
+                        doc.getId(),
+                        doc.getDouble("BCBudget"),
+                        doc.getString("BNum"),
+                        doc.getString("CNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncBudgets () {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("BUDGET").get().addOnSuccessListener(budgetSnapshots -> {
+
+            for (DocumentSnapshot doc : budgetSnapshots) {
+
+                dbManager.insertBudget(
+                        doc.getId(),
+                        doc.getString("UNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncBudgetAdditions () {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("BUDGET_ADD").get().addOnSuccessListener(addSnapshots -> {
+
+            for (DocumentSnapshot doc : addSnapshots) {
+
+                dbManager.insertBudgetAdd(
+                        doc.getId(),
+                        doc.getString("BAName"),
+                        doc.getDouble("BAExpense"),
+                        doc.getString("BNum"),
+                        doc.getString("CNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncTransactions() {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("TRANSACTIONS").get().addOnSuccessListener(transSnapshots -> {
+
+            for (DocumentSnapshot doc : transSnapshots) {
+
+                dbManager.insertTransaction(
+
+                        doc.getId(),
+                        doc.getString("TName"),
+                        doc.getString("TDate"),
+                        doc.getString("TTime"),
+                        doc.getDouble("TAmount"),
+                        //doc.getString("TImage"), // TODO: Remove comments for TImage Part 2 of 2
+                        String.valueOf(doc.getBoolean("TStatus")),
+                        doc.getString("CNum"),
+                        doc.getString("UNum")
+                );
+            }
+
+            dbManager.close();
         });
     }
 
