@@ -32,9 +32,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -347,6 +344,7 @@ public class Home extends AppCompatActivity {
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 }
