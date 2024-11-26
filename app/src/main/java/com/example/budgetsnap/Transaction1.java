@@ -38,8 +38,8 @@ import java.util.Locale;
 
 public class Transaction1 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    ImageView imageBG, imageLogo, imageBell, searchBar, Search_Button;
-    TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
+    ImageView imageBG, imageLogo;
+    TextView textTransactions;
     Spinner dropdown_menu;
     FrameLayout frameLayout;
     String PK_Unum;
@@ -56,8 +56,6 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         // Initialize views properly
         imageBG = findViewById(R.id.imageBG);
         imageLogo = findViewById(R.id.imageLogo);
-        imageBell = findViewById(R.id.imageBell);
-        searchBar = findViewById(R.id.searchBar);
         textTransactions = findViewById(R.id.textTransactions);
         frameLayout = findViewById(R.id.frameLayout);
         dropdown_menu = findViewById(R.id.dropdown_menu);
@@ -348,6 +346,66 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         });
         // Refresh the UI after sorting
         showTransactionsInConstraintLayout();
+    }
+
+    private void showDeleteTransactionPrompt() {
+        if (transactionList.isEmpty()) {
+            Toast.makeText(this, "No transactions to delete.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a dialog to show a list of transactions
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Transaction to Delete");
+
+        // Prepare an array of transaction names for the dialog
+        String[] transactionNames = new String[transactionList.size()];
+        for (int i = 0; i < transactionList.size(); i++) {
+            transactionNames[i] = transactionList.get(i).getName() + " - Php " + transactionList.get(i).getAmount();
+        }
+
+        // Show transaction names in a single-choice list
+        builder.setItems(transactionNames, (dialog, which) -> {
+            // Confirm deletion
+            confirmDeleteTransaction(which);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.create().show();
+    }
+
+    private void confirmDeleteTransaction(int index) {
+        Transaction selectedTransaction = transactionList.get(index);
+
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle("Confirm Delete");
+        confirmBuilder.setMessage("Are you sure you want to delete " + selectedTransaction.getName() + "?");
+
+        confirmBuilder.setPositiveButton("Yes", (dialog, which) -> {
+            deleteTransactionFromDatabase(selectedTransaction);
+            transactionList.remove(index);
+            showTransactionsInConstraintLayout(); // Update the UI
+            Toast.makeText(this, "Transaction deleted.", Toast.LENGTH_SHORT).show();
+        });
+
+        confirmBuilder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        confirmBuilder.create().show();
+    }
+
+
+    private void deleteTransactionFromDatabase(Transaction transaction) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        // Use a query to delete the transaction by name and amount (adjust as needed for uniqueness)
+        String whereClause = "TName = ? AND TAmount = ?";
+        String[] whereArgs = {transaction.getName(), transaction.getAmount()};
+
+        db.delete("TRANSACTIONS", whereClause, whereArgs);
+        db.close();
+    }
+
+    public void onDeleteTransactionClicked(View view) {
+        showDeleteTransactionPrompt();
     }
 
     public void gohome(View v) {
