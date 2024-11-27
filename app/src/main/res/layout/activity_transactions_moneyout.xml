@@ -226,7 +226,7 @@
             android:layout_height="52dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:hint="2:45 P.M"
+            android:hint="HH:MM"
             android:inputType="time"
             android:fontFamily="@font/poppins"
             app:layout_constraintEnd_toEndOf="parent"
