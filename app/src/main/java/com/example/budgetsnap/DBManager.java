@@ -163,4 +163,61 @@ public class DBManager {
 
         database.delete(DatabaseHelper.TABLE_SAVINGS, DatabaseHelper.PK_SNUM + "=?", new String[] {snum});
     }
+
+
+    // ========================== OTHERS ==========================
+    public void insertBudgetCategory (String BCNum, double BCBudget, String BNum, String CNum) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.PK_BCNUM, BCNum);
+        values.put(DatabaseHelper.BCBUDGET, BCBudget);
+        values.put(DatabaseHelper.FK_BCBNUM, BNum);
+        values.put(DatabaseHelper.FK_BCCNUM, CNum);
+
+        database.insert(DatabaseHelper.TABLE_BUDGET_CATEGORY, null, values);
+    }
+
+    public void insertBudget (String BNum, String UNum) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.PK_BNUM, BNum);
+        values.put(DatabaseHelper.FK_BUNUM, UNum);
+
+        database.insert(DatabaseHelper.TABLE_BUDGET, null, values);
+    }
+
+    public void insertBudgetAdd (String BANum, String BAName, double BAExpense, String BNum, String CNum) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.PK_BANUM, BANum);
+        values.put(DatabaseHelper.BANAME, BAName);
+        values.put(DatabaseHelper.BAEXPENSE, BAExpense);
+        values.put(DatabaseHelper.FK_BABNUM, BNum);
+        values.put(DatabaseHelper.FK_BACNUM, CNum);
+
+        database.insert(DatabaseHelper.TABLE_BUDGET_ADD, null, values);
+    }
+
+    // TODO: Remove comments for TImage Part 1 of 1
+    public void insertTransaction (String TNum, String TName, String TDate, String TTime, double TAmount/*, String TImage*/, String TStatus, String CNum, String UNum) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.PK_TNUM, TNum);
+        values.put(DatabaseHelper.TNAME, TName);
+        values.put(DatabaseHelper.TDATE, TDate);
+        values.put(DatabaseHelper.TTIME, TTime);
+        values.put(DatabaseHelper.TAMOUNT, TAmount);
+        //values.put(DatabaseHelper.TIMAGE, TImage);
+        values.put(DatabaseHelper.TSTATUS, TStatus);
+        values.put(DatabaseHelper.FK_TCNUM, CNum);
+        values.put(DatabaseHelper.FK_TUNUM, UNum);
+
+        database.insert(DatabaseHelper.TABLE_TRANSACTIONS, null, values);
+    }
+
+
 }

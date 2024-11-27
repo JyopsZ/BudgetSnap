@@ -427,10 +427,6 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         startActivity(i);
     }
 
-    public void gonotif(View v) {
-        Intent i = new Intent(Transaction1.this, Notifications.class);
-        startActivity(i);
-    }
 
     public void gocategories(View v) {
         Intent i = new Intent(Transaction1.this, categories_main.class);

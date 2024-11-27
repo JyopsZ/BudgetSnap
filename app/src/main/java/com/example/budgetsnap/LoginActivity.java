@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,6 +19,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,7 +34,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText editEmail, editPassword;
     ImageButton eyeButton;
 
+    private FirebaseFirestore db; // Results in error if declared in method for some reason >:(
+
     boolean isPasswordVisible = false;
+    String UNum = null;
 
     ArrayList<UserClass> userClassList = new ArrayList<>(); // Sample data for testing
 
@@ -42,7 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         initializeViews();
-        refreshUser(); // Update arrayList with new entries to the db
+
+        syncFirebaseToSQLite(); // Duplicate Firebase entries into SQLite DB
+        syncBudgetCategories(); // Duplicate the rest of the tables, except user, categories, savings'
+        syncBudgets();
+        syncBudgetAdditions();
+        syncTransactions();
+        syncSavings();
     }
 
     private void initializeViews() {
@@ -63,36 +80,183 @@ public class LoginActivity extends AppCompatActivity {
         // Reference for Html: https://alfredmyers.com/2018/02/06/warning-cs0618-html-fromhtmlstring-is-obsolete-deprecated/#google_vignette
     }
 
-    private void refreshUser() { // Repurposed method from MCO2. Used to add new users to arrayList from SignupActivity intent. (addUser)
-                                // Updated to add new users to arrayList by refreshing database.
-
+    private void refreshUser() {
         DBManager dbManager = new DBManager(this);
         dbManager.open();
 
         userClassList.clear();
 
-        Cursor cursor = dbManager.fetchUsers(); // Get all users currently in db
+        Cursor cursor = dbManager.fetchUsers();
 
         if (cursor.moveToFirst()) {
             do {
-                userClassList.add(new UserClass(
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE)))
-                );
+                String UNum = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.PK_UNUM));
+                String UName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UNAME));
+                String UPass = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UPASS));
+                String UBDay = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UBDAY));
+                String UEmail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.UEMAIL));
+                byte[] UImage = cursor.getBlob(cursor.getColumnIndexOrThrow(DatabaseHelper.UIMAGE));
+                double UIncome = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UINCOME));
+                double UExpense = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.UEXPENSE));
+
+                userClassList.add(new UserClass(UNum, UName, UPass, UBDay, UEmail, UImage, UIncome, UExpense));
             } while (cursor.moveToNext());
         }
 
-        // FOR DEBUGGING
-        //Toast.makeText(this, "First User UNum: " + userClassList.get(0).getUNum(), Toast.LENGTH_LONG).show();
-
         cursor.close();
-        dbManager.close();
+    }
+
+    private void syncFirebaseToSQLite() { Reference: https://firebase.google.com/docs/firestore/query-data/get-data
+
+        db = FirebaseFirestore.getInstance();
+        DBManager dbManager = new DBManager(this);
+
+        dbManager.open();
+
+        db.collection("USER").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                byte[] imageBytes = null;
+
+
+                if (doc.contains("UImage") && doc.get("UImage") != null) {
+                    String imageString = doc.getString("UImage");
+
+                    try {
+                        imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                UserClass user = new UserClass(
+                        doc.getId(),
+                        doc.getString("UName"),
+                        doc.getString("UPass"),
+                        doc.getString("UBday"),
+                        doc.getString("UEmail"),
+                        imageBytes,
+                        doc.getDouble("UIncome"),
+                        doc.getDouble("UExpense")
+                );
+
+
+                dbManager.insertUser(user);
+            }
+
+            refreshUser();
+        });
+    }
+
+    private void syncBudgetCategories () {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("BUDGET_CATEGORY").get().addOnSuccessListener(queryDocumentSnapshots -> {
+
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+
+                dbManager.insertBudgetCategory(
+                        doc.getId(),
+                        doc.getDouble("BCBudget"),
+                        doc.getString("BNum"),
+                        doc.getString("CNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncBudgets () {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("BUDGET").get().addOnSuccessListener(budgetSnapshots -> {
+
+            for (DocumentSnapshot doc : budgetSnapshots) {
+
+                dbManager.insertBudget(
+                        doc.getId(),
+                        doc.getString("UNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncBudgetAdditions () {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("BUDGET_ADD").get().addOnSuccessListener(addSnapshots -> {
+
+            for (DocumentSnapshot doc : addSnapshots) {
+
+                dbManager.insertBudgetAdd(
+                        doc.getId(),
+                        doc.getString("BAName"),
+                        doc.getDouble("BAExpense"),
+                        doc.getString("BNum"),
+                        doc.getString("CNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncTransactions() {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("TRANSACTIONS").get().addOnSuccessListener(transSnapshots -> {
+
+            for (DocumentSnapshot doc : transSnapshots) {
+
+                dbManager.insertTransaction(
+
+                        doc.getId(),
+                        doc.getString("TName"),
+                        doc.getString("TDate"),
+                        doc.getString("TTime"),
+                        doc.getDouble("TAmount"),
+                        //doc.getString("TImage"), // TODO: Remove comments for TImage Part 2 of 2
+                        String.valueOf(doc.getBoolean("TStatus")),
+                        doc.getString("CNum"),
+                        doc.getString("UNum")
+                );
+            }
+
+            dbManager.close();
+        });
+    }
+
+    private void syncSavings() {
+
+        DBManager dbManager = new DBManager(this);
+        dbManager.open();
+        db.collection("SAVINGS").get().addOnSuccessListener(savingsSnapshots -> {
+
+            for (DocumentSnapshot doc : savingsSnapshots) {
+
+                SavingsClass savings = new SavingsClass(
+                        doc.getId(),
+                        doc.getString("SName"),
+                        doc.getDouble("SCurrentAmount"),
+                        doc.getDouble("SGoalAmount"),
+                        doc.getString("SFrequency"),
+                        doc.getString("SDate"),
+                        doc.getBoolean("SStatus"),
+                        doc.getString("UNum")
+                );
+
+                dbManager.insertSavings(savings);
+            }
+
+            dbManager.close();
+        });
     }
 
     public void togglePassword(View v) { // Method for toggling password visibility onClick of eye symbol
@@ -118,11 +282,10 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
-        String UNum = null;
         boolean isValid = false;
-        for (UserClass userClass : userClassList) { // Check every user in the arrayList
+        for (UserClass userClass : userClassList) {
 
-            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) { // If email and password provided is given, valid
+            if (userClass.getEmail().equals(email) && userClass.getPassword().equals(password)) {
                UNum = userClass.getUNum();
                 isValid = true;
                 break;
@@ -130,7 +293,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            // for passing of UNum
             SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("userUNum", UNum); // Store the UNum
@@ -147,7 +309,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent i = getIntent();
             finish();
-            startActivity(i); // Reload activity if incorrect
+            startActivity(i);
         }
     }
 

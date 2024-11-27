@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 16;
 
     // User
     public static final String TABLE_USER = "USER";
@@ -37,44 +37,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Transactions
-    private static final String TABLE_TRANSACTIONS = "TRANSACTIONS";
-    private static final String PK_TNUM = "TNum";
-    private static final String TNAME = "TName";
-    private static final String TDATE = "TDate";
-    private static final String TTIME = "TTime";
-    private static final String TAMOUNT = "TAmount";
-    private static final String TIMAGE = "TImage";
-    private static final String TSTATUS = "TStatus";
-    private static final String FK_TCNUM = "CNum";
-    private static final String FK_TUNUM = "UNum";
+    public static final String TABLE_TRANSACTIONS = "TRANSACTIONS";
+    public static final String PK_TNUM = "TNum";
+    public static final String TNAME = "TName";
+    public static final String TDATE = "TDate";
+    public static final String TTIME = "TTime";
+    public static final String TAMOUNT = "TAmount";
+    public static final String TIMAGE = "TImage";
+    public static final String TSTATUS = "TStatus";
+    public static final String FK_TCNUM = "CNum";
+    public static final String FK_TUNUM = "UNum";
 
     // Categories
-    private static final String TABLE_CATEGORIES = "CATEGORIES";
-    private static final String PK_CNUM = "CNum";
-    private static final String CNAME = "CName";
+    public static final String TABLE_CATEGORIES = "CATEGORIES";
+    public static final String PK_CNUM = "CNum";
+    public static final String CNAME = "CName";
 
     // Budget Tables
-    private static final String TABLE_BUDGET = "BUDGET";
-    private static final String PK_BNUM = "BNum";
-    private static final String FK_BUNUM = "UNum";
+    public static final String TABLE_BUDGET = "BUDGET";
+    public static final String PK_BNUM = "BNum";
+    public static final String FK_BUNUM = "UNum";
 
-    private static final String TABLE_BUDGET_CATEGORY = "BUDGET_CATEGORY";
-    private static final String PK_BCNUM = "BCNum";
-    private static final String BCBUDGET = "BCBudget";
-    private static final String FK_BCBNUM = "BNum";
-    private static final String FK_BCCNUM = "CNum";
+    public static final String TABLE_BUDGET_CATEGORY = "BUDGET_CATEGORY";
+    public static final String PK_BCNUM = "BCNum";
+    public static final String BCBUDGET = "BCBudget";
+    public static final String FK_BCBNUM = "BNum";
+    public static final String FK_BCCNUM = "CNum";
 
-    private static final String TABLE_BUDGET_ADD = "BUDGET_ADD";
-    private static final String PK_BANUM = "BANum";
-    private static final String BANAME = "BAName";
-    private static final String BAEXPENSE = "BAExpense";
-    private static final String FK_BABNUM = "BNum";
-    private static final String FK_BACNUM = "CNum";
+    public static final String TABLE_BUDGET_ADD = "BUDGET_ADD";
+    public static final String PK_BANUM = "BANum";
+    public static final String BANAME = "BAName";
+    public static final String BAEXPENSE = "BAExpense";
+    public static final String FK_BABNUM = "BNum";
+    public static final String FK_BACNUM = "CNum";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         //USER
@@ -84,16 +83,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + UPASS + " TEXT,"
                 + UBDAY + " TEXT,"
                 + UEMAIL + " TEXT,"
-                + UIMAGE + " TEXT,"
+                + UIMAGE + " BLOB,"
                 + UINCOME + " DOUBLE,"
                 + UEXPENSE + " DOUBLE"
                 + ")";
         db.execSQL(CREATE_USER_TABLE);
-
-        db.execSQL("INSERT INTO USER(Unum, UName, UPass, UBday, UEmail, UImage, UIncome, UExpense) VALUES " +
-                "('U0001', 'admin', '1234', '01/01/2000', 'admin', '', 0, 0), " +
-                "('U0002', 'Fredrick', 'Pogi', '02/02/2000', 'Fredrick@dlsu.edu.ph', '', 10, 10), " +
-                "('U0003', 'Brad Pitt', 'asdf', '03/03/2000', 'brad_pitt@dlsu.edu.ph', '', 10, 10)");
 
         //FRIENDS
         String CREATE_FRIENDS_TABLE = "CREATE TABLE " + TABLE_FRIENDS + "("
@@ -119,11 +113,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + FK_SUNUM + ") REFERENCES " + TABLE_USER + "(" + PK_UNUM + ")"
                 + ")";
         db.execSQL(CREATE_SAVINGS_TABLE);
-           db.execSQL("INSERT INTO SAVINGS(SNum, SName, SCurrentAmount, SGoalAmount, SFrequency, SDate, SStatus, UNum) VALUES " +
-                        "('S0001', 'Concert', 0.0, 5000, 'Daily', '10/17/2024', true, 'U0002' ), " +
-                        "('S0002', 'Tuition', 9878.0, 100000, 'Monthly', '01/03/2025', false, 'U0002' )");
-
-
 
         //TRANSACTIONS
         String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + TABLE_TRANSACTIONS + "("
@@ -211,4 +200,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET_ADD);
         onCreate(db);
     }
+
+    public void updateUserName(String UNum, String newUserName) {
+        String query = "UPDATE " + TABLE_USER +
+                " SET " + UNAME + " = ? " +
+                " WHERE " + PK_UNUM + " = ?";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query, new Object[]{newUserName, UNum});
+        db.close();
+    }
+
 }

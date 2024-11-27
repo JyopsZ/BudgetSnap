@@ -11,11 +11,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class SavingsInputAmount extends AppCompatActivity {
 
     EditText editInputText;
 
     String snum;
+
+    String UNum = getIntent().getStringExtra("PK_UNUM");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,21 @@ public class SavingsInputAmount extends AppCompatActivity {
         dbManager.incrementCurSavings(snum, amount);
         dbManager.close();
 
+        incrementCurSavingsFB(snum, amount);
+
         finish();
+    }
+
+    private void incrementCurSavingsFB(String snum, double amount) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SAVINGS").document(snum).get().addOnSuccessListener(documentSnapshot -> {
+
+            double currentAmount = documentSnapshot.getDouble("SCurrentAmount");
+            double newAmount = currentAmount += amount;
+
+            db.collection("SAVINGS").document(snum).update("SCurrentAmount", newAmount);
+        });
     }
 
     public void goHome (View v) {
@@ -57,22 +75,26 @@ public class SavingsInputAmount extends AppCompatActivity {
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void gosavings(View v) {
         Intent i = new Intent(this, SavingsActivity.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 }

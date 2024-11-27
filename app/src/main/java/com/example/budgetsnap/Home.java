@@ -46,11 +46,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Home extends AppCompatActivity {
 
-    private List<String> xValues = Arrays.asList("Savings Goal Progress", "Total Income", "Total Expenses");
+    private List<String> xValues = Arrays.asList( "Total Income", "Total Expenses");
     private String PK_Unum;
     private DatabaseHelper dbHelper;
     private String selectedItem = "Daily";
-    private Integer TB1 = 0, TB2 = 0, TB3 = 0;
+    private Integer  TB2 = 0, TB3 = 0;
 
     @SuppressLint("SuspiciousIndentation")
     @Override
@@ -111,7 +111,7 @@ public class Home extends AppCompatActivity {
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0, TB2));
         entries.add(new BarEntry(1, TB3));
-        entries.add(new BarEntry(2, TB1));
+
 
         YAxis yAxis = barChart.getAxisLeft();
         yAxis.setAxisMaximum(100000f);
@@ -193,7 +193,7 @@ public class Home extends AppCompatActivity {
     }
 
     private void updateTransactionValues() {
-        double TI = 10;
+        double TI = 0;
         double TE = 0;
 
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -274,7 +274,6 @@ public class Home extends AppCompatActivity {
 
         TB2 = (int) TI;
         TB3 = (int) TE;
-        TB1 = 5000;
 
         if (TIText != null) TIText.setText("PHP " + String.format("%.2f", TI));
         if (TEText != null) TEText.setText("PHP " + String.format("%.2f", TE));
@@ -286,9 +285,8 @@ public class Home extends AppCompatActivity {
         BarChart barChart = findViewById(R.id.chart);
 
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, TB1));
-        entries.add(new BarEntry(1, TB2));
-        entries.add(new BarEntry(2, TB3));
+        entries.add(new BarEntry(0, TB2));
+        entries.add(new BarEntry(1, TB3));
 
         BarDataSet dataSet = new BarDataSet(entries, "Subjects");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
@@ -315,13 +313,12 @@ public class Home extends AppCompatActivity {
         dbHelper.close();
     }
 
-    public void gonotif(View v) {
-        Intent i = new Intent(this, Notifications.class);
+    public void returnToMainActivity(View v) {
+        Intent i= new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
     public void gosavings(View v) {
-
         Intent i = new Intent(this, SavingsActivity.class);
         i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
@@ -342,6 +339,7 @@ public class Home extends AppCompatActivity {
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 

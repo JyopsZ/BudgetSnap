@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class SavingsViewing extends AppCompatActivity {
 
     TextView nameValue, goalAmountValue, frequencyValue, dateValue;
@@ -22,6 +24,8 @@ public class SavingsViewing extends AppCompatActivity {
     Button activateButton;
 
     String snum;
+
+    String UNum = getIntent().getStringExtra("PK_UNUM");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +154,8 @@ public class SavingsViewing extends AppCompatActivity {
             dbManager.deleteSavingsGoal(snum);
             dbManager.close();
 
+            deleteFirebaseSavings(snum);
+
             // Handle clicking Back button
             deletionConfirmView.findViewById(R.id.backButton).setOnClickListener(v2 -> {
                 deletionConfirmDialog.dismiss();
@@ -157,6 +163,12 @@ public class SavingsViewing extends AppCompatActivity {
                 finish();
             });
         });
+    }
+
+    private void deleteFirebaseSavings(String snum) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SAVINGS").document(snum).delete();
     }
 
     public void inputMoney(View v) {
@@ -175,31 +187,43 @@ public class SavingsViewing extends AppCompatActivity {
             activateButton.setText("Activate");
             activateButton.setBackgroundColor(0xFF4CAF50); // Green color
             dbManager.updateSavingsStatus(snum, false);
+            updateFirebaseStatus(snum, false);
         } else {
             activateButton.setText("Deactivate");
             activateButton.setBackgroundColor(0xFFFF2020); // Red color
             dbManager.updateSavingsStatus(snum, true);
+            updateFirebaseStatus(snum, true);
         }
+    }
+
+    private void updateFirebaseStatus(String snum, boolean status) {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("SAVINGS").document(snum).update("SStatus", status);
     }
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 
     public void gosavings(View v) {
         Intent i = new Intent(this, SavingsActivity.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivity(i);
     }
 }
