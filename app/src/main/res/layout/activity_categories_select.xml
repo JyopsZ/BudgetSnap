@@ -148,6 +148,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
+        android:onClick="goTransactions"
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
