@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "budget.db";
-    private static final int DB_VERSION = 17;
+    private static final int DB_VERSION = 18;
 
     // User
     public static final String TABLE_USER = "USER";
@@ -20,10 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String UINCOME = "UIncome";
     public static final String UEXPENSE = "UExpense";
 
-    public static final String TABLE_FRIENDS = "FRIENDS";
-    public static final String FK_FNUM = "FNum";
-    public static final String FK_FUNUM = "UNum";
-
     // Savings
     public static final String TABLE_SAVINGS = "SAVINGS";
     public static final String PK_SNUM = "SNum";
@@ -34,7 +30,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String SDATE = "SDate";
     public static final String SSTATUS = "SStatus";
     public static final String FK_SUNUM = "UNum";
-
 
     // Transactions
     public static final String TABLE_TRANSACTIONS = "TRANSACTIONS";
@@ -88,16 +83,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + UEXPENSE + " DOUBLE"
                 + ")";
         db.execSQL(CREATE_USER_TABLE);
-
-        //FRIENDS
-        String CREATE_FRIENDS_TABLE = "CREATE TABLE " + TABLE_FRIENDS + "("
-                + FK_FNUM + " TEXT PRIMARY KEY,"
-                + FK_FUNUM + " TEXT,"
-                + "FOREIGN KEY(" + FK_FUNUM + ") REFERENCES " + TABLE_USER + "(" + FK_FUNUM + ")"
-                + ")";
-        db.execSQL(CREATE_FRIENDS_TABLE);
-        //   db.execSQL("" +
-        //                "('F0001', ), " +
 
 
         //SAVINGS
@@ -191,7 +176,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FRIENDS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVINGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
