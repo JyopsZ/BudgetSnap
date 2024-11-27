@@ -219,5 +219,15 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_TRANSACTIONS, null, values);
     }
 
+    public void deleteSQLInitial () {
+
+        database.execSQL("DELETE FROM " + DatabaseHelper.TABLE_USER + ";");
+        database.execSQL("DELETE FROM " + DatabaseHelper.TABLE_SAVINGS + ";");
+        database.execSQL("DELETE FROM " + DatabaseHelper.TABLE_TRANSACTIONS + ";");
+        database.execSQL("DELETE FROM " + DatabaseHelper.TABLE_BUDGET + ";");
+        database.execSQL("DELETE FROM " + DatabaseHelper.TABLE_BUDGET_CATEGORY + ";");
+        database.execSQL("DELETE FROM " + DatabaseHelper.TABLE_BUDGET_ADD + ";");
+    }
+
 
 }

@@ -52,6 +52,11 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
+        DBManager dbManager = new DBManager(this); // Reset local db before updating with firebase
+        dbManager.open();
+        dbManager.deleteSQLInitial();
+        dbManager.close();
+
         initializeViews();
 
         syncFirebaseToSQLite(); // Duplicate Firebase entries into SQLite DB
