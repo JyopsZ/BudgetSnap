@@ -202,7 +202,7 @@ public class transaction_moneyin extends AppCompatActivity {
         transactionData.put("TStatus", status); // Store as boolean (true for Money In, false for Money Out)
         transactionData.put("UNum", currentUserUNum);
         if (base64Image != null) {
-            transactionData.put("TImageBase64", base64Image); // Add Base64 image string to Firestore
+            transactionData.put("TImage", base64Image); // Add Base64 image string to Firestore
         }
 
         // Insert into Firestore

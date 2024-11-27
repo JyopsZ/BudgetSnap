@@ -197,7 +197,7 @@ public class transactions_moneyout extends AppCompatActivity {
 
         // Add Base64 image to Firestore if available
         if (base64Image != null) {
-            transactionData.put("TImageBase64", base64Image); // Store Base64 image string in Firestore
+            transactionData.put("TImage", base64Image); // Store Base64 image string in Firestore
         }
 
         // Insert into Firestore
