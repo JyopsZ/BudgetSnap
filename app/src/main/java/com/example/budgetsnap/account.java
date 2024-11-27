@@ -185,12 +185,6 @@ public class account extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goSavings(View v) {
-        Intent intent = new Intent(this, SavingsActivity.class);
-        intent.putExtra("PK_UNUM", UNum);
-        startActivity(intent);
-    }
-
     public void goEdit(View v) {
         Intent intent = new Intent(this, accountEditProfile.class);
         intent.putExtra("PK_UNUM", UNum);

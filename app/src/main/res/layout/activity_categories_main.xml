@@ -267,12 +267,13 @@
         android:layout_width="75dp"
         android:layout_height="72dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
+        android:onClick="goTransactions"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/menu_square" />
 
     <ImageView
@@ -334,7 +335,7 @@
         android:layout_width="47dp"
         android:layout_height="49dp"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="8dp"
+        android:onClick="goTransactions"
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />

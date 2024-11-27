@@ -186,7 +186,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="15dp"
-        android:onClick="goSavings"
+        android:onClick="goTransactions"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/menu_transaction"
@@ -254,7 +254,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
-        android:onClick="goSavings"
+        android:onClick="goTransactions"
         app:layout_constraintStart_toStartOf="@+id/menu_square"
         app:layout_constraintTop_toTopOf="@+id/menu_rectangle"
         app:srcCompat="@drawable/menu_plus" />
