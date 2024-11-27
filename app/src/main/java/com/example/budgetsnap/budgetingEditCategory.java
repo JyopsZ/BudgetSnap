@@ -102,8 +102,8 @@ public class budgetingEditCategory extends AppCompatActivity {
             insertBudgetCategoryIfChecked(db, checkBoxFood, "C0002", editTextFoodAmount);
             insertBudgetCategoryIfChecked(db, checkBoxBills, "C0003", editTextBillsAmount);
             insertBudgetCategoryIfChecked(db, checkBoxHealth, "C0004", editTextHealthAmount);
-            insertBudgetCategoryIfChecked(db, checkBoxEducation, "C0005", editTextEducationAmount);
-            insertBudgetCategoryIfChecked(db, checkBoxLeisure, "C0006", editTextLeisureAmount);
+            insertBudgetCategoryIfChecked(db, checkBoxLeisure, "C0005", editTextLeisureAmount);
+            insertBudgetCategoryIfChecked(db, checkBoxEducation, "C0006", editTextEducationAmount);
             insertBudgetCategoryIfChecked(db, checkBoxTranspo, "C0007", editTextTranspoAmount);
             insertBudgetCategoryIfChecked(db, checkBoxSavings, "C0008", editTextSavingsAmount);
             insertBudgetCategoryIfChecked(db, checkBoxOthers, "C0009", editTextOthersAmount);

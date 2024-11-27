@@ -63,11 +63,11 @@ public class BudgetingAdapter extends RecyclerView.Adapter<BudgetingAdapter.BudV
             case "Health":
                 holder.budImage.setImageResource(R.drawable.c_health);
                 break;
-            case "Education":
-                holder.budImage.setImageResource(R.drawable.c_education);
-                break;
             case "Leisure":
                 holder.budImage.setImageResource(R.drawable.c_leisure);
+                break;
+            case "Education":
+                holder.budImage.setImageResource(R.drawable.c_education);
                 break;
             case "Transportation":
                 holder.budImage.setImageResource(R.drawable.c_transportation);
@@ -79,7 +79,6 @@ public class BudgetingAdapter extends RecyclerView.Adapter<BudgetingAdapter.BudV
                 holder.budImage.setImageResource(R.drawable.c_others);
                 break;
             default:
-                holder.budImage.setImageResource(R.drawable.c_others); // Default image for unmatched categories
                 break;
         }
     }

@@ -202,7 +202,7 @@ public class DBManager {
     }
 
     // TODO: Remove comments for TImage Part 1 of 1
-    public void insertTransaction (String TNum, String TName, String TDate, String TTime, double TAmount/*, String TImage*/, String TStatus, String CNum, String UNum) {
+    public void insertTransaction (String TNum, String TName, String TDate, String TTime, double TAmount, String TImage, String TStatus, String CNum, String UNum) {
 
         ContentValues values = new ContentValues();
 
@@ -211,7 +211,7 @@ public class DBManager {
         values.put(DatabaseHelper.TDATE, TDate);
         values.put(DatabaseHelper.TTIME, TTime);
         values.put(DatabaseHelper.TAMOUNT, TAmount);
-        //values.put(DatabaseHelper.TIMAGE, TImage);
+        values.put(DatabaseHelper.TIMAGE, TImage);
         values.put(DatabaseHelper.TSTATUS, TStatus);
         values.put(DatabaseHelper.FK_TCNUM, CNum);
         values.put(DatabaseHelper.FK_TUNUM, UNum);

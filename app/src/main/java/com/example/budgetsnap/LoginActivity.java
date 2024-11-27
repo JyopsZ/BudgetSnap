@@ -222,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                         doc.getString("TDate"),
                         doc.getString("TTime"),
                         doc.getDouble("TAmount"),
-                        //doc.getString("TImage"), // TODO: Remove comments for TImage Part 2 of 2
+                        doc.getString("TImage"), // TODO: Remove comments for TImage Part 2 of 2
                         String.valueOf(doc.getBoolean("TStatus")),
                         doc.getString("CNum"),
                         doc.getString("UNum")
