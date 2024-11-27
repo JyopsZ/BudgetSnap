@@ -155,10 +155,20 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
                 String category = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
                 byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("TImage")); // Retrieve BLOB data
 
-                boolean isPositive = Boolean.parseBoolean(status); // Convert string to boolean, for passing into arrayList
+                boolean isPositive;
+
+                // Use if-else to check the value of TStatus and set isPositive
+                if ("1".equals(status) || "true".equalsIgnoreCase(status)) {
+                    isPositive = true; // Income
+                } else if ("0".equals(status) || "false".equalsIgnoreCase(status)) {
+                    isPositive = false; // Expense
+                } else {
+                    isPositive = false; // Default to false if status is unexpected
+                }
 
                 // TODO: REMOVE
                 Toast.makeText(this, "Status: " + isPositive, Toast.LENGTH_SHORT).show();
+
                 // Add the transaction to the list
                 transactionList.add(new Transaction(tNum, name, date, amount, isPositive, category, image));
             } while (cursor.moveToNext());
@@ -229,11 +239,20 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             amountLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
             TextView transactionAmountView = new TextView(this);
-            transactionAmountView.setText((transaction.isPositive() ? "+ Php " : "- Php ") + transaction.getAmount());
-            transactionAmountView.setTextSize(16);
+
+            // Set the amount text with proper formatting based on transaction type (positive or negative)
+            String amountText = (transaction.isPositive() ? "+ Php " : "- Php ") + transaction.getAmount();
+            transactionAmountView.setText(amountText);
+            // Set text size, bold style, and color
+            transactionAmountView.setTextSize(16); // Increased text size for better visibility
             transactionAmountView.setTypeface(null, Typeface.BOLD);
-            transactionAmountView.setTextColor(transaction.isPositive() ? getResources().getColor(android.R.color.holo_green_light)
-                    : getResources().getColor(android.R.color.holo_red_light));
+            // Use color based on the transaction type (green for income, red for expense)
+            int textColor = transaction.isPositive()
+                    ? getResources().getColor(android.R.color.holo_green_light)
+                    : getResources().getColor(android.R.color.holo_red_light);
+            transactionAmountView.setTextColor(textColor);
+
+            // Add the TextView to your layout (amountLayout)
             amountLayout.addView(transactionAmountView);
 
             // Create and add the "view image" link below the amount
