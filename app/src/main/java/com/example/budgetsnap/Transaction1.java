@@ -151,10 +151,14 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
                 String amount = cursor.getString(cursor.getColumnIndexOrThrow("TAmount"));
+                String status = cursor.getString(cursor.getColumnIndexOrThrow("TStatus"));
                 String category = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
-                boolean isPositive = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) > 0;
                 byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("TImage")); // Retrieve BLOB data
 
+                boolean isPositive = Boolean.parseBoolean(status); // Convert string to boolean, for passing into arrayList
+
+                // TODO: REMOVE
+                Toast.makeText(this, "Status: " + isPositive, Toast.LENGTH_SHORT).show();
                 // Add the transaction to the list
                 transactionList.add(new Transaction(tNum, name, date, amount, isPositive, category, image));
             } while (cursor.moveToNext());
