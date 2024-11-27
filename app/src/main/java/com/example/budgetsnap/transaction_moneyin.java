@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,22 +17,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
 
 public class transaction_moneyin extends AppCompatActivity {
 
@@ -42,11 +39,12 @@ public class transaction_moneyin extends AppCompatActivity {
     private EditText editTextName, editTextAmount, editTextDate, editTextTime;
     private Spinner spinnerCategory;
     private Button buttonAttachImage, buttonAddIncome;
-    private SQLiteDatabase db; // SQLite database instance
+    private SQLiteDatabase db;
     private LinkedHashMap<String, String> categoryMap; // Stores CNUM -> CNAME mapping
-    private String currentUserUNum; // Current user's unique number
-    private String PK_Unum; // Primary key user number passed through intent
-    private String base64ImageString; // String to hold the Base64-encoded image
+    private String currentUserUNum;
+    private double balance;// Store the current user's UNum
+
+    private byte[] byteArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +87,6 @@ public class transaction_moneyin extends AppCompatActivity {
 
         // Handle Add Income button
         buttonAddIncome.setOnClickListener(v -> addIncomeToDatabase());
-
-        // CURRENT USER'S NUMBER
-        PK_Unum = getIntent().getStringExtra("PK_UNUM");
-        Toast.makeText(this, "Current User: " + PK_Unum, Toast.LENGTH_SHORT).show();
     }
 
     private String getCurrentUserUNum() {
@@ -144,80 +138,108 @@ public class transaction_moneyin extends AppCompatActivity {
             // Generate a new transaction ID
             String newTransactionID = generateNewTransactionID();
 
-            // Set TStatus as boolean (true for Money In)
-            boolean tStatus = true;
-
-            // Convert the image to a byte array (if image exists)
-            byte[] imageBytes = null;
-            if (base64ImageString != null) {
-                // Convert Base64 to byte array for SQLite storage as BLOB
-                imageBytes = Base64.decode(base64ImageString, Base64.DEFAULT);
-            }
-
-            // Prepare SQLite ContentValues
+            // Prepare content values
             ContentValues values = new ContentValues();
-            values.put("TNum", newTransactionID);
+            values.put("TNum", newTransactionID); // Use the generated transaction ID
             values.put("TName", name);
             values.put("TAmount", Double.parseDouble(amount));
             values.put("TDate", date);
             values.put("TTime", time);
-            values.put("CNum", categoryCNUM);
-            if (imageBytes != null) {
-                values.put("TImage", imageBytes); // Store image as BLOB in SQLite
-            }
-            values.put("TStatus", tStatus ? 1 : 0); // SQLite stores TStatus as an integer (1 for true, 0 for false)
-            values.put("UNum", currentUserUNum);
+            values.put("CNum", categoryCNUM); // Save CNUM instead of category name
+            values.put("TImage", byteArray);
+            values.put("TStatus", 1); // 1 for Money In
+            values.put("UNum", currentUserUNum); // Save current user's UNum
 
-            // Insert into SQLite
+            // Insert into the database
             long result = db.insert("TRANSACTIONS", null, values);
 
             if (result != -1) {
-                Toast.makeText(this, "Transaction added successfully to SQLite", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Transaction added successfully", Toast.LENGTH_SHORT).show();
 
-                // Insert into Firebase Firestore
-                insertIntoFirebase(newTransactionID, name, amount, date, time, categoryCNUM, tStatus, base64ImageString);
 
+                updateBalanceForTransaction();
                 clearFields();
             } else {
-                Toast.makeText(this, "Failed to add transaction to SQLite", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to add transaction", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Log.e("SQLiteError", "Error adding transaction: " + e.getMessage());
+            Toast.makeText(this, "An error occurred. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void insertIntoFirebase(String transactionID, String name, String amount, String date, String time, String categoryCNUM, boolean status, String base64Image) {
-        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+    private void updateBalanceForTransaction() {
+        try {
+            String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+            Log.d("BalanceUpdate", "Current date formatted: " + currentDate);
 
-        // Create a map of the transaction data
-        Map<String, Object> transactionData = new HashMap<>();
-        transactionData.put("TName", name);
-        transactionData.put("TAmount", Double.parseDouble(amount));
-        transactionData.put("TDate", date);
-        transactionData.put("TTime", time);
-        transactionData.put("CNum", categoryCNUM);
-        transactionData.put("TStatus", status); // Store as boolean (true for Money In, false for Money Out)
-        transactionData.put("UNum", currentUserUNum);
-        if (base64Image != null) {
-            transactionData.put("TImageBase64", base64Image); // Add Base64 image string to Firestore
+            String queryDateCheck = "SELECT TDate FROM TRANSACTIONS WHERE UNum = ? ORDER BY TNum DESC LIMIT 1";
+            String[] dateCheckArgs = {currentUserUNum};
+
+            Cursor dateCursor = db.rawQuery(queryDateCheck, dateCheckArgs);
+            if (dateCursor != null && dateCursor.moveToFirst()) {
+
+                String queryTransaction = "SELECT TAmount, TStatus FROM TRANSACTIONS WHERE UNum = ? ORDER BY TNum DESC LIMIT 1";
+                String[] transactionArgs = {currentUserUNum};
+
+                Cursor transactionCursor = db.rawQuery(queryTransaction, transactionArgs);
+
+                if (transactionCursor != null && transactionCursor.moveToFirst()) {
+                    double amount = transactionCursor.getDouble(transactionCursor.getColumnIndex("TAmount"));
+                    int status = transactionCursor.getInt(transactionCursor.getColumnIndex("TStatus"));
+
+                    Log.d("BalanceUpdate", "Transaction found: TAmount = " + amount + ", TStatus = " + status);
+
+                    if (status == 1) {
+                        updateUserBalance(amount);
+                    }
+                    transactionCursor.close();
+                }
+            } else {
+                Log.d("BalanceUpdate", "No transactions for the current date: " + currentDate);
+            }
+            dateCursor.close();
+        } catch (Exception e) {
+            Log.e("BalanceError", "Error updating balance: " + e.getMessage());
         }
-
-        // Insert into Firestore
-        dbFirebase.collection("TRANSACTIONS")
-                .document(transactionID)
-                .set(transactionData)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Transaction added to Firebase"))
-                .addOnFailureListener(e -> Log.e("FirestoreError", "Error adding transaction to Firebase", e));
     }
+
+
+    private void updateUserBalance(double amount) {
+        try {
+            String query = "SELECT UIncome FROM USER WHERE UNum = ?";
+            String[] queryArgs = {currentUserUNum};
+
+            Cursor cursor = db.rawQuery(query, queryArgs);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                double currentBalance = cursor.getDouble(cursor.getColumnIndex("UIncome"));
+                double newBalance = currentBalance + amount;
+
+                ContentValues values = new ContentValues();
+                values.put("UIncome", newBalance);
+
+                int rowsUpdated = db.update("USER", values, "UNum = ?", new String[]{currentUserUNum});
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("BalanceUpdateError", "Error updating user balance: " + e.getMessage());
+        }
+    }
+
 
     private String generateNewTransactionID() {
         String newID = "T0001"; // Default ID for the first transaction
         try {
+            // Query the database for the latest transaction ID
             String query = "SELECT TNum FROM TRANSACTIONS ORDER BY TNum DESC LIMIT 1";
             try (Cursor cursor = db.rawQuery(query, null)) {
                 if (cursor.moveToFirst()) {
+                    // Get the last ID
                     String lastID = cursor.getString(0);
-                    int numericPart = Integer.parseInt(lastID.substring(1));
+
+                    // Extract the numeric part and increment
+                    int numericPart = Integer.parseInt(lastID.substring(1)); // Remove the "T" prefix
                     numericPart++;
                     newID = "T" + String.format("%04d", numericPart); // Format as T000X
                 }
@@ -239,13 +261,12 @@ public class transaction_moneyin extends AppCompatActivity {
 
     private void openImagePicker() {
 
-         /*
+        /*
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*"); // Filter for image files only
         imagePickerLauncher.launch(intent); // Launch the image picker
          */
 
-        
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraLauncher.launch(cameraIntent);
     }
@@ -270,13 +291,14 @@ public class transaction_moneyin extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
 
-                    // Convert bitmap to Base64 string
+                    // Convert bitmap to byte array for BLOB storage
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    base64ImageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    byteArray = stream.toByteArray();
 
-                    Toast.makeText(this, "Image captured and converted to Base64", Toast.LENGTH_SHORT).show();
+                    // The byte array will be stored as BLOB in SQLite
+                    selectedImageUriMoneyIn = Uri.parse("blob://" + System.currentTimeMillis());
+                    Toast.makeText(this, "Image captured and ready for storage", Toast.LENGTH_SHORT).show();
                 }
             }
     );
@@ -288,8 +310,12 @@ public class transaction_moneyin extends AppCompatActivity {
         editTextTime.setText("");
         spinnerCategory.setSelection(0);
         selectedImageUriMoneyIn = null;
-        base64ImageString = null;
     }
+
+    public void BtnClickedPlus(View view) {
+        showTransactionDialog();
+    }
+
     private void showTransactionDialog() {
         // Inflate the custom dialog layout
         LayoutInflater inflater = getLayoutInflater();
@@ -305,24 +331,16 @@ public class transaction_moneyin extends AppCompatActivity {
 
         // Handle dialog buttons
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
-            Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
-            i.putExtra("PK_UNUM", PK_Unum);
-            startActivity(i);
+            startActivity(new Intent(this, transaction_moneyin.class));
             dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
-            Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
-            i.putExtra("PK_UNUM", PK_Unum);
-            startActivity(i);
+            startActivity(new Intent(this, transactions_moneyout.class));
             dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.cancelButton).setOnClickListener(v -> dialog.dismiss());
-    }
-
-    public void BtnClickedPlus(View view) {
-        showTransactionDialog();
     }
 
     public void gohome(View v) {
@@ -331,34 +349,17 @@ public class transaction_moneyin extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void BtnMoneyOutBtn1(View v) {
-        Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
-        i.putExtra("PK_UNUM", PK_Unum);
-        startActivity(i);
-    }
-
-    public void ButtonMoneyIn1(View v) {
-        Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
-        i.putExtra("PK_UNUM", PK_Unum);
-        startActivity(i);
-    }
 
     public void gotransactions(View v) {
-        Intent i = new Intent(this, Transaction1.class);
-        i.putExtra("PK_UNUM", PK_Unum);
-        startActivity(i);
+        startActivity(new Intent(this, Transaction1.class));
     }
 
+
     public void gocategories(View v) {
-        Intent i = new Intent(this, categories_main.class);
-        i.putExtra("PK_UNUM", PK_Unum);
-        startActivity(i);
+        startActivity(new Intent(this, categories_main.class));
     }
 
     public void goaccount(View v) {
-        Intent i = new Intent(this, account.class);
-        i.putExtra("PK_UNUM", PK_Unum);
-        startActivity(i);
+        startActivity(new Intent(this, account.class));
     }
 }
-
