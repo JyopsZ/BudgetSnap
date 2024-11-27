@@ -163,6 +163,7 @@ public class SavingsActivity extends AppCompatActivity {
     public void addSavings(View v) { // When either the +Add savings challenge button or orange box is pressed, start a new savings challenge activity
 
         Intent i = new Intent(this, SavingsChallenge.class);
+        i.putExtra("PK_UNUM", UNum);
         startActivityForResult(i, 1);
     }
 
