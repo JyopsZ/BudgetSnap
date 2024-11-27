@@ -32,6 +32,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -169,10 +171,15 @@ public class Home extends AppCompatActivity {
                 int columnIndex = cursor.getColumnIndex("UIncome");
                 if (columnIndex != -1) {
                     double uIncome = cursor.getDouble(columnIndex);
+                    if (uIncome < 0) {
+                        uIncome = 0;
+                    }
+                        updateUserIncomeInFirestore(uIncome);
 
-                    String formattedIncome = String.format(Locale.getDefault(), "Php %,.2f", uIncome);
+                        String formattedIncome = String.format(Locale.getDefault(), "Php %,.2f", uIncome);
 
-                    balanceTextView.setText(formattedIncome);
+                        balanceTextView.setText(formattedIncome);
+
                 }
             }
         } finally {
@@ -190,6 +197,25 @@ public class Home extends AppCompatActivity {
         updateSavingsGoal();
     }
 
+    public void updateUserIncomeInFirestore(double UIncome) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference userRef = db.collection("USER").document(PK_Unum);
+
+        Map<String, Object> userIncomeMap = new HashMap<>();
+        userIncomeMap.put("UIncome", UIncome);
+
+        // Update the UIncome field in Firestore
+        userRef.update(userIncomeMap)
+                .addOnSuccessListener(aVoid -> {
+                    // If the update was successful
+                    Log.d("Firestore", "User income successfully updated!");
+                })
+                .addOnFailureListener(e -> {
+                    // If the update failed
+                    Log.w("Firestore", "Error updating income: ", e);
+                });
+    }
     private void updateTransactionValues() {
         double TI = 0;
         double TE = 0;

@@ -1,6 +1,7 @@
 package com.example.budgetsnap;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -404,6 +405,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     private void deleteTransactionFromDatabase(Transaction transaction) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
+        updateIncome(transaction.getName(), transaction.getAmount(), PK_Unum);
         // Delete from SQLite
         String whereClause = "TName = ? AND TAmount = ?";
         String[] whereArgs = {transaction.getName(), transaction.getAmount()};
@@ -419,6 +421,42 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
                 .addOnFailureListener(e -> Log.e("FirestoreError", "Error deleting transaction from Firebase", e));
     }
 
+    private void updateIncome(String tName, String tAmount, String uNum) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT USER.UIncome, TRANSACTIONS.TStatus " +
+                        "FROM USER " +
+                        "INNER JOIN TRANSACTIONS ON USER.UNum = TRANSACTIONS.UNum " +
+                        "WHERE TRANSACTIONS.TName = ? AND TRANSACTIONS.TAmount = ? AND USER.UNum = ?",
+                new String[]{tName, tAmount, uNum});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            double uIncome = cursor.getDouble(cursor.getColumnIndex("UIncome"));
+            int tStatus = cursor.getInt(cursor.getColumnIndex("TStatus"));
+
+            double TAmount = Double.parseDouble(tAmount);
+
+            double newIncome;
+            if (tStatus == 1) {
+                newIncome = uIncome - TAmount;
+                Log.d("TransactionDebug", "TStatus is 1. Subtracting TAmount from UIncome.");
+            } else {
+                newIncome = uIncome + TAmount;
+                Log.d("TransactionDebug", "TStatus is not 1. Adding TAmount to UIncome.");
+            }
+
+            ContentValues values = new ContentValues();
+            values.put("UIncome", newIncome);
+            int rowsUpdated = db.update("USER", values, "UNum = ?", new String[]{uNum});
+            Log.d("TransactionDebug", "Rows updated in USER table: " + rowsUpdated);
+
+            cursor.close();
+        } else {
+            Log.e("TransactionDebug", "No data found for the specified transaction.");
+        }
+
+    }
     public void onDeleteTransactionClicked(View view) {
         showDeleteTransactionPrompt();
     }
