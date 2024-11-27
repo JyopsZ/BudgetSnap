@@ -8,25 +8,24 @@
     tools:context=".Transaction1">
 
     <ImageView
-        android:id="@+id/imageBG"
-        android:layout_width="418dp"
-        android:layout_height="144dp"
+        android:id="@+id/GreenBG"
+        android:layout_width="414dp"
+        android:layout_height="62dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/bg"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background" />
+        app:srcCompat="@drawable/budgetsnapbg_1" />
 
     <ImageView
-        android:id="@+id/imageLogo"
-        android:layout_width="259dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="28dp"
+        android:id="@+id/Logo"
+        android:layout_width="136dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="136dp"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logonobg" />
 
@@ -34,36 +33,39 @@
         android:id="@+id/textTransactions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Transactions"
         android:textColor="#E16162"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageBG"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonDeleteTransaction"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
 
     <Spinner
         android:id="@+id/dropdown_menu"
         android:layout_width="152dp"
         android:layout_height="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="45dp"
         android:layout_marginEnd="28dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageBG" />
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="376dp"
-        android:layout_height="540dp"
+        android:layout_height="590dp"
         android:layout_margin="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_border"
         android:elevation="4dp"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dropdown_menu">
 
@@ -197,12 +199,12 @@
         android:id="@+id/buttonDeleteTransaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="45dp"
         android:onClick="onDeleteTransactionClicked"
         android:text="Delete Transaction"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.082"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GreenBG" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

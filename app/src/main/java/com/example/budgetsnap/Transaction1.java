@@ -56,8 +56,8 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_transaction1);
 
         // Initialize views properly
-        imageBG = findViewById(R.id.imageBG);
-        imageLogo = findViewById(R.id.imageLogo);
+        imageBG = findViewById(R.id.GreenBG);
+        imageLogo = findViewById(R.id.Logo);
         textTransactions = findViewById(R.id.textTransactions);
         frameLayout = findViewById(R.id.frameLayout);
         dropdown_menu = findViewById(R.id.dropdown_menu);
@@ -136,11 +136,14 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     private void loadTransactionData() {
         transactionList = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        // Modify the query to filter by the current user's ID (PK_Unum)
         String query = "SELECT TRANSACTIONS.TNum, TName, TDate, TAmount, TStatus, CName, TImage " +
                 "FROM TRANSACTIONS " +
-                "INNER JOIN CATEGORIES ON TRANSACTIONS.CNum = CATEGORIES.CNum";
+                "INNER JOIN CATEGORIES ON TRANSACTIONS.CNum = CATEGORIES.CNum " +
+                "WHERE TRANSACTIONS.UNum = ?"; // Filter for the logged-in user
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[]{PK_Unum}); // Pass PK_Unum as a parameter
 
         if (cursor.moveToFirst()) {
             do {
@@ -176,107 +179,83 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
             return;
         }
 
-        // Date formatting
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-        Calendar today = Calendar.getInstance();
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.add(Calendar.DATE, -1);
-
-        String lastAddedLabel = ""; // To track the last added label
+        String lastAddedDate = ""; // To track the last added date
 
         for (Transaction transaction : transactionList) {
-            try {
-                // Parse the transaction date
-                Date transactionDate = dateFormat.parse(transaction.getDate());
-                Calendar transactionCalendar = Calendar.getInstance();
-                transactionCalendar.setTime(transactionDate);
+            // Get the transaction's date
+            String transactionDate = transaction.getDate();
 
-                // Determine the label for the transaction date
-                String dateLabel;
-                if (isSameDay(today, transactionCalendar)) {
-                    dateLabel = "Today";
-                } else if (isSameDay(yesterday, transactionCalendar)) {
-                    dateLabel = "Yesterday";
-                } else {
-                    dateLabel = "A While Ago";
-                }
-
-                // Add the date label if it's new
-                if (!dateLabel.equals(lastAddedLabel)) {
-                    TextView dateTextView = new TextView(this);
-                    dateTextView.setText(dateLabel);
-                    dateTextView.setTextSize(18);
-                    dateTextView.setTypeface(null, Typeface.BOLD);
-                    dateTextView.setTextColor(getResources().getColor(android.R.color.black));
-                    transactionContainer.addView(dateTextView);
-                    lastAddedLabel = dateLabel;
-                }
-
-                // Create a layout for the transaction
-                LinearLayout transactionLayout = new LinearLayout(this);
-                transactionLayout.setOrientation(LinearLayout.HORIZONTAL);
-                transactionLayout.setPadding(0, 16, 0, 16);
-
-                LinearLayout textLayout = new LinearLayout(this);
-                textLayout.setOrientation(LinearLayout.VERTICAL);
-                textLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-                TextView transactionNameView = new TextView(this);
-                transactionNameView.setText(transaction.getName());
-                transactionNameView.setTextSize(16);
-                transactionNameView.setTypeface(null, Typeface.BOLD);
-                transactionNameView.setTextColor(getResources().getColor(R.color.verydarkcyan));
-                textLayout.addView(transactionNameView);
-
-                TextView transactionCategoryView = new TextView(this);
-                transactionCategoryView.setText("Category: " + transaction.getCategory());
-                transactionCategoryView.setTextSize(14);
-                transactionCategoryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                textLayout.addView(transactionCategoryView);
-
-                transactionLayout.addView(textLayout);
-
-                LinearLayout amountLayout = new LinearLayout(this);
-                amountLayout.setOrientation(LinearLayout.VERTICAL);
-                amountLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                TextView transactionAmountView = new TextView(this);
-                transactionAmountView.setText((transaction.isPositive() ? "+ Php " : "- Php ") + transaction.getAmount());
-                transactionAmountView.setTextSize(16);
-                transactionAmountView.setTypeface(null, Typeface.BOLD);
-                transactionAmountView.setTextColor(transaction.isPositive() ? getResources().getColor(android.R.color.holo_green_light)
-                        : getResources().getColor(android.R.color.holo_red_light));
-                amountLayout.addView(transactionAmountView);
-
-                /// Create and add the "view image" link below the amount
-                TextView viewImageTextView = new TextView(this);
-                viewImageTextView.setText("> view image");
-                viewImageTextView.setTextSize(12);
-                viewImageTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                viewImageTextView.setOnClickListener(v -> {
-                    byte[] imageData = transaction.getImage(); // Get the image data from the transaction
-                    if (imageData != null && imageData.length > 0) {
-                        showImageDialog(imageData); // Show the dialog with the image
-                    } else {
-                        Toast.makeText(this, "No image available for this transaction.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                amountLayout.addView(viewImageTextView);
-
-                transactionLayout.addView(amountLayout);
-
-                transactionContainer.addView(transactionLayout);
-
-                // Add a spacer between transactions
-                View spacer = new View(this);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 16);
-                spacer.setLayoutParams(params);
-                transactionContainer.addView(spacer);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e("TransactionUI", "Error processing transaction date: " + transaction.getDate());
+            // Add a date label if it's different from the last one
+            if (!transactionDate.equals(lastAddedDate)) {
+                TextView dateTextView = new TextView(this);
+                dateTextView.setText(transactionDate); // Display the transaction date
+                dateTextView.setTextSize(18);
+                dateTextView.setTypeface(null, Typeface.BOLD);
+                dateTextView.setTextColor(getResources().getColor(android.R.color.black));
+                transactionContainer.addView(dateTextView);
+                lastAddedDate = transactionDate;
             }
+
+            // Create a layout for the transaction
+            LinearLayout transactionLayout = new LinearLayout(this);
+            transactionLayout.setOrientation(LinearLayout.HORIZONTAL);
+            transactionLayout.setPadding(0, 16, 0, 16);
+
+            LinearLayout textLayout = new LinearLayout(this);
+            textLayout.setOrientation(LinearLayout.VERTICAL);
+            textLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            TextView transactionNameView = new TextView(this);
+            transactionNameView.setText(transaction.getName());
+            transactionNameView.setTextSize(16);
+            transactionNameView.setTypeface(null, Typeface.BOLD);
+            transactionNameView.setTextColor(getResources().getColor(R.color.verydarkcyan));
+            textLayout.addView(transactionNameView);
+
+            TextView transactionCategoryView = new TextView(this);
+            transactionCategoryView.setText("Category: " + transaction.getCategory());
+            transactionCategoryView.setTextSize(14);
+            transactionCategoryView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            textLayout.addView(transactionCategoryView);
+
+            transactionLayout.addView(textLayout);
+
+            LinearLayout amountLayout = new LinearLayout(this);
+            amountLayout.setOrientation(LinearLayout.VERTICAL);
+            amountLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            TextView transactionAmountView = new TextView(this);
+            transactionAmountView.setText((transaction.isPositive() ? "+ Php " : "- Php ") + transaction.getAmount());
+            transactionAmountView.setTextSize(16);
+            transactionAmountView.setTypeface(null, Typeface.BOLD);
+            transactionAmountView.setTextColor(transaction.isPositive() ? getResources().getColor(android.R.color.holo_green_light)
+                    : getResources().getColor(android.R.color.holo_red_light));
+            amountLayout.addView(transactionAmountView);
+
+            // Create and add the "view image" link below the amount
+            TextView viewImageTextView = new TextView(this);
+            viewImageTextView.setText("> view image");
+            viewImageTextView.setTextSize(12);
+            viewImageTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            viewImageTextView.setOnClickListener(v -> {
+                byte[] imageData = transaction.getImage(); // Get the image data from the transaction
+                if (imageData != null && imageData.length > 0) {
+                    showImageDialog(imageData); // Show the dialog with the image
+                } else {
+                    Toast.makeText(this, "No image available for this transaction.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            amountLayout.addView(viewImageTextView);
+
+            transactionLayout.addView(amountLayout);
+
+            transactionContainer.addView(transactionLayout);
+
+            // Add a spacer between transactions
+            View spacer = new View(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 16);
+            spacer.setLayoutParams(params);
+            transactionContainer.addView(spacer);
         }
     }
 
