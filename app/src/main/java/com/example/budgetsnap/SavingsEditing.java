@@ -29,7 +29,7 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
     String frequency; // Store frequency chosen by user
     String snum;
 
-    String UNum = getIntent().getStringExtra("PK_UNUM");
+    String PK_UNum;
 
     private static final String[] freq = {"Daily", "Weekly", "Monthly"}; // Reference: Adrian Tan Villador for Spinner (dropdown code)
 
@@ -43,6 +43,8 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        PK_UNum = getIntent().getStringExtra("PK_UNUM");
 
         initializeViews(); // Print out labels for input fields with red asterisks
     }
@@ -188,26 +190,26 @@ public class SavingsEditing extends AppCompatActivity implements AdapterView.OnI
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
-        i.putExtra("PK_UNUM", UNum);
+        i.putExtra("PK_UNUM", PK_UNum);
         startActivity(i);
     }
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
-        i.putExtra("PK_UNUM", UNum);
+        i.putExtra("PK_UNUM", PK_UNum);
         startActivity(i);
     }
 
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
-        i.putExtra("PK_UNUM", UNum);
+        i.putExtra("PK_UNUM", PK_UNum);
         startActivity(i);
     }
 
     public void gosavings(View v) {
         Intent i = new Intent(this, SavingsActivity.class);
-        i.putExtra("PK_UNUM", UNum);
+        i.putExtra("PK_UNUM", PK_UNum);
         startActivity(i);
     }
 }
