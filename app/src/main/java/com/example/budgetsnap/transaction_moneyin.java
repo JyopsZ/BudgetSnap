@@ -305,12 +305,16 @@ public class transaction_moneyin extends AppCompatActivity {
 
         // Handle dialog buttons
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
-            startActivity(new Intent(this, transaction_moneyin.class));
+            Intent i = new Intent(transaction_moneyin.this, transaction_moneyin.class);
+            i.putExtra("PK_UNUM", PK_Unum);
+            startActivity(i);
             dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
-            startActivity(new Intent(this, transactions_moneyout.class));
+            Intent i = new Intent(transaction_moneyin.this, transactions_moneyout.class);
+            i.putExtra("PK_UNUM", PK_Unum);
+            startActivity(i);
             dialog.dismiss();
         });
 
@@ -346,12 +350,15 @@ public class transaction_moneyin extends AppCompatActivity {
     }
 
     public void gocategories(View v) {
-        startActivity(new Intent(this, categories_main.class));
+        Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
     }
 
     public void goaccount(View v) {
-        startActivity(new Intent(this, account.class));
-        base64ImageString = null;
+        Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
     }
 }
 

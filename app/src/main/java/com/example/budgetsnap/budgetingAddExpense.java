@@ -39,6 +39,7 @@ public class budgetingAddExpense extends AppCompatActivity {
     private List<Budget> budList;
     SQLiteOpenHelper databaseHelper;
     private LinkedHashMap<String, String> categoryMap; // To store category CNUM -> CNAME mapping
+    private String PK_Unum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +157,7 @@ public class budgetingAddExpense extends AppCompatActivity {
 
             // Navigate back to `budgeting1`
             Intent intent = new Intent(this, budgeting1.class);
+            intent.putExtra("PK_UNUM", PK_Unum);
             setResult(RESULT_OK, intent);
             finish();
         } catch (SQLiteException e) {
@@ -198,25 +200,31 @@ public class budgetingAddExpense extends AppCompatActivity {
 
     public void gohome(View v) {
         Intent i = new Intent(this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void back(View v) {
-        finish();
+        Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
     }
 }

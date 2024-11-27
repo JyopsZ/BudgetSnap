@@ -366,12 +366,14 @@ public class transactions_moneyout extends AppCompatActivity {
 
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
             Intent i = new Intent(transactions_moneyout.this, transaction_moneyin.class);
+            i.putExtra("PK_UNUM", PK_Unum);
             startActivity(i);
             dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
             Intent i = new Intent(transactions_moneyout.this, transactions_moneyout.class);
+            i.putExtra("PK_UNUM", PK_Unum);
             startActivity(i);
             dialog.dismiss();
         });
@@ -410,11 +412,13 @@ public class transactions_moneyout extends AppCompatActivity {
 
     public void gocategories(View v) {
         Intent i = new Intent(transactions_moneyout.this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(transactions_moneyout.this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 }

@@ -403,29 +403,35 @@ public class budgeting1 extends AppCompatActivity {
     // Navigate to Home activity
     public void gohome(View v) {
         Intent i = new Intent(budgeting1.this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Navigate to Transactions activity
     public void gotransactions(View v) {
         Intent i = new Intent(budgeting1.this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Navigate to Categories activity
     public void gocategories(View v) {
         Intent i = new Intent(budgeting1.this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Navigate to Account activity
     public void goaccount(View v) {
         Intent i = new Intent(budgeting1.this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Go back to the previous activity
     public void back(View v) {
+        Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         finish();
     }
 }

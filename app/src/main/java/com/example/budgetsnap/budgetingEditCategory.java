@@ -29,6 +29,7 @@ public class budgetingEditCategory extends AppCompatActivity {
             editTextEducationAmount, editTextLeisureAmount, editTextTranspoAmount, editTextSavingsAmount, editTextOthersAmount;
     private DatabaseHelper dbHelper;
     private String PK_BNUM;
+    private String PK_Unum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,25 +173,31 @@ public class budgetingEditCategory extends AppCompatActivity {
 
     public void gohome(View v) {
         Intent i = new Intent(budgetingEditCategory.this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void gotransactions(View v) {
         Intent i = new Intent(budgetingEditCategory.this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void gocategories(View v) {
         Intent i = new Intent(budgetingEditCategory.this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(budgetingEditCategory.this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void back(View v) {
+        Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         finish();
     }
 }
