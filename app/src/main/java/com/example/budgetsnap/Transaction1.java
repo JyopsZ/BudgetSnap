@@ -26,6 +26,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.File;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
@@ -38,8 +40,8 @@ import java.util.Locale;
 
 public class Transaction1 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    ImageView imageBG, imageLogo, imageBell, searchBar, Search_Button;
-    TextView textTransactions, dateText, textRestaurant, textCategory, textPrice, viewImage, Search_Text;
+    ImageView imageBG, imageLogo;
+    TextView textTransactions;
     Spinner dropdown_menu;
     FrameLayout frameLayout;
     String PK_Unum;
@@ -56,16 +58,12 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         // Initialize views properly
         imageBG = findViewById(R.id.imageBG);
         imageLogo = findViewById(R.id.imageLogo);
-        imageBell = findViewById(R.id.imageBell);
-        searchBar = findViewById(R.id.searchBar);
         textTransactions = findViewById(R.id.textTransactions);
         frameLayout = findViewById(R.id.frameLayout);
         dropdown_menu = findViewById(R.id.dropdown_menu);
 
         // Initialize database helper
         databaseHelper = new DatabaseHelper(this);
-
-        PK_Unum = getIntent().getStringExtra("PK_UNUM");
 
         // Setup Window Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -80,6 +78,9 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dropdown_menu.setAdapter(adapter);
         dropdown_menu.setOnItemSelectedListener(this); // Set listener for item selection
 
+        // CURRENT USER'S NUMBER
+        PK_Unum = getIntent().getStringExtra("PK_UNUM");
+        Toast.makeText(this, "Current User: " + PK_Unum, Toast.LENGTH_SHORT).show();
 
         // Load transaction data from the database
         loadTransactionData();
@@ -113,6 +114,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dialogView.findViewById(R.id.moneyInOption).setOnClickListener(v -> {
             // Start Money In Activity
             Intent i = new Intent(Transaction1.this, transaction_moneyin.class);
+            i.putExtra("PK_UNUM", PK_Unum);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
@@ -120,6 +122,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         dialogView.findViewById(R.id.moneyOutOption).setOnClickListener(v -> {
             // Start Money Out Activity
             Intent i = new Intent(Transaction1.this, transactions_moneyout.class);
+            i.putExtra("PK_UNUM", PK_Unum);
             startActivity(i);
             dialog.dismiss(); // Close the dialog after starting the activity
         });
@@ -133,8 +136,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
     private void loadTransactionData() {
         transactionList = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        String query = "SELECT TName, TDate, TAmount, TStatus, CName, TImage " +
+        String query = "SELECT TRANSACTIONS.TNum, TName, TDate, TAmount, TStatus, CName, TImage " +
                 "FROM TRANSACTIONS " +
                 "INNER JOIN CATEGORIES ON TRANSACTIONS.CNum = CATEGORIES.CNum";
 
@@ -142,6 +144,7 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
 
         if (cursor.moveToFirst()) {
             do {
+                String tNum = cursor.getString(cursor.getColumnIndexOrThrow("TNum"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("TName"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("TDate"));
                 String amount = cursor.getString(cursor.getColumnIndexOrThrow("TAmount"));
@@ -149,7 +152,8 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
                 boolean isPositive = cursor.getInt(cursor.getColumnIndexOrThrow("TStatus")) > 0;
                 byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("TImage")); // Retrieve BLOB data
 
-                transactionList.add(new Transaction(name, date, amount, isPositive, category, image));
+                // Add the transaction to the list
+                transactionList.add(new Transaction(tNum, name, date, amount, isPositive, category, image));
             } while (cursor.moveToNext());
         }
 
@@ -350,12 +354,84 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         showTransactionsInConstraintLayout();
     }
 
+    private void showDeleteTransactionPrompt() {
+        if (transactionList.isEmpty()) {
+            Toast.makeText(this, "No transactions to delete.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a dialog to show a list of transactions
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Transaction to Delete");
+
+        // Prepare an array of transaction names for the dialog
+        String[] transactionNames = new String[transactionList.size()];
+        for (int i = 0; i < transactionList.size(); i++) {
+            transactionNames[i] = transactionList.get(i).getName() + " - Php " + transactionList.get(i).getAmount();
+        }
+
+        // Show transaction names in a single-choice list
+        builder.setItems(transactionNames, (dialog, which) -> {
+            // Confirm deletion
+            confirmDeleteTransaction(which);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.create().show();
+    }
+
+    private void confirmDeleteTransaction(int index) {
+        Transaction selectedTransaction = transactionList.get(index);
+
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle("Confirm Delete");
+        confirmBuilder.setMessage("Are you sure you want to delete " + selectedTransaction.getName() + "?");
+
+        confirmBuilder.setPositiveButton("Yes", (dialog, which) -> {
+            deleteTransactionFromDatabase(selectedTransaction);
+            transactionList.remove(index);
+            showTransactionsInConstraintLayout(); // Update the UI
+            Toast.makeText(this, "Transaction deleted.", Toast.LENGTH_SHORT).show();
+        });
+
+        confirmBuilder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+        confirmBuilder.create().show();
+    }
+
+
+    private void deleteTransactionFromDatabase(Transaction transaction) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+
+        // Delete from SQLite
+        String whereClause = "TName = ? AND TAmount = ?";
+        String[] whereArgs = {transaction.getName(), transaction.getAmount()};
+        db.delete("TRANSACTIONS", whereClause, whereArgs);
+        db.close();
+
+        // Delete from Firebase Firestore
+        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+        dbFirebase.collection("TRANSACTIONS")
+                .document(transaction.getTNum()) // Assuming TNum is the unique transaction ID
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Transaction deleted from Firebase"))
+                .addOnFailureListener(e -> Log.e("FirestoreError", "Error deleting transaction from Firebase", e));
+    }
+
+    public void onDeleteTransactionClicked(View view) {
+        showDeleteTransactionPrompt();
+    }
+
     public void gohome(View v) {
         Intent i = new Intent(Transaction1.this, Home.class);
         i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
+    }
 
     public void gocategories(View v) {
         Intent i = new Intent(Transaction1.this, categories_main.class);

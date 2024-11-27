@@ -20,9 +20,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class budgetingAddExpense extends AppCompatActivity {
 
@@ -35,6 +39,7 @@ public class budgetingAddExpense extends AppCompatActivity {
     private List<Budget> budList;
     SQLiteOpenHelper databaseHelper;
     private LinkedHashMap<String, String> categoryMap; // To store category CNUM -> CNAME mapping
+    private String PK_Unum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,26 +125,39 @@ public class budgetingAddExpense extends AppCompatActivity {
             // Generate a new `BANum`
             String newBANum = generateNewBANum();
 
-            // Insert expense into `BUDGET_ADD`
+            // Insert into SQLite
             ContentValues expenseValues = new ContentValues();
-            expenseValues.put("BANum", newBANum); // Unique ID for this expense
-            expenseValues.put("BAName", name); // Expense name
-            expenseValues.put("BAExpense", amount); // Expense amount
-            expenseValues.put("BNum", PK_BNUM); // Foreign key from the `BUDGET` table
-            expenseValues.put("CNum", categoryCNUM); // Foreign key from the `CATEGORIES` table
+            expenseValues.put("BANum", newBANum);
+            expenseValues.put("BAName", name);
+            expenseValues.put("BAExpense", amount);
+            expenseValues.put("BNum", PK_BNUM);
+            expenseValues.put("CNum", categoryCNUM);
 
             long expenseResult = db.insert("BUDGET_ADD", null, expenseValues);
-
             if (expenseResult == -1) {
                 Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // Insert into Firebase
+            Map<String, Object> firebaseData = new HashMap<>();
+            firebaseData.put("BAName", name);
+            firebaseData.put("BAExpense", amount);
+            firebaseData.put("BNum", PK_BNUM);
+            firebaseData.put("CNum", categoryCNUM);
+
+            FirebaseFirestore.getInstance().collection("BUDGET_ADD")
+                    .document(newBANum)
+                    .set(firebaseData)
+                    .addOnSuccessListener(aVoid -> Toast.makeText(this, "Expense added to Firebase", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to add expense to Firebase: " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
             Toast.makeText(this, "Expense added successfully", Toast.LENGTH_SHORT).show();
             clearFields();
 
             // Navigate back to `budgeting1`
             Intent intent = new Intent(this, budgeting1.class);
+            intent.putExtra("PK_UNUM", PK_Unum);
             setResult(RESULT_OK, intent);
             finish();
         } catch (SQLiteException e) {
@@ -182,25 +200,31 @@ public class budgetingAddExpense extends AppCompatActivity {
 
     public void gohome(View v) {
         Intent i = new Intent(this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void gotransactions(View v) {
         Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void gocategories(View v) {
         Intent i = new Intent(this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void goaccount(View v) {
         Intent i = new Intent(this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     public void back(View v) {
-        finish();
+        Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
     }
 }

@@ -15,12 +15,10 @@
       android:adjustViewBounds="false"
       android:contentDescription="@string/bg"
       android:scaleType="centerCrop"
-      app:layout_constraintBottom_toBottomOf="@+id/searchBar"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.571"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.315"
       app:srcCompat="@drawable/background" />
 
   <ImageView
@@ -28,85 +26,38 @@
       android:layout_width="259dp"
       android:layout_height="33dp"
       android:layout_marginTop="28dp"
+      app:layout_constraintBottom_toBottomOf="@+id/imageBG"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.397"
       app:srcCompat="@drawable/logonobg" />
-
-  <ImageView
-      android:id="@+id/imageBell"
-      android:onClick="gonotif"
-      android:layout_width="52dp"
-      android:layout_height="52dp"
-      android:layout_marginTop="12dp"
-      android:layout_marginEnd="20dp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/imageLogo"
-      app:srcCompat="@drawable/bell" />
-
-  <ImageView
-      android:id="@+id/searchBar"
-      android:layout_width="311dp"
-      android:layout_height="42dp"
-      android:layout_marginTop="20dp"
-      android:scaleType="fitCenter"
-      app:layout_constraintBottom_toBottomOf="@+id/imageBell"
-      app:layout_constraintTop_toBottomOf="@+id/imageLogo"
-      app:layout_constraintVertical_bias="0.0"
-      app:srcCompat="@drawable/home_searchbar"
-      tools:layout_editor_absoluteX="17dp" />
-
-  <ImageView
-      android:id="@+id/Search_Button"
-      android:layout_width="25dp"
-      android:layout_height="20dp"
-      android:layout_marginTop="92dp"
-      android:layout_marginEnd="8dp"
-      app:layout_constraintEnd_toStartOf="@+id/Search_Text"
-      app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/home_search" />
-
-  <TextView
-      android:id="@+id/Search_Text"
-      android:layout_width="248dp"
-      android:layout_height="28dp"
-      android:layout_marginStart="76dp"
-      android:layout_marginTop="88dp"
-      android:fontFamily="@font/poppins"
-      android:hint="Search transactions..."
-      android:textAlignment="gravity"
-      android:textColorHint="#FFFFFF"
-      android:textSize="13sp"
-      app:layout_constraintBottom_toBottomOf="@+id/searchBar"
-      app:layout_constraintStart_toStartOf="@+id/imageBG"
-      app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
       android:id="@+id/textTransactions"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="36dp"
-      android:layout_marginTop="40dp"
+      android:layout_marginStart="28dp"
+      android:layout_marginTop="12dp"
+      android:fontFamily="@font/poppins_bold"
       android:text="Transactions"
       android:textColor="#E16162"
-      android:fontFamily="@font/poppins_bold"
       android:textSize="22sp"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+      app:layout_constraintTop_toBottomOf="@+id/imageBG" />
 
-    <Button
+  <Button
         android:id="@+id/buttonMoneyIn"
         android:layout_width="125dp"
         android:layout_height="46dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="5dp"
-        android:backgroundTint="@color/white"
+      android:backgroundTint="@color/lightgreen"
         android:fontFamily="@font/poppins_bold"
         android:onClick="ButtonMoneyIn1"
         android:text="Money In"
-        android:textColor="@color/verydarkcyan"
+        android:textColor="@color/white"
         android:textSize="15dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/buttonMoneyOut"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTransactions" />
@@ -158,7 +109,7 @@
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins"
         android:hint="Ex. Lunch Food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +134,7 @@
         android:layout_marginEnd="16dp"
         android:hint="0.00"
         android:inputType="numberDecimal"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAmount" />
@@ -262,6 +213,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:hint="MM/DD/YY"
+        android:fontFamily="@font/poppins"
         android:inputType="date"
         app:layout_constraintEnd_toStartOf="@+id/editTextTime"
         app:layout_constraintStart_toStartOf="parent"
@@ -273,7 +225,7 @@
         android:layout_height="46dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins"
         android:hint="2:45 P.M"
         android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"

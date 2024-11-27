@@ -7,8 +7,10 @@ public class Transaction {
     private String date;
     private boolean isPositive;
     private byte[] image; // Binary data for the image
+    private String tNum;
 
-    public Transaction(String name, String date, String amount, boolean isPositive, String category, byte[] image) {
+    public Transaction(String tNum, String name, String date, String amount, boolean isPositive, String category, byte[] image) {
+        this.tNum = tNum;
         this.name = name;
         this.date = date;
         this.amount = amount;
@@ -43,5 +45,13 @@ public class Transaction {
 
     public boolean isPositive() {
         return isPositive;
+    }
+
+    public String getTNum() {
+        return tNum;
+    }
+
+    public void setTNum(String tNum) {
+        this.tNum = tNum;
     }
 }

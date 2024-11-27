@@ -16,8 +16,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class budgeting1 extends AppCompatActivity {
 
@@ -81,25 +86,47 @@ public class budgeting1 extends AppCompatActivity {
         Toast.makeText(this, "Current User: " + currentUnum, Toast.LENGTH_SHORT).show();
 
         if (currentUnum != null && !currentUnum.isEmpty()) {
-            // Check if the user already has an associated BNum
-            boolean userExists = checkUserExists(currentUnum);
+            // Check if the user already has a BNum in SQLite
+            String existingBNum = getExistingBNumFromSQLite(currentUnum);
 
-            if (!userExists) {
-                // Generate a new BNum for the new user
+            if (existingBNum == null) {
+                // Generate a new BNum for the user and save to both SQLite and Firebase
                 String newBNum = generateNewBNum();
                 if (newBNum != null) {
-                    // Save the new BNum and associate it with the current user
-                    saveNewBNumForUser(currentUnum, newBNum);
+                    saveNewBNumForUser(currentUnum, newBNum); // Save to SQLite
+                    saveNewBNumToFirebase(currentUnum, newBNum); // Save to Firebase
                     Toast.makeText(this, "New BNum generated: " + newBNum, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Failed to generate a new BNum.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "User already exists with a BNum.", Toast.LENGTH_SHORT).show();
+                // Check if the BNum exists in Firebase
+                checkUserInFirebase(currentUnum, existsInFirebase -> {
+                    if (!existsInFirebase) {
+                        // Save the existing BNum to Firebase
+                        saveNewBNumToFirebase(currentUnum, existingBNum);
+                        Toast.makeText(this, "Existing BNum saved to Firebase: " + existingBNum, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "BNum already exists in Firebase.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         } else {
             Toast.makeText(this, "No user information provided.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getExistingBNumFromSQLite(String userUnum) {
+        String bNum = null;
+        String query = "SELECT BNum FROM BUDGET WHERE UNum = ?";
+        try (Cursor cursor = db.rawQuery(query, new String[]{userUnum})) {
+            if (cursor.moveToFirst()) {
+                bNum = cursor.getString(cursor.getColumnIndexOrThrow("BNum"));
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error fetching existing BNum: " + e.getMessage());
+        }
+        return bNum;
     }
 
     // Method to check if the user already has an associated BNum
@@ -116,6 +143,28 @@ public class budgeting1 extends AppCompatActivity {
         return exists;
     }
 
+    private void checkUserInFirebase(String userUnum, FirebaseCallback callback) {
+        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+        dbFirebase.collection("BUDGET")
+                .whereEqualTo("UNum", userUnum)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        callback.onCallback(true); // User exists in Firebase
+                    } else {
+                        callback.onCallback(false); // User does not exist in Firebase
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FirestoreError", "Error checking user in Firebase: " + e.getMessage());
+                    callback.onCallback(false); // Default to false on failure
+                });
+    }
+
+    interface FirebaseCallback {
+        void onCallback(boolean existsInFirebase);
+    }
+
     // Method to save the new BNum for the user
     private void saveNewBNumForUser(String userUnum, String bNum) {
         try {
@@ -128,7 +177,22 @@ public class budgeting1 extends AppCompatActivity {
         }
     }
 
-    // Method to generate a new BNum (from earlier)
+    // Method of saving to Firebase
+    private void saveNewBNumToFirebase(String userUnum, String bNum) {
+        FirebaseFirestore dbFirebase = FirebaseFirestore.getInstance();
+
+        // Create a map to store the BNum and UNum
+        Map<String, Object> budgetData = new HashMap<>();
+        budgetData.put("UNum", userUnum);
+
+        dbFirebase.collection("BUDGET")
+                .document(bNum) // Use BNum as the document ID
+                .set(budgetData)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "BNum saved to Firebase"))
+                .addOnFailureListener(e -> Log.e("FirestoreError", "Error saving BNum to Firebase: " + e.getMessage()));
+    }
+
+    // Method to generate a new BNum for new Users
     private String generateNewBNum() {
         String newBNum = "B0001"; // Default ID for the first entry
         try {
@@ -150,56 +214,73 @@ public class budgeting1 extends AppCompatActivity {
     private void loadBudgetsFromDatabase() {
         budList = new ArrayList<>();
 
-        // Prepopulate categories with default values
-        String[] defaultCategories = {
-                "Food", "Transportation", "Health", "Utilities", "Education", "Entertainment", "Savings", "Others"
-        };
-        for (String category : defaultCategories) {
-            budList.add(new Budget(category, 0.0, 0.0)); // Default values
+        // Query to fetch budget data for each category
+        String budgetQuery = "SELECT CATEGORIES.CName, " +
+                "IFNULL(SUM(BUDGET_CATEGORY.BCBudget), 0) AS TotalBudget " +
+                "FROM CATEGORIES " +
+                "LEFT JOIN BUDGET_CATEGORY ON CATEGORIES.CNum = BUDGET_CATEGORY.CNum AND BUDGET_CATEGORY.BNum = ? " +
+                "GROUP BY CATEGORIES.CName";
+
+        // Query to fetch expense data for each category
+        String expenseQuery = "SELECT CATEGORIES.CName, " +
+                "IFNULL(SUM(BUDGET_ADD.BAExpense), 0) AS TotalExpenses " +
+                "FROM CATEGORIES " +
+                "LEFT JOIN BUDGET_ADD ON CATEGORIES.CNum = BUDGET_ADD.CNum AND BUDGET_ADD.BNum = ? " +
+                "GROUP BY CATEGORIES.CName";
+
+        String currentBNum = getBNumForCurrentUser();
+
+        if (currentBNum == null || currentBNum.isEmpty()) {
+            Toast.makeText(this, "No budget found for current user", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        // Get readable database
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        // Create a map to store budget data
+        Map<String, Double> budgetMap = new HashMap<>();
+        // Create a map to store expense data
+        Map<String, Double> expenseMap = new HashMap<>();
 
-        // Updated query
-        String query = "SELECT CATEGORIES.CName, BUDGET_CATEGORY.BCBudget, " +
-                "IFNULL(SUM(BUDGET_ADD.BAExpense), 0) AS BExpense " +
-                "FROM BUDGET_CATEGORY " +
-                "INNER JOIN CATEGORIES ON BUDGET_CATEGORY.CNum = CATEGORIES.CNum " +
-                "LEFT JOIN BUDGET_ADD ON BUDGET_CATEGORY.CNum = BUDGET_ADD.CNum " +
-                "GROUP BY CATEGORIES.CName, BUDGET_CATEGORY.BCBudget";
+        try (Cursor budgetCursor = db.rawQuery(budgetQuery, new String[]{currentBNum})) {
+            if (budgetCursor.moveToFirst()) {
+                do {
+                    String categoryName = budgetCursor.getString(budgetCursor.getColumnIndexOrThrow("CName"));
+                    double totalBudget = budgetCursor.getDouble(budgetCursor.getColumnIndexOrThrow("TotalBudget"));
 
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                // Fetch values for each budget entry
-                String category = cursor.getString(cursor.getColumnIndexOrThrow("CName"));
-                double totalBudget = cursor.getDouble(cursor.getColumnIndexOrThrow("BCBudget")); // Budgeted amount
-                double totalExpenses = cursor.getDouble(cursor.getColumnIndexOrThrow("BExpense")); // Calculated expenses
-
-                // Update or add to the list
-                boolean updated = false;
-                for (Budget budget : budList) {
-                    if (budget.getCategory().equals(category)) {
-                        budget.setRemaining(totalBudget);
-                        budget.setExpenses(totalExpenses);
-                        updated = true;
-                        break;
-                    }
-                }
-
-                if (!updated) {
-                    // Add new Budget to the list
-                    budList.add(new Budget(category, totalBudget, totalExpenses));
-                }
-            } while (cursor.moveToNext());
+                    // Store the budget in the map
+                    budgetMap.put(categoryName, totalBudget);
+                } while (budgetCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error loading budgets: " + e.getMessage());
+            Toast.makeText(this, "Error loading budgets", Toast.LENGTH_SHORT).show();
         }
 
-        cursor.close(); // Close the cursor
-        db.close();     // Close the database
+        try (Cursor expenseCursor = db.rawQuery(expenseQuery, new String[]{currentBNum})) {
+            if (expenseCursor.moveToFirst()) {
+                do {
+                    String categoryName = expenseCursor.getString(expenseCursor.getColumnIndexOrThrow("CName"));
+                    double totalExpenses = expenseCursor.getDouble(expenseCursor.getColumnIndexOrThrow("TotalExpenses"));
 
-        // Set adapter with updated list
+                    // Store the expense in the map
+                    expenseMap.put(categoryName, totalExpenses);
+                } while (expenseCursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("SQLiteError", "Error loading expenses: " + e.getMessage());
+            Toast.makeText(this, "Error loading expenses", Toast.LENGTH_SHORT).show();
+        }
+
+        // Merge budget and expense data
+        for (String category : budgetMap.keySet()) {
+            double totalBudget = budgetMap.getOrDefault(category, 0.0);
+            double totalExpenses = expenseMap.getOrDefault(category, 0.0);
+            double remaining = totalBudget - totalExpenses;
+
+            // Add the category with budget, expenses, and calculated remaining
+            budList.add(new Budget(category, remaining, totalExpenses));
+        }
+
+        // Update the RecyclerView adapter with the updated list
         adapter = new BudgetingAdapter(budList);
         recyclerView.setAdapter(adapter);
     }
@@ -252,8 +333,8 @@ public class budgeting1 extends AppCompatActivity {
     }
 
     private void calculateRemainingBalance() {
-        double totalBudget = 0.0;
-        double totalExpenses = 0.0;
+        double totalBudget = 00.0;
+        double totalExpenses = 00.0;
         double remainingBalance;
 
         // Query to sum up the BCBudget column from the BUDGET_CATEGORY table
@@ -322,29 +403,35 @@ public class budgeting1 extends AppCompatActivity {
     // Navigate to Home activity
     public void gohome(View v) {
         Intent i = new Intent(budgeting1.this, Home.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Navigate to Transactions activity
     public void gotransactions(View v) {
         Intent i = new Intent(budgeting1.this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Navigate to Categories activity
     public void gocategories(View v) {
         Intent i = new Intent(budgeting1.this, categories_main.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Navigate to Account activity
     public void goaccount(View v) {
         Intent i = new Intent(budgeting1.this, account.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         startActivity(i);
     }
 
     // Go back to the previous activity
     public void back(View v) {
+        Intent i = new Intent(this, budgeting1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
         finish();
     }
 }
