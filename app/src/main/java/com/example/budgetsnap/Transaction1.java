@@ -427,6 +427,11 @@ public class Transaction1 extends AppCompatActivity implements AdapterView.OnIte
         startActivity(i);
     }
 
+    public void gotransactions(View v) {
+        Intent i = new Intent(this, Transaction1.class);
+        i.putExtra("PK_UNUM", PK_Unum);
+        startActivity(i);
+    }
 
     public void gocategories(View v) {
         Intent i = new Intent(Transaction1.this, categories_main.class);

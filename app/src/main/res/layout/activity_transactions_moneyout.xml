@@ -73,7 +73,7 @@
         android:fontFamily="@font/poppins_bold"
         android:onClick="BtnMoneyOutBtn2"
         android:text="Money Out"
-        android:textColor="@color/verydarkcyan"
+        android:textColor="@color/red"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ButtonMoneyIn2"
